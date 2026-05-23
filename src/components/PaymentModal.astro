@@ -1,0 +1,97 @@
+---
+const pixKey  = '03043151097';
+const waNumber = '5551999595522';
+---
+
+<div class="modal-overlay" id="payModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">✕</button>
+
+    <p class="eyebrow" style="text-align:center;margin-bottom:0.5rem;">Workshop CALI</p>
+    <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;text-align:center;margin-bottom:0.3rem;" id="modalTitle">Reservar lugar</h2>
+    <p style="text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:1.8rem;" id="modalSubtitle"></p>
+
+    <!-- PIX -->
+    <div style="background:rgba(0,179,116,0.06);border:1px solid rgba(0,179,116,0.25);border-radius:16px;padding:1.5rem;margin-bottom:1rem;">
+      <p style="font-family:var(--font-display);font-size:1.05rem;margin-bottom:0.4rem;">
+        🟢 Pague com <strong>PIX</strong> e ganhe <span style="color:#00b374;font-weight:600;">10% de desconto</span>
+      </p>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">
+        Valor com desconto: <span id="pixPrice" style="color:#00b374;font-size:1.15rem;font-weight:500;"></span>
+      </p>
+      <div class="pix-key-box">
+        <span class="pix-key">{pixKey}</span>
+        <button class="copy-btn" id="copyPixBtn">Copiar chave</button>
+      </div>
+      <p style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;">
+        1. Copie a chave PIX acima &nbsp;·&nbsp; 2. Pague o valor com desconto &nbsp;·&nbsp; 3. Envie o comprovante pelo WhatsApp
+      </p>
+      <a id="waComprovante" href="#" target="_blank" rel="noopener"
+         class="btn btn-pix" style="display:block;text-align:center;width:100%;">
+        📲 Enviar comprovante via WhatsApp
+      </a>
+    </div>
+
+    <div class="divider">ou pague com cartão</div>
+
+    <a href="https://www.mercadopago.com.br" id="mpLink" target="_blank" rel="noopener"
+       class="btn btn-mp" style="display:block;text-align:center;width:100%;margin-bottom:1.2rem;">
+      Pagar com Mercado Pago
+    </a>
+
+    <p style="text-align:center;font-size:0.8rem;color:var(--muted);">
+      Dúvidas? <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener"
+        style="color:var(--orange);text-decoration:none;">Fale no WhatsApp</a>
+    </p>
+  </div>
+</div>
+
+<script define:vars={{ pixKey, waNumber }}>
+  const overlay  = document.getElementById('payModal');
+  const closeBtn = document.getElementById('modalClose');
+  const copyBtn  = document.getElementById('copyPixBtn');
+
+  function openModal(workshopName, price, currency) {
+    const symbol = currency === 'EUR' ? '€' : 'R$';
+    const pixDiscount = Math.round(price * 0.9);
+
+    document.getElementById('modalTitle').textContent    = workshopName;
+    document.getElementById('modalSubtitle').textContent = `Valor cheio: ${symbol}${price}`;
+    document.getElementById('pixPrice').textContent      = `${symbol}${pixDiscount}`;
+
+    const msg = encodeURIComponent(
+      `Olá Cami! Quero enviar o comprovante do pagamento PIX para o workshop "${workshopName}" (${symbol}${pixDiscount}).`
+    );
+    document.getElementById('waComprovante').href = `https://wa.me/${waNumber}?text=${msg}`;
+    overlay.classList.add('open');
+  }
+
+  // Expose globally so pages can call openModal()
+  window.openPayModal = openModal;
+
+  // Wire [data-workshop] buttons
+  document.querySelectorAll('[data-workshop]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openModal(
+        btn.dataset.workshop,
+        Number(btn.dataset.price),
+        btn.dataset.currency || 'BRL'
+      );
+    });
+  });
+
+  const closeModal = () => overlay.classList.remove('open');
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(pixKey);
+      copyBtn.textContent = '✓ Copiado!';
+      setTimeout(() => { copyBtn.textContent = 'Copiar chave'; }, 2500);
+    } catch {
+      copyBtn.textContent = 'Copie: ' + pixKey;
+    }
+  });
+</script>

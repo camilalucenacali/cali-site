@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+import { workshops } from '../data/workshops.js';
+import { getCollection } from 'astro:content';
+
+const nextWorkshops = workshops.filter(w => w.status === 'upcoming').slice(0, 3);
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3);
+
+const waNumber = '5551999595522';
+const waText = encodeURIComponent('Olá Cami! Quero saber mais sobre os workshops CALI.');
+const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
+---
+
+<BaseLayout
+  title="CALI MOVIMIENTO — Yoga, Dança e Movimento com Camila Lucena"
+  description="Experiências de movimento, yoga, dança e expressão corporal com Camila Lucena. Workshops presenciais em todo Brasil e Europa."
+>
+  <Header />
+
+  <!-- ══════════════════════════════════════════
+       HERO — Espaço sideral
+  ══════════════════════════════════════════ -->
+  <section class="section-full" id="hero" style="background:radial-gradient(ellipse at 50% 60%, #12113a 0%, #080818 100%);padding-top:7rem;">
+    <div class="stars-container" id="stars"></div>
+    <div style="position:relative;z-index:2;text-align:center;max-width:900px;padding:2rem;">
+      <p class="eyebrow reveal">by Camila Lucena</p>
+      <h1 class="display-title reveal" style="transition-delay:0.1s;">CALI</h1>
+      <p class="reveal" style="font-family:var(--font-heading);font-size:clamp(1.2rem,3vw,2rem);letter-spacing:0.4em;color:var(--muted);margin:-0.5rem 0 1.5rem;transition-delay:0.2s;">
+        MOVIMIENTO
+      </p>
+      <p class="tagline reveal" style="transition-delay:0.3s;">
+        O corpo não é um problema a resolver.<br>É um território a habitar.
+      </p>
+      <a href="/workshops" class="btn btn-primary reveal" style="transition-delay:0.4s;">
+        Ver workshops
+      </a>
+    </div>
+    <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;opacity:0.4;font-size:1.5rem;">↓</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       MANIFESTO — Cuidando da sua coluna
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#080818 0%,#0c0c24 100%);">
+    <div class="container">
+      <p class="eyebrow reveal" style="text-align:center;">manifesto</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3.5rem;">
+        Cuidando da tua coluna
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;">
+
+        <div class="card reveal">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">🌿</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
+            Consumo Consciente como Movimento
+          </h3>
+          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
+            Escolher o que consumimos é um movimento político e corporal. É o que "entra" e o que "sustenta" o ritmo da vida. Se o objetivo é ativar o ser, a poluição — visual, sonora ou química — é um ruído que bloqueia essa ativação.
+          </p>
+        </div>
+
+        <div class="card reveal" style="transition-delay:0.15s;">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">🌎</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
+            Ambientes que ativam o sentir
+          </h3>
+          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
+            Para sentir o corpo, precisamos de ambientes menos sintéticos. Conectar a preservação ambiental ao prazer sensorial que a natureza proporciona — o cheiro da chuva, o calor do sol, o frescor da água. Se o corpo sente prazer na natureza, o cuidado se torna instintivo, não uma obrigação teórica.
+          </p>
+        </div>
+
+        <div class="card reveal" style="transition-delay:0.3s;">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">🦶</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
+            O pé na terra
+          </h3>
+          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
+            O pé na terra ativa terminações nervosas que "avisam" o corpo que ele pertence àquele lugar. Pertencer é a base de qualquer prática real de autoconhecimento.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PRÓXIMOS WORKSHOPS
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:#080818;">
+    <div class="container">
+      <p class="eyebrow reveal" style="text-align:center;">agenda nômade</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3.5rem;">
+        Próximos workshops
+      </h2>
+      <div class="grid-3">
+        {nextWorkshops.map((w, i) => {
+          const price = w.currency === 'EUR'
+            ? (w.priceEUR?.earlyBird ?? 80)
+            : (w.priceBRL?.earlyBird ?? 180);
+          const symbol = w.currency === 'EUR' ? '€' : 'R$';
+          return (
+            <div class="card reveal" style={`transition-delay:${i * 0.15}s`}>
+              <p class="workshop-date">{w.dateDisplay}</p>
+              <p class="workshop-city">{w.city}</p>
+              <p class="workshop-location">{w.location}</p>
+              <p class="workshop-time">{w.time}</p>
+              <div class="price-tag">Early bird até 2 dias antes</div>
+              <div class="price-row">
+                <span class="price-main">{symbol}{price}</span>
+                <span class="price-pix"> · {symbol}{Math.round(price * 0.9)} no PIX</span>
+              </div>
+              <button
+                class="btn btn-primary"
+                style="width:100%;text-align:center;"
+                data-workshop={`${w.city} — ${w.dateDisplay} ${w.time}`}
+                data-price={price}
+                data-currency={w.currency}
+              >
+                Reservar lugar
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <div style="text-align:center;margin-top:3rem;" class="reveal">
+        <a href="/workshops" class="btn btn-outline">Ver toda a agenda</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       QUEM É A CAMI
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
+    <div class="container">
+      <div class="grid-2" style="align-items:center;gap:4rem;">
+        <div>
+          <p class="eyebrow reveal">quem é</p>
+          <h2 class="section-title reveal" style="margin-bottom:1.5rem;">a Cami</h2>
+          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:1.2rem;">
+            Ativista do sentir corporal livre, a Cami é facilitadora de transformação pessoal e coletiva utilizando diferentes linguagens e ferramentas. Suas práticas fundem saberes que muitas vezes transcendem a abordagem tradicional, oferecendo <strong style="color:white;">conexão, liberdade e autonomia</strong>.
+          </p>
+          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:1.2rem;">
+            Propondo o cuidado como uma performance coletiva.
+          </p>
+          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:2rem;">
+            Se você quer entender melhor sobre ti mesma, fases e ciclos da tua vida — chegaste no lugar certo. Na aula conseguimos entrar em todos esses temas de uma maneira leve e descontraída, mas profunda a nível de te auxiliar bastante no teu autoconhecimento e autodescoberta.
+          </p>
+          <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;">
+            <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">
+              Conversar no WhatsApp
+            </a>
+            <a href="/workshops" class="btn btn-primary">Ver workshops</a>
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:0.2s;">
+          <div style="aspect-ratio:3/4;border-radius:24px;background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(168,85,247,0.15));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
+            <p style="color:var(--muted);font-size:0.85rem;text-align:center;padding:2rem;">
+              📸 Foto de Camila<br>(adicionar)
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       A PRÁTICA — Spine Lab
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:#0d0d28;">
+    <div class="container">
+      <p class="eyebrow reveal" style="text-align:center;">a prática</p>
+      <h2 class="section-title reveal" style="text-align:center;">
+        Spine Lab — 2 horas
+      </h2>
+      <p class="tagline reveal" style="margin-bottom:3rem;">
+        Para o ocidental que nunca soube que tinha um corpo.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;">
+        {[
+          { time: '15min', title: 'Abertura', icon: '🌬️', desc: 'Chegança real. Não começa com movimento — começa com parada. Dirga Pranayama, Sankalpa, Om × 3.' },
+          { time: '20min', title: 'Aquecimento', icon: '🌊', desc: 'A coluna se move em 6 direções. A maioria das pessoas usa 1. Gato-vaca, torções, Surya Namaskar lento.' },
+          { time: '40min', title: 'Prática Central', icon: '⚡', desc: 'Progressão clássica de pé → chão. Força, enraizamento, mobilidade profunda, introspecção.' },
+          { time: '20min', title: 'Nauli', icon: '🔥', desc: 'O coração do Spine Lab. Shatkarma — prática de purificação do Hatha Yoga. Não é acrobacia: é medicina interna.' },
+          { time: '15min', title: 'Invertidas', icon: '🌙', desc: 'Progressão segura: Viparita Karani, Sarvangasana, Sirsasana. Todo mundo consegue entrar de alguma forma.' },
+          { time: '10min', title: 'Encerramento', icon: '✨', desc: '7 minutos reais de Savasana — não negociável. Yoga Nidra breve. Círculo de fechamento.' },
+        ].map((block, i) => (
+          <div class="card reveal" style={`transition-delay:${i * 0.1}s;text-align:center;`}>
+            <p style="font-size:2rem;margin-bottom:0.5rem;">{block.icon}</p>
+            <p style="font-size:0.75rem;letter-spacing:0.2em;color:var(--orange);text-transform:uppercase;margin-bottom:0.3rem;">{block.time}</p>
+            <h3 style="font-family:var(--font-heading);font-size:1.15rem;font-weight:400;margin-bottom:0.8rem;">{block.title}</h3>
+            <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;">{block.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CTA FINAL — Vamos nos encontrar
+  ══════════════════════════════════════════ -->
+  <section class="section-full" style="background:radial-gradient(ellipse at 50% 50%, #1a0a2e 0%, #080818 100%);padding:6rem 2rem;">
+    <div class="stars-container" id="stars2"></div>
+    <div style="position:relative;z-index:2;text-align:center;max-width:700px;">
+      <p class="eyebrow reveal">próximo passo</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">
+        Fico muito feliz que vamos nos encontrar em tempo real!
+      </h2>
+      <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1rem;margin-bottom:0.8rem;">
+        Nossa prática pode acontecer de forma presencial ou online via Zoom, onde estarei inteiramente disposta e interessada em te entender e vivenciar contigo.
+      </p>
+      <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1rem;margin-bottom:2.5rem;">
+        Podes tirar todas as dúvidas que quiseres — ou já partir direto para a reserva.
+      </p>
+      <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
+        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.8rem;">
+          💬 Vamos ver
+        </a>
+        <button
+          class="btn btn-primary"
+          style="font-size:1rem;padding:1.1rem 2.8rem;"
+          data-workshop={`${nextWorkshops[0]?.city ?? 'Workshop CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
+          data-price={nextWorkshops[0]?.currency === 'EUR'
+            ? (nextWorkshops[0]?.priceEUR?.earlyBird ?? 80)
+            : (nextWorkshops[0]?.priceBRL?.earlyBird ?? 180)}
+          data-currency={nextWorkshops[0]?.currency ?? 'BRL'}
+        >
+          ✨ Já quero
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       BLOG PREVIEW
+  ══════════════════════════════════════════ -->
+  {posts.length > 0 && (
+    <section style="padding:6rem 2rem;background:#080818;">
+      <div class="container">
+        <p class="eyebrow reveal" style="text-align:center;">blog</p>
+        <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">Escritas do movimento</h2>
+        <div class="blog-grid">
+          {posts.map((post, i) => (
+            <a href={`/blog/${post.slug}`} style="text-decoration:none;color:inherit;" class="reveal" style={`transition-delay:${i*0.15}s`}>
+              <div class="card">
+                <div class="blog-card-img"></div>
+                <p class="blog-card-date">{post.data.pubDate.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}</p>
+                <h3 class="blog-card-title">{post.data.title}</h3>
+                <p class="blog-card-excerpt">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div style="text-align:center;margin-top:3rem;" class="reveal">
+          <a href="/blog" class="btn btn-outline">Ver todos os posts</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Footer />
+  <WhatsAppButton />
+  <PaymentModal />
+</BaseLayout>
+
+<script>
+  // Generate stars for hero sections
+  function makeStars(containerId, count = 150) {
+    const c = document.getElementById(containerId);
+    if (!c) return;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        --d:${2 + Math.random()*4}s;--delay:${Math.random()*6}s;
+      `;
+      c.appendChild(s);
+    }
+  }
+  makeStars('stars', 200);
+  makeStars('stars2', 100);
+</script>
+
+<style>
+  @keyframes bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(8px); }
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.pubDate.toISOString(),
+  "author": { "@type": "Person", "name": "Camila Lucena" },
+  "publisher": { "@type": "Organization", "name": "CALI MOVIMIENTO" }
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} — CALI MOVIMIENTO`}
+  description={post.data.description}
+  type="article"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+
+  <Header />
+
+  <article style="padding:8rem 2rem 6rem;max-width:720px;margin:0 auto;">
+    <header style="margin-bottom:3rem;text-align:center;">
+      <p class="eyebrow">
+        {post.data.pubDate.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}
+        {post.data.city && <span style="color:var(--orange);"> · {post.data.city}</span>}
+      </p>
+      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:400;line-height:1.1;margin:1rem 0;">
+        {post.data.title}
+      </h1>
+      <p style="color:var(--muted);font-size:1.1rem;line-height:1.6;">{post.data.description}</p>
+      {post.data.tags.length > 0 && (
+        <div style="margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;">
+          {post.data.tags.map(tag => (
+            <span style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.2);border-radius:20px;padding:0.2rem 0.8rem;font-size:0.8rem;color:var(--orange);">{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <div style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;">
+      <p style="color:var(--muted);margin-bottom:1.5rem;">Gostaste? Encontra-me num workshop.</p>
+      <a href="/workshops" class="btn btn-primary">Ver workshops</a>
+      &nbsp;
+      <a href="/blog" class="btn btn-outline" style="margin-left:0.5rem;">← Voltar ao blog</a>
+    </div>
+  </article>
+
+  <Footer />
+  <WhatsAppButton />
+</BaseLayout>
+
+<style>
+  .prose { color: rgba(255,255,255,0.85); line-height: 1.9; font-size: 1.05rem; }
+  .prose h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; margin: 2.5rem 0 1rem; }
+  .prose h3 { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 400; margin: 2rem 0 0.8rem; }
+  .prose p  { margin-bottom: 1.4rem; }
+  .prose strong { color: white; font-weight: 500; }
+  .prose em { color: rgba(255,255,255,0.7); font-style: italic; }
+  .prose a  { color: var(--orange); text-decoration: underline; }
+  .prose ul, .prose ol { margin: 1rem 0 1.4rem 1.5rem; }
+  .prose li { margin-bottom: 0.5rem; }
+  .prose blockquote {
+    border-left: 3px solid var(--orange);
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    background: rgba(255,107,53,0.05);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: rgba(255,255,255,0.75);
+  }
+  .prose hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+</style>

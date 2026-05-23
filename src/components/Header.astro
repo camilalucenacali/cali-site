@@ -1,0 +1,21 @@
+---
+const nav = [
+  { label: 'Workshops', href: '/workshops' },
+  { label: 'Blog',      href: '/blog' },
+  { label: 'Imprensa',  href: '/imprensa' },
+];
+---
+<header class="site-header">
+  <a href="/" class="logo">CALI</a>
+
+  <nav>
+    <ul class="nav" id="main-nav">
+      {nav.map(item => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+      <li><a href="/workshops" class="nav-cta">Reservar lugar</a></li>
+    </ul>
+  </nav>
+
+  <button class="nav-toggle" id="nav-toggle" aria-label="Menu">☰</button>
+</header>

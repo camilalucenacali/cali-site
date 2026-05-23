@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+const releases = [
+  // Adicionar releases aqui no formato:
+  // { date: '2026-06-01', title: 'Título do release', excerpt: 'Resumo.', href: '#' }
+];
+---
+
+<BaseLayout
+  title="Imprensa — CALI MOVIMIENTO by Camila Lucena"
+  description="Informações para a imprensa sobre Camila Lucena e o projeto CALI MOVIMIENTO. Kit de mídia, releases e contato."
+>
+  <Header />
+
+  <!-- Hero -->
+  <section style="padding:9rem 2rem 5rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,#12113a 0%,#080818 70%);">
+    <div class="stars-container" id="stars"></div>
+    <div style="position:relative;z-index:2;max-width:600px;margin:0 auto;">
+      <p class="eyebrow reveal">mídia</p>
+      <h1 class="section-title reveal" style="font-size:clamp(3rem,8vw,5.5rem);">Para a Imprensa</h1>
+      <p class="tagline reveal">
+        Informações, materiais e contato para jornalistas, veículos e parceiros.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bio rápida -->
+  <section style="padding:5rem 2rem;background:#080818;">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal">bio para veículos</p>
+      <h2 class="section-title reveal" style="font-size:2.5rem;margin-bottom:2rem;">Camila Lucena</h2>
+      <div class="card reveal">
+        <p style="line-height:1.9;font-size:1.05rem;color:rgba(255,255,255,0.85);margin-bottom:1.2rem;">
+          <strong>Versão curta (até 280 caracteres):</strong><br>
+          Ativista do sentir corporal livre. Facilitadora de yoga, dança, capoeira e expressão corporal. Fundadora do CALI MOVIMIENTO. Nômade. Presente em todo o Brasil e Europa.
+        </p>
+        <p style="line-height:1.9;font-size:1.05rem;color:rgba(255,255,255,0.85);">
+          <strong>Versão longa:</strong><br>
+          Camila Lucena é facilitadora de transformação pessoal e coletiva que utiliza diferentes linguagens corporais — yoga, dança, capoeira, hair dance e expressão corporal. Suas práticas fundem saberes que transcendem a abordagem tradicional, propondo o cuidado como uma performance coletiva. Criadora do Spine Lab, um programa de 2h baseado nos princípios do Hatha Yoga clássico e na prática do Nauli (Shatkarma), Camila leva o sentir corporal a todos os cantos do mundo como ato político e de resistência.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kit de mídia -->
+  <section style="padding:3rem 2rem 5rem;background:#080818;">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal">downloads</p>
+      <h2 class="section-title reveal" style="font-size:2rem;margin-bottom:2rem;">Kit de Mídia</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;">
+        {[
+          { icon: '🖼️', label: 'Logo CALI (PNG/SVG)', href: '#', note: 'em breve' },
+          { icon: '📸', label: 'Fotos de Divulgação', href: '#', note: 'em breve' },
+          { icon: '📄', label: 'Bio Completa (PDF)', href: '#', note: 'em breve' },
+          { icon: '🎨', label: 'Guia de Identidade Visual', href: '#', note: 'em breve' },
+        ].map(item => (
+          <div class="card reveal" style="text-align:center;">
+            <p style="font-size:2rem;margin-bottom:0.5rem;">{item.icon}</p>
+            <p style="font-size:0.95rem;margin-bottom:0.3rem;">{item.label}</p>
+            <p style="font-size:0.75rem;color:var(--muted);">{item.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Releases -->
+  <section style="padding:3rem 2rem 5rem;background:#080818;">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal">releases</p>
+      <h2 class="section-title reveal" style="font-size:2rem;margin-bottom:2rem;">Comunicados</h2>
+      {releases.length === 0 ? (
+        <div class="card reveal" style="text-align:center;padding:3rem;">
+          <p style="color:var(--muted);">Releases em breve.</p>
+        </div>
+      ) : (
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          {releases.map((r, i) => (
+            <a href={r.href} class="card reveal" style={`text-decoration:none;color:inherit;display:block;transition-delay:${i*0.1}s`}>
+              <p class="blog-card-date">{r.date}</p>
+              <h3 class="blog-card-title" style="font-size:1.3rem;">{r.title}</h3>
+              <p class="blog-card-excerpt">{r.excerpt}</p>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Contato imprensa -->
+  <section style="padding:4rem 2rem 6rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
+    <div class="container" style="max-width:600px;text-align:center;">
+      <p class="eyebrow reveal">contato</p>
+      <h2 class="section-title reveal" style="font-size:2rem;margin-bottom:1rem;">Fale com a assessoria</h2>
+      <p class="reveal" style="color:var(--muted);margin-bottom:2rem;">
+        Para entrevistas, pautas e parcerias — entre em contato pelo WhatsApp ou Instagram.
+      </p>
+      <div class="reveal" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="https://wa.me/5551999595522?text=Olá! Sou da imprensa e gostaria de falar com Camila Lucena."
+           target="_blank" rel="noopener" class="btn btn-primary">
+          WhatsApp
+        </a>
+        <a href="https://www.instagram.com/camilalucena.cali" target="_blank" rel="noopener" class="btn btn-outline">
+          @camilalucena.cali
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <WhatsAppButton />
+</BaseLayout>
+
+<script>
+  const c = document.getElementById('stars');
+  if (c) for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2 + 0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;`;
+    c.appendChild(s);
+  }
+</script>
