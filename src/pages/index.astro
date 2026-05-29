@@ -13,13 +13,13 @@ const posts = (await getCollection('blog')).sort(
 ).slice(0, 3);
 
 const waNumber = '5551999595522';
-const waText = encodeURIComponent('Olá Cami! Quero saber mais sobre os workshops CALI.');
+const waText = encodeURIComponent('Olá Cami! Quero saber mais sobre as imersões CALI.');
 const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
 ---
 
 <BaseLayout
   title="CALI MOVIMIENTO — Yoga, Dança e Movimento com Camila Lucena"
-  description="Experiências de movimento, yoga, dança e expressão corporal com Camila Lucena. Workshops presenciais em todo Brasil e Europa."
+  description="Experiências de movimento, yoga, dança e expressão corporal com Camila Lucena. Imersões presenciais em todo Brasil e Europa."
 >
   <Header />
 
@@ -37,8 +37,8 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
       <p class="tagline reveal" style="transition-delay:0.3s;">
         O corpo não é um problema a resolver.<br>É um território a habitar.
       </p>
-      <a href="/workshops" class="btn btn-primary reveal" style="transition-delay:0.4s;">
-        Ver workshops
+      <a href="/imersoes" class="btn btn-primary reveal" style="transition-delay:0.4s;">
+        Ver imersões
       </a>
     </div>
     <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;opacity:0.4;font-size:1.5rem;">↓</div>
@@ -96,7 +96,7 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
     <div class="container">
       <p class="eyebrow reveal" style="text-align:center;">agenda nômade</p>
       <h2 class="section-title reveal" style="text-align:center;margin-bottom:3.5rem;">
-        Próximos workshops
+        Próximas imersões
       </h2>
       <div class="grid-3">
         {nextWorkshops.map((w, i) => {
@@ -129,7 +129,7 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
         })}
       </div>
       <div style="text-align:center;margin-top:3rem;" class="reveal">
-        <a href="/workshops" class="btn btn-outline">Ver toda a agenda</a>
+        <a href="/imersoes" class="btn btn-outline">Ver toda a agenda</a>
       </div>
     </div>
   </section>
@@ -156,7 +156,7 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
             <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">
               Conversar no WhatsApp
             </a>
-            <a href="/workshops" class="btn btn-primary">Ver workshops</a>
+            <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
           </div>
         </div>
         <div class="reveal" style="transition-delay:0.2s;">
@@ -167,6 +167,33 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       1ª AULA ONLINE — Agendamento
+  ══════════════════════════════════════════ -->
+  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#0a0a1e 100%);">
+    <div class="container" style="max-width:760px;text-align:center;">
+      <p class="eyebrow reveal">experiência individual</p>
+      <h2 class="section-title reveal" style="margin-bottom:1rem;">Marque tua 1ª aula online</h2>
+      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:0.5rem;">
+        Uma sessão de 2h, ao vivo via Zoom. A mesma prática das imersões presenciais — no teu ritmo, no teu espaço.
+      </p>
+      <p class="reveal" style="font-family:var(--font-heading);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:400;margin:1.2rem 0 2rem;" id="aula-preco">
+        R$ 15,00
+      </p>
+      <a
+        href="#calendly-placeholder"
+        class="btn btn-primary reveal"
+        style="font-size:1rem;padding:1.1rem 2.8rem;"
+        id="btn-agendar"
+      >
+        📅 Agendar agora
+      </a>
+      <p class="reveal" style="color:var(--muted);font-size:0.82rem;margin-top:1rem;opacity:0.7;">
+        Seleciona a data e horário que funciona para ti — confirmação imediata.
+      </p>
     </div>
   </section>
 
@@ -226,7 +253,7 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
         <button
           class="btn btn-primary"
           style="font-size:1rem;padding:1.1rem 2.8rem;"
-          data-workshop={`${nextWorkshops[0]?.city ?? 'Workshop CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
+          data-workshop={`${nextWorkshops[0]?.city ?? 'Imersão CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
           data-price={nextWorkshops[0]?.currency === 'EUR'
             ? (nextWorkshops[0]?.priceEUR?.earlyBird ?? 80)
             : (nextWorkshops[0]?.priceBRL?.earlyBird ?? 180)}
@@ -269,6 +296,17 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   <WhatsAppButton />
   <PaymentModal />
 </BaseLayout>
+
+<script>
+  // Detect location via timezone to show correct price for 1st class
+  (function() {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const isEurope = tz.startsWith('Europe/');
+    const priceEl = document.getElementById('aula-preco');
+    if (priceEl && isEurope) priceEl.textContent = '€ 15,00';
+    // When Calendly link is available, swap the href here too
+  })();
+</script>
 
 <script>
   // Generate stars for hero sections

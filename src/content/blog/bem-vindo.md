@@ -26,4 +26,4 @@ Esse endereço é o que muda tudo.
 
 ---
 
-*Quer experimentar? Os próximos workshops estão na [agenda](/workshops).*
+*Quer experimentar? As próximas imersões estão na [agenda](/imersoes).*

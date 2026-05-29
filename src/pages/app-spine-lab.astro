@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+const waNumber = '5551999595522';
+const waWaitlist = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá! Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min com a Camila.')}`;
+const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cami! Recebi um convite para a Spine Lab e quero agendar minha conversa de 15 min.')}`;
+---
+
+<BaseLayout
+  title="APP Spine Lab — CALI MOVIMIENTO"
+  description="Spine Lab é uma comunidade de prática corporal consciente. Acesso via conversa com a Camila — 10 vagas por semana. Entre na lista."
+>
+  <Header />
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="section-full" style="background:radial-gradient(ellipse at 50% 60%, #1a0a2e 0%, #080818 100%);padding-top:8rem;">
+    <div class="stars-container" id="stars"></div>
+    <div style="position:relative;z-index:2;text-align:center;max-width:820px;padding:2rem;">
+      <p class="eyebrow reveal">acesso consciente</p>
+      <h1 class="display-title reveal" style="font-size:clamp(2.8rem,7vw,5.5rem);transition-delay:0.1s;line-height:1.1;">
+        Spine Lab é uma<br>comunidade que cuida
+      </h1>
+      <p class="tagline reveal" style="transition-delay:0.2s;max-width:600px;margin:1.5rem auto 0;">
+        Não é mais um app de yoga.<br>
+        É um laboratório de prática corporal consciente — e o acesso começa com uma conversa.
+      </p>
+      <div class="reveal" style="transition-delay:0.35s;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
+          Entrar na lista de espera
+        </a>
+        <a href="https://calispinelab.vercel.app" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
+          Acessar o app ↗
+        </a>
+      </div>
+      <p class="reveal" style="transition-delay:0.45s;color:var(--muted);font-size:0.85rem;margin-top:1.2rem;">
+        10 conversas por semana · próxima liberação: segunda-feira
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       POR QUE O ACESSO NÃO É ABERTO
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:#080818;">
+    <div class="container" style="max-width:760px;">
+      <p class="eyebrow reveal" style="text-align:center;">a lógica por trás</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:2.5rem;">
+        Por que o acesso não é aberto?
+      </h2>
+      <div class="card reveal" style="line-height:1.95;font-size:1.05rem;color:rgba(255,255,255,0.85);">
+        <p style="margin-bottom:1.2rem;">
+          O mundo já tem conteúdo demais. A Spine Lab existe exatamente pelo oposto disso — não queremos ser mais um lugar onde a informação se acumula sem direção.
+        </p>
+        <p style="margin-bottom:1.2rem;">
+          Somos uma comunidade para quem já sabe que precisa cuidar da coluna e quer fazer isso com intenção, não por impulso.
+        </p>
+        <p style="margin-bottom:0;">
+          Por isso o acesso não é aberto. Cada nova pessoa passa por uma conversa de 15 min com a Cami — não como triagem, mas como direcionamento: entender onde essa pessoa está, o que ela precisa, e como o app pode servir melhor a ela.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       COMO FUNCIONA O ACESSO
+  ══════════════════════════════════════════ -->
+  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal" style="text-align:center;">passo a passo</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">Como funciona o acesso</h2>
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        {[
+          { n: '01', title: 'Entra na lista', desc: 'Clica em "Entrar na lista de espera" e aguarda o contato via WhatsApp. Toda segunda-feira liberamos novas vagas.' },
+          { n: '02', title: 'Conversa de 15 min com a Cami', desc: 'Não é triagem — é direcionamento. A Cami entende onde você está e como a prática pode te servir melhor.' },
+          { n: '03', title: 'Aprovação + link de pagamento', desc: 'Após a conversa, você recebe o link de pagamento e o acesso ao app é liberado manualmente.' },
+          { n: '04', title: 'Boas-vindas à comunidade', desc: 'Acesso ao Spine Lab + entrada no grupo permanente "Zona Spine Lab" — onde a prática continua entre as aulas.' },
+        ].map((step, i) => (
+          <div class="card reveal" style={`display:flex;gap:1.5rem;align-items:flex-start;transition-delay:${i*0.12}s`}>
+            <p style="font-family:var(--font-display);font-size:2.5rem;font-weight:300;color:var(--orange);line-height:1;flex-shrink:0;min-width:3rem;">{step.n}</p>
+            <div>
+              <h3 style="font-family:var(--font-heading);font-size:1.15rem;font-weight:400;margin-bottom:0.5rem;">{step.title}</h3>
+              <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin:0;">{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       O QUE ESTÁ DENTRO DO APP
+  ══════════════════════════════════════════ -->
+  <section style="padding:5rem 2rem;background:#0d0d28;">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal" style="text-align:center;">a prática</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">O que está dentro do app</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;">
+        {[
+          { icon: '🌬️', title: 'Spine Lab — 2 horas', desc: 'A prática completa: Dirga Pranayama, 6 movimentos da coluna, Nauli, invertidas e Savasana real.' },
+          { icon: '🔥', title: 'Aulas avulsas', desc: 'Práticas focadas de 20–40 min para encaixar na rotina sem perder a profundidade.' },
+          { icon: '🌙', title: 'Ciclos de prática', desc: 'Sequências pensadas para diferentes fases do corpo — feminino, energia, introspecção.' },
+          { icon: '✨', title: 'Zona Spine Lab', desc: 'O grupo permanente onde a Cami acompanha, tira dúvidas e a comunidade se apoia entre as aulas.' },
+        ].map((item, i) => (
+          <div class="card reveal" style={`text-align:center;transition-delay:${i*0.1}s`}>
+            <p style="font-size:2rem;margin-bottom:0.8rem;">{item.icon}</p>
+            <h3 style="font-family:var(--font-heading);font-size:1.05rem;font-weight:400;margin-bottom:0.6rem;">{item.title}</h3>
+            <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;margin:0;">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SISTEMA DE CONVITE
+  ══════════════════════════════════════════ -->
+  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#080818 100%);">
+    <div class="container" style="max-width:760px;text-align:center;">
+      <p class="eyebrow reveal">convite exclusivo</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">Conhece alguém que já é membro?</h2>
+      <div class="card reveal" style="text-align:left;margin-bottom:2.5rem;">
+        <p style="line-height:1.9;color:rgba(255,255,255,0.85);font-size:1.02rem;margin-bottom:1rem;">
+          Cada membro aprovado recebe <strong style="color:white;">2 convites exclusivos</strong> para indicar quem acredita que vai se beneficiar da prática.
+        </p>
+        <p style="line-height:1.9;color:var(--muted);font-size:0.95rem;margin:0;">
+          Quem chega por convite pula a fila e vai direto para a conversa de 15 min — sem espera. O convite não dá acesso automático, mas garante a vaga na entrevista.
+        </p>
+      </div>
+      <a href={waInvite} target="_blank" rel="noopener" class="btn btn-outline reveal">
+        Tenho um convite — quero agendar
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CTA FINAL
+  ══════════════════════════════════════════ -->
+  <section class="section-full" style="background:radial-gradient(ellipse at 50% 50%, #12113a 0%, #080818 100%);padding:6rem 2rem;">
+    <div class="stars-container" id="stars2"></div>
+    <div style="position:relative;z-index:2;text-align:center;max-width:680px;">
+      <p class="eyebrow reveal">próximo passo</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.2rem;">
+        O corpo não espera pelo momento certo.
+      </h2>
+      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:2.5rem;">
+        Entra na lista. Conversa com a Cami. Começa a prática.
+      </p>
+      <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
+        <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
+          Entrar na lista de espera
+        </a>
+        <a href="https://calispinelab.vercel.app" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
+          Já sou membro — acessar ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <WhatsAppButton />
+</BaseLayout>
+
+<script>
+  function makeStars(id, n = 150) {
+    const c = document.getElementById(id);
+    if (!c) return;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*6}s;`;
+      c.appendChild(s);
+    }
+  }
+  makeStars('stars', 200);
+  makeStars('stars2', 100);
+</script>

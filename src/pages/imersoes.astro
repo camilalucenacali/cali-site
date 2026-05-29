@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+import { workshops } from '../data/workshops.js';
+
+const cities = [...new Set(workshops.map(w => w.city))];
+
+// Event schema JSON-LD for all imersoes
+const eventSchemas = workshops.map(w => ({
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": `Imersão CALI — Yoga e Movimento com Camila Lucena`,
+  "description": "Experiência de 2h de yoga, movimento e expressão corporal com Camila Lucena. Inclui Hatha Yoga clássico, Nauli e invertidas.",
+  "startDate": w.date,
+  "location": {
+    "@type": "Place",
+    "name": w.location,
+    "address": { "@type": "PostalAddress", "addressLocality": w.city }
+  },
+  "organizer": { "@type": "Person", "name": "Camila Lucena" },
+  "offers": {
+    "@type": "Offer",
+    "price": w.currency === 'EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird,
+    "priceCurrency": w.currency,
+    "availability": "https://schema.org/InStock"
+  }
+}));
+---
+
+<BaseLayout
+  title="Imersões de Yoga — CALI MOVIMIENTO by Camila Lucena"
+  description="Imersões de yoga e movimento com Camila Lucena. Rio de Janeiro, Florianópolis, Porto Alegre e Europa. Reserve o teu lugar."
+>
+  {eventSchemas.map(schema => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  ))}
+
+  <Header />
+
+  <!-- Hero -->
+  <section style="padding:9rem 2rem 4rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,#12113a 0%,#080818 70%);">
+    <div class="stars-container" id="stars"></div>
+    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
+      <p class="eyebrow reveal">agenda 2026</p>
+      <h1 class="section-title reveal" style="font-size:clamp(3rem,8vw,6rem);">Imersões</h1>
+      <p class="tagline reveal">
+        Onde o corpo aprende a se habitar.<br>
+        Brasil e Europa — sempre em movimento.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pricing legend -->
+  <section style="padding:2rem;background:#080818;">
+    <div class="container">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;" class="reveal">
+        <div style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;">
+          🐦 <strong>Early bird</strong> — até 2 dias antes
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;">
+          Regular — até 1 dia antes
+        </div>
+        <div style="background:rgba(233,30,140,0.08);border:1px solid rgba(233,30,140,0.2);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;">
+          No dia
+        </div>
+        <div style="background:rgba(0,179,116,0.1);border:1px solid rgba(0,179,116,0.3);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;color:#00b374;">
+          💚 PIX = 10% de desconto em qualquer valor
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Imersão cards grouped by city -->
+  {cities.map(city => {
+    const cityWs = workshops.filter(w => w.city === city);
+    return (
+      <section style="padding:4rem 2rem;background:#080818;">
+        <div class="container">
+          <h2 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;margin-bottom:2rem;" class="reveal">
+            <span class="text-gradient">{city}</span>
+          </h2>
+          <div class="grid-3">
+            {cityWs.map((w, i) => {
+              const price  = w.currency === 'EUR' ? (w.priceEUR?.earlyBird ?? 80) : (w.priceBRL?.earlyBird ?? 180);
+              const priceR = w.currency === 'EUR' ? (w.priceEUR?.regular ?? 100)  : (w.priceBRL?.regular ?? 200);
+              const priceD = w.currency === 'EUR' ? (w.priceEUR?.dayOf ?? 120)    : (w.priceBRL?.dayOf ?? 220);
+              const sym    = w.currency === 'EUR' ? '€' : 'R$';
+              return (
+                <div class="card reveal" style={`transition-delay:${i*0.12}s`}>
+                  <p class="workshop-date">{w.dateDisplay}</p>
+                  <p class="workshop-city" style="font-size:1.15rem;">{w.neighborhood || w.city}</p>
+                  <p class="workshop-location">{w.location}</p>
+                  <p class="workshop-time">⏰ {w.time} &nbsp;·&nbsp; 2 horas</p>
+
+                  <table style="width:100%;font-size:0.85rem;margin:0.8rem 0 1.2rem;border-collapse:collapse;">
+                    <tr>
+                      <td style="color:var(--muted);padding:0.2rem 0;">🐦 Early bird</td>
+                      <td style="text-align:right;color:var(--orange);">{sym}{price} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(price*0.9)} PIX</span></td>
+                    </tr>
+                    <tr>
+                      <td style="color:var(--muted);padding:0.2rem 0;">Regular</td>
+                      <td style="text-align:right;">{sym}{priceR} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(priceR*0.9)} PIX</span></td>
+                    </tr>
+                    <tr>
+                      <td style="color:var(--muted);padding:0.2rem 0;">No dia</td>
+                      <td style="text-align:right;">{sym}{priceD} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(priceD*0.9)} PIX</span></td>
+                    </tr>
+                  </table>
+
+                  <button
+                    class="btn btn-primary"
+                    style="width:100%;text-align:center;"
+                    data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
+                    data-price={price}
+                    data-currency={w.currency}
+                  >
+                    Reservar lugar
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  })}
+
+  <!-- Online / Zoom -->
+  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
+    <div class="container" style="max-width:700px;text-align:center;">
+      <p class="eyebrow reveal">também disponível</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.2rem;">Aulas online via Zoom</h2>
+      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:2rem;">
+        Não consegues estar presencialmente? A prática também acontece online, com a mesma presença e intenção. Estarei inteiramente disposta a te entender e vivenciar contigo.
+      </p>
+      <a href={`https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Quero saber mais sobre as aulas online.')}`}
+         target="_blank" rel="noopener" class="btn btn-outline reveal">
+        Perguntar sobre aulas online
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+  <WhatsAppButton />
+  <PaymentModal />
+</BaseLayout>
+
+<script>
+  function makeStars(id, n = 120) {
+    const c = document.getElementById(id);
+    if (!c) return;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const sz = Math.random() * 2 + 0.5;
+      s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;`;
+      c.appendChild(s);
+    }
+  }
+  makeStars('stars');
+</script>

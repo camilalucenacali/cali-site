@@ -1,8 +1,8 @@
 ---
 const nav = [
-  { label: 'Workshops', href: '/workshops' },
-  { label: 'Blog',      href: '/blog' },
-  { label: 'Imprensa',  href: '/imprensa' },
+  { label: 'Imersões',      href: '/imersoes' },
+  { label: 'APP Spine Lab', href: '/app-spine-lab' },
+  { label: 'Blog',          href: '/blog' },
 ];
 ---
 <header class="site-header">
@@ -13,7 +13,7 @@ const nav = [
       {nav.map(item => (
         <li><a href={item.href}>{item.label}</a></li>
       ))}
-      <li><a href="/workshops" class="nav-cta">Reservar lugar</a></li>
+      <li><a href="/imersoes" class="nav-cta">Reservar lugar</a></li>
     </ul>
   </nav>
 
