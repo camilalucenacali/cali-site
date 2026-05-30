@@ -6,8 +6,6 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
 import PaymentModal from '../components/PaymentModal.astro';
 import { workshops } from '../data/workshops.js';
 
-const cities = [...new Set(workshops.map(w => w.city))];
-
 const eventSchemas = workshops
   .filter(w => w.date)
   .map(w => ({
@@ -83,81 +81,72 @@ const eventSchemas = workshops
     </div>
   </section>
 
-  <!-- Cards agrupados por cidade -->
-  {cities.map(city => {
-    const cityWs = workshops.filter(w => w.city === city);
-    return (
-      <section style="padding:4rem 2rem;background:#080818;">
-        <div class="container">
-          <h2 style="font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;margin-bottom:2rem;" class="reveal">
-            <span class="text-gradient">{city}</span>
-          </h2>
-          <div class="grid-3">
-            {cityWs.map((w, i) => {
-              const earlyBRL = w.priceBRL?.earlyBird;
-              const regBRL   = w.priceBRL?.regular;
-              const dayBRL   = w.priceBRL?.dayOf;
-              const earlyEUR = w.priceEUR?.earlyBird;
-              const regEUR   = w.priceEUR?.regular;
-              const dayEUR   = w.priceEUR?.dayOf;
-              const isTbd    = w.status === 'tbd';
+  <!-- Grid único — todas as imersões, máx 3 por linha -->
+  <section style="padding:4rem 2rem 5rem;background:#080818;">
+    <div class="container">
+      <div class="grid-3">
+        {workshops.map((w, i) => {
+          const earlyBRL = w.priceBRL?.earlyBird;
+          const regBRL   = w.priceBRL?.regular;
+          const dayBRL   = w.priceBRL?.dayOf;
+          const earlyEUR = w.priceEUR?.earlyBird;
+          const regEUR   = w.priceEUR?.regular;
+          const dayEUR   = w.priceEUR?.dayOf;
+          const isTbd    = w.status === 'tbd';
 
-              return (
-                <div
-                  class={`card reveal imersao-card${isTbd ? ' card-tbd' : ''}`}
-                  data-event-date={w.date ?? ''}
-                  data-early={w.currency === 'EUR' ? earlyEUR : earlyBRL}
-                  data-regular={w.currency === 'EUR' ? regEUR : regBRL}
-                  data-dayof={w.currency === 'EUR' ? dayEUR : dayBRL}
-                  data-currency={w.currency}
-                  style={`transition-delay:${i*0.12}s;position:relative;`}
-                >
-                  {isTbd && (
-                    <span style="position:absolute;top:1rem;right:1rem;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.4);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.72rem;letter-spacing:0.05em;color:#e91e8c;">
-                      Em breve
-                    </span>
-                  )}
+          return (
+            <div
+              class={`card reveal imersao-card${isTbd ? ' card-tbd' : ''}`}
+              data-event-date={w.date ?? ''}
+              data-early={w.currency === 'EUR' ? earlyEUR : earlyBRL}
+              data-regular={w.currency === 'EUR' ? regEUR : regBRL}
+              data-dayof={w.currency === 'EUR' ? dayEUR : dayBRL}
+              data-currency={w.currency}
+              style={`transition-delay:${i*0.1}s;position:relative;`}
+            >
+              {isTbd && (
+                <span style="position:absolute;top:1rem;right:1rem;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.4);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.72rem;letter-spacing:0.05em;color:#e91e8c;">
+                  Em breve
+                </span>
+              )}
 
-                  <p class="workshop-date">{w.dateDisplay}</p>
-                  <p class="workshop-city" style="font-size:1.15rem;">{w.neighborhood || w.city}</p>
-                  <p class="workshop-location">{w.location}</p>
-                  <p class="workshop-time">⏰ {w.time}{!isTbd ? ' · 2 horas' : ''}</p>
+              <p class="workshop-date">{w.dateDisplay}</p>
+              <p class="workshop-city" style="font-size:1.15rem;">{w.neighborhood || w.city}</p>
+              <p class="workshop-location">{w.location}</p>
+              <p class="workshop-time">⏰ {w.time}{!isTbd ? ' · 2 horas' : ''}</p>
 
-                  <!-- Tier de preço calculado por JS -->
-                  <div style="margin:0.8rem 0 0.4rem;">
-                    <span class="price-tier-badge" style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);border-radius:8px;padding:0.25rem 0.7rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.5rem;"></span>
-                  </div>
-                  <div class="price-row" style="margin-bottom:0.5rem;">
-                    <span class="price-main tier-price" style="font-family:var(--font-display);font-size:2rem;"></span>
-                    <span class="tier-pix" style="font-size:0.85rem;color:#00b374;margin-left:0.4rem;"></span>
-                  </div>
+              <div style="margin:0.8rem 0 0.4rem;">
+                <span class="price-tier-badge" style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);border-radius:8px;padding:0.25rem 0.7rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.5rem;"></span>
+              </div>
+              <div class="price-row" style="margin-bottom:0.5rem;">
+                <span class="price-main tier-price" style="font-family:var(--font-display);font-size:2rem;"></span>
+                <span class="tier-pix" style="font-size:0.85rem;color:#00b374;margin-left:0.4rem;"></span>
+              </div>
 
-                  {w.addOn && (
-                    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">
-                      🍱 Opcional: {w.addOn.label} — R${w.addOn.price}
-                    </p>
-                  )}
+              {w.addOn && (
+                <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">
+                  🍱 Opcional: {w.addOn.label} — R${w.addOn.price}
+                </p>
+              )}
 
-                  <button
-                    class="btn btn-primary"
-                    style={`width:100%;text-align:center;${isTbd ? 'opacity:0.5;' : ''}`}
-                    data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
-                    data-price={w.currency === 'EUR' ? earlyEUR : earlyBRL}
-                    data-currency={w.currency}
-                    data-addon-price={w.addOn?.price ?? ''}
-                    data-addon-label={w.addOn?.label ?? ''}
-                    disabled={isTbd}
-                  >
-                    {isTbd ? 'Em breve — aguarde' : 'Reservar lugar'}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    );
-  })}
+              <button
+                class="btn btn-primary"
+                style={`width:100%;text-align:center;margin-top:auto;${isTbd ? 'opacity:0.5;' : ''}`}
+                data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
+                data-price={w.currency === 'EUR' ? earlyEUR : earlyBRL}
+                data-currency={w.currency}
+                data-addon-price={w.addOn?.price ?? ''}
+                data-addon-label={w.addOn?.label ?? ''}
+                disabled={isTbd}
+              >
+                {isTbd ? 'Em breve — aguarde' : 'Reservar lugar'}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
 
   <!-- Online / Zoom -->
   <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
