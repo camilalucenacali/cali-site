@@ -32,25 +32,48 @@ body {
 
 /* ── Custom cursor ─────────────────────────────── */
 .cursor {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--orange);
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(255,107,53,0.55);
   border-radius: 50%;
   position: fixed;
+  left: 0; top: 0;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: transform 0.05s linear, width 0.2s, height 0.2s, border-color 0.3s, background 0.3s;
-  background: rgba(255,107,53,0.15);
-  backdrop-filter: blur(2px);
+  transition: width 0.35s ease, height 0.35s ease, border-color 0.35s, background 0.35s, opacity 0.3s;
+  background: rgba(255,107,53,0.04);
+  will-change: left, top;
 }
 .cursor.hover {
-  width: 36px;
-  height: 36px;
-  border-color: var(--magenta);
-  background: rgba(233,30,140,0.15);
+  width: 60px;
+  height: 60px;
+  border-color: rgba(233,30,140,0.75);
+  background: rgba(233,30,140,0.07);
 }
-@media (pointer: coarse) { .cursor { display: none; } body { cursor: auto; } * { cursor: auto; } }
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  position: fixed;
+  left: 0; top: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.3s;
+  will-change: left, top;
+}
+.cursor-dot.hover {
+  width: 10px;
+  height: 10px;
+  background: var(--magenta);
+}
+@media (pointer: coarse) {
+  .cursor, .cursor-dot { display: none; }
+  body { cursor: auto; }
+  * { cursor: auto; }
+}
 
 /* ── Stars ─────────────────────────────────────── */
 .stars-container {

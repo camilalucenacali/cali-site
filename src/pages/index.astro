@@ -100,29 +100,47 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
       </h2>
       <div class="grid-3">
         {nextWorkshops.map((w, i) => {
-          const price = w.currency === 'EUR'
+          const earlyPrice = w.currency === 'EUR'
             ? (w.priceEUR?.earlyBird ?? 80)
-            : (w.priceBRL?.earlyBird ?? 180);
-          const symbol = w.currency === 'EUR' ? '€' : 'R$';
+            : (w.priceBRL?.earlyBird ?? 0);
+          const isTbd = w.status === 'tbd';
           return (
-            <div class="card reveal" style={`transition-delay:${i * 0.15}s`}>
+            <div
+              class="card reveal home-imersao-card"
+              data-event-date={w.date ?? ''}
+              data-early={w.currency === 'EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird}
+              data-regular={w.currency === 'EUR' ? w.priceEUR?.regular : w.priceBRL?.regular}
+              data-dayof={w.currency === 'EUR' ? w.priceEUR?.dayOf : w.priceBRL?.dayOf}
+              data-currency={w.currency}
+              data-addon-price={w.addOn?.price ?? ''}
+              data-addon-label={w.addOn?.label ?? ''}
+              style={`transition-delay:${i * 0.15}s;position:relative;`}
+            >
+              {isTbd && (
+                <span style="position:absolute;top:1rem;right:1rem;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.4);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.72rem;color:#e91e8c;">Em breve</span>
+              )}
               <p class="workshop-date">{w.dateDisplay}</p>
-              <p class="workshop-city">{w.city}</p>
+              <p class="workshop-city">{w.neighborhood || w.city}</p>
               <p class="workshop-location">{w.location}</p>
               <p class="workshop-time">{w.time}</p>
-              <div class="price-tag">Early bird até 2 dias antes</div>
-              <div class="price-row">
-                <span class="price-main">{symbol}{price}</span>
-                <span class="price-pix"> · {symbol}{Math.round(price * 0.9)} no PIX</span>
+              <div style="margin:0.8rem 0 0.4rem;">
+                <span class="home-tier-badge" style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);border-radius:8px;padding:0.25rem 0.7rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.5rem;"></span>
+              </div>
+              <div class="price-row" style="margin-bottom:1.2rem;">
+                <span class="price-main home-tier-price"></span>
+                <span class="home-tier-pix" style="font-size:0.85rem;color:#00b374;margin-left:0.4rem;"></span>
               </div>
               <button
                 class="btn btn-primary"
-                style="width:100%;text-align:center;"
-                data-workshop={`${w.city} — ${w.dateDisplay} ${w.time}`}
-                data-price={price}
+                style={`width:100%;text-align:center;${isTbd ? 'opacity:0.5;' : ''}`}
+                data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
+                data-price={earlyPrice}
                 data-currency={w.currency}
+                data-addon-price={w.addOn?.price ?? ''}
+                data-addon-label={w.addOn?.label ?? ''}
+                disabled={isTbd}
               >
-                Reservar lugar
+                {isTbd ? 'Em breve' : 'Reservar lugar'}
               </button>
             </div>
           );
@@ -296,6 +314,41 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   <WhatsAppButton />
   <PaymentModal />
 </BaseLayout>
+
+<script>
+  // Dynamic pricing — home cards
+  (function() {
+    function getPriceTier(dateStr) {
+      if (!dateStr) return 'earlyBird';
+      const today = new Date(); today.setHours(0,0,0,0);
+      const ev    = new Date(dateStr + 'T00:00:00');
+      const days  = Math.floor((ev - today) / 86400000);
+      return days >= 3 ? 'earlyBird' : days <= 0 ? 'dayOf' : 'regular';
+    }
+    const LABELS = { earlyBird: '🐦 Early bird', regular: 'Regular', dayOf: 'No dia' };
+
+    document.querySelectorAll('.home-imersao-card').forEach(card => {
+      const early   = parseFloat(card.dataset.early   || 0);
+      const regular = parseFloat(card.dataset.regular || 0);
+      const dayof   = parseFloat(card.dataset.dayof   || 0);
+      const curr    = card.dataset.currency === 'EUR' ? '€' : 'R$';
+      const tier    = getPriceTier(card.dataset.eventDate || null);
+      const price   = { earlyBird: early, regular, dayOf: dayof }[tier] || early;
+      const pix     = Math.round(price * 0.9 * 100) / 100;
+      const fmt     = v => curr + v.toFixed(2).replace('.', ',');
+
+      const badge = card.querySelector('.home-tier-badge');
+      const prEl  = card.querySelector('.home-tier-price');
+      const pixEl = card.querySelector('.home-tier-pix');
+      const btn   = card.querySelector('[data-workshop]');
+
+      if (badge)  badge.textContent  = LABELS[tier] || '';
+      if (prEl)   prEl.textContent   = fmt(price);
+      if (pixEl)  pixEl.textContent  = `· ${fmt(pix)} PIX`;
+      if (btn && card.dataset.eventDate) btn.dataset.price = price;
+    });
+  })();
+</script>
 
 <script>
   // Detect location via timezone to show correct price for 1st class

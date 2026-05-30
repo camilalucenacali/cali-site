@@ -1,5 +1,5 @@
 ---
-const pixKey  = '03043151097';
+const pixKey   = '03043151097';
 const waNumber = '5551999595522';
 ---
 
@@ -9,7 +9,34 @@ const waNumber = '5551999595522';
 
     <p class="eyebrow" style="text-align:center;margin-bottom:0.5rem;">Imersão CALI</p>
     <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;text-align:center;margin-bottom:0.3rem;" id="modalTitle">Reservar lugar</h2>
-    <p style="text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:1.8rem;" id="modalSubtitle"></p>
+    <p style="text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:1.2rem;" id="modalSubtitle"></p>
+
+    <!-- Add-on marmita (só Rio) -->
+    <div id="addonSection" style="display:none;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.25);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.2rem;">
+      <label style="display:flex;align-items:center;gap:0.8rem;cursor:none;">
+        <input type="checkbox" id="addonCheck" style="width:18px;height:18px;accent-color:var(--orange);" />
+        <span id="addonLabel" style="font-size:0.9rem;color:rgba(255,255,255,0.85);"></span>
+      </label>
+    </div>
+
+    <!-- Cupom de desconto -->
+    <div style="margin-bottom:1.2rem;">
+      <div style="display:flex;gap:0.5rem;">
+        <input
+          type="text"
+          id="couponInput"
+          placeholder="Código de desconto"
+          style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:white;font-size:0.88rem;outline:none;transition:border-color 0.2s;"
+        />
+        <button
+          id="couponApply"
+          style="background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:white;font-size:0.85rem;cursor:none;white-space:nowrap;transition:background 0.2s;"
+        >
+          Aplicar
+        </button>
+      </div>
+      <p id="couponMsg" style="font-size:0.78rem;margin-top:0.4rem;min-height:1em;"></p>
+    </div>
 
     <!-- PIX -->
     <div style="background:rgba(0,179,116,0.06);border:1px solid rgba(0,179,116,0.25);border-radius:16px;padding:1.5rem;margin-bottom:1rem;">
@@ -50,32 +77,108 @@ const waNumber = '5551999595522';
   const overlay  = document.getElementById('payModal');
   const closeBtn = document.getElementById('modalClose');
   const copyBtn  = document.getElementById('copyPixBtn');
+  const couponInput = document.getElementById('couponInput');
+  const couponApply = document.getElementById('couponApply');
+  const couponMsg   = document.getElementById('couponMsg');
+  const addonSection = document.getElementById('addonSection');
+  const addonCheck   = document.getElementById('addonCheck');
+  const addonLabel   = document.getElementById('addonLabel');
 
-  function openModal(workshopName, price, currency) {
-    const symbol = currency === 'EUR' ? '€' : 'R$';
-    const pixDiscount = Math.round(price * 0.9);
+  const COUPONS = { COMUNIDADE: 0.20 };
 
-    document.getElementById('modalTitle').textContent    = workshopName;
-    document.getElementById('modalSubtitle').textContent = `Valor cheio: ${symbol}${price}`;
-    document.getElementById('pixPrice').textContent      = `${symbol}${pixDiscount}`;
+  let basePrice   = 0;
+  let currency    = 'BRL';
+  let couponDisc  = 0;
+  let addonPrice  = 0;
+  let addonActive = false;
+  let currentName = '';
+
+  function symbol() { return currency === 'EUR' ? '€' : 'R$'; }
+
+  function fmt(val) {
+    return symbol() + val.toFixed(2).replace('.', ',');
+  }
+
+  function effectivePrice() {
+    const base = addonActive && addonPrice ? addonPrice : basePrice;
+    return Math.round(base * (1 - couponDisc) * 100) / 100;
+  }
+
+  function updateDisplay() {
+    const total = effectivePrice();
+    const pix   = Math.round(total * 0.9 * 100) / 100;
+
+    document.getElementById('modalSubtitle').textContent = `Valor: ${fmt(total)}` +
+      (couponDisc > 0 ? ` (${Math.round(couponDisc*100)}% de desconto aplicado)` : '');
+    document.getElementById('pixPrice').textContent = fmt(pix);
 
     const msg = encodeURIComponent(
-      `Olá Cami! Quero enviar o comprovante do pagamento PIX para a imersão "${workshopName}" (${symbol}${pixDiscount}).`
+      `Olá Cami! Quero enviar o comprovante do pagamento PIX para a imersão "${currentName}" (${fmt(pix)}).`
     );
     document.getElementById('waComprovante').href = `https://wa.me/${waNumber}?text=${msg}`;
+  }
+
+  function openModal(workshopName, price, curr, addonP, addonLbl) {
+    currentName = workshopName;
+    basePrice   = parseFloat(price);
+    currency    = curr || 'BRL';
+    couponDisc  = 0;
+    addonPrice  = parseFloat(addonP || 0);
+    addonActive = false;
+
+    couponInput.value = '';
+    couponMsg.textContent = '';
+    couponMsg.style.color = '';
+
+    document.getElementById('modalTitle').textContent = workshopName;
+
+    if (addonP && addonLbl) {
+      addonSection.style.display = 'block';
+      addonLabel.textContent = addonLbl + ` — ${symbol()}${parseFloat(addonP).toFixed(2).replace('.', ',')}`;
+      addonCheck.checked = false;
+    } else {
+      addonSection.style.display = 'none';
+    }
+
+    updateDisplay();
     overlay.classList.add('open');
   }
 
-  // Expose globally so pages can call openModal()
   window.openPayModal = openModal;
 
-  // Wire [data-workshop] buttons
+  // Add-on toggle
+  addonCheck.addEventListener('change', () => {
+    addonActive = addonCheck.checked;
+    updateDisplay();
+  });
+
+  // Coupon
+  couponApply.addEventListener('click', () => {
+    const code = couponInput.value.trim().toUpperCase();
+    if (COUPONS[code] !== undefined) {
+      couponDisc = COUPONS[code];
+      couponMsg.textContent = `✓ Cupom aplicado — ${Math.round(couponDisc*100)}% de desconto`;
+      couponMsg.style.color = '#00b374';
+    } else {
+      couponDisc = 0;
+      couponMsg.textContent = code ? 'Cupom inválido.' : '';
+      couponMsg.style.color = '#ff6b35';
+    }
+    updateDisplay();
+  });
+  couponInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') couponApply.click();
+  });
+
+  // Wire buttons with data-workshop
   document.querySelectorAll('[data-workshop]').forEach(btn => {
     btn.addEventListener('click', () => {
       openModal(
         btn.dataset.workshop,
-        Number(btn.dataset.price),
-        btn.dataset.currency || 'BRL'
+        btn.dataset.price,
+        btn.dataset.currency || 'BRL',
+        btn.dataset.addonPrice,
+        btn.dataset.addonLabel
       );
     });
   });

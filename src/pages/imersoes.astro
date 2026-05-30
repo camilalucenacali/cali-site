@@ -8,26 +8,27 @@ import { workshops } from '../data/workshops.js';
 
 const cities = [...new Set(workshops.map(w => w.city))];
 
-// Event schema JSON-LD for all imersoes
-const eventSchemas = workshops.map(w => ({
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": `Imersão CALI — Yoga e Movimento com Camila Lucena`,
-  "description": "Experiência de 2h de yoga, movimento e expressão corporal com Camila Lucena. Inclui Hatha Yoga clássico, Nauli e invertidas.",
-  "startDate": w.date,
-  "location": {
-    "@type": "Place",
-    "name": w.location,
-    "address": { "@type": "PostalAddress", "addressLocality": w.city }
-  },
-  "organizer": { "@type": "Person", "name": "Camila Lucena" },
-  "offers": {
-    "@type": "Offer",
-    "price": w.currency === 'EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird,
-    "priceCurrency": w.currency,
-    "availability": "https://schema.org/InStock"
-  }
-}));
+const eventSchemas = workshops
+  .filter(w => w.date)
+  .map(w => ({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": `Imersão CALI — Yoga e Movimento com Camila Lucena`,
+    "description": "Experiência de 2h de yoga, movimento e expressão corporal com Camila Lucena. Inclui Hatha Yoga clássico, Nauli e invertidas.",
+    "startDate": w.date,
+    "location": {
+      "@type": "Place",
+      "name": w.location,
+      "address": { "@type": "PostalAddress", "addressLocality": w.city }
+    },
+    "organizer": { "@type": "Person", "name": "Camila Lucena" },
+    "offers": {
+      "@type": "Offer",
+      "price": w.currency === 'EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird,
+      "priceCurrency": w.currency,
+      "availability": "https://schema.org/InStock"
+    }
+  }));
 ---
 
 <BaseLayout
@@ -53,12 +54,21 @@ const eventSchemas = workshops.map(w => ({
     </div>
   </section>
 
+  <!-- Banner — o que está incluído -->
+  <section style="padding:1.2rem 2rem;background:linear-gradient(90deg,rgba(255,107,53,0.12),rgba(168,85,247,0.12));border-top:1px solid rgba(255,107,53,0.2);border-bottom:1px solid rgba(255,107,53,0.2);">
+    <div class="container" style="text-align:center;">
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.9);letter-spacing:0.03em;">
+        ✦ Todas as imersões incluem <strong>material impresso</strong> para continuar praticando em casa + <strong>acesso ao APP Spine Lab</strong> ✦
+      </p>
+    </div>
+  </section>
+
   <!-- Pricing legend -->
   <section style="padding:2rem;background:#080818;">
     <div class="container">
       <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;" class="reveal">
         <div style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;">
-          🐦 <strong>Early bird</strong> — até 2 dias antes
+          🐦 <strong>Early bird</strong> — 3+ dias antes
         </div>
         <div style="background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.85rem;">
           Regular — até 1 dia antes
@@ -73,7 +83,7 @@ const eventSchemas = workshops.map(w => ({
     </div>
   </section>
 
-  <!-- Imersão cards grouped by city -->
+  <!-- Cards agrupados por cidade -->
   {cities.map(city => {
     const cityWs = workshops.filter(w => w.city === city);
     return (
@@ -84,40 +94,61 @@ const eventSchemas = workshops.map(w => ({
           </h2>
           <div class="grid-3">
             {cityWs.map((w, i) => {
-              const price  = w.currency === 'EUR' ? (w.priceEUR?.earlyBird ?? 80) : (w.priceBRL?.earlyBird ?? 180);
-              const priceR = w.currency === 'EUR' ? (w.priceEUR?.regular ?? 100)  : (w.priceBRL?.regular ?? 200);
-              const priceD = w.currency === 'EUR' ? (w.priceEUR?.dayOf ?? 120)    : (w.priceBRL?.dayOf ?? 220);
-              const sym    = w.currency === 'EUR' ? '€' : 'R$';
+              const earlyBRL = w.priceBRL?.earlyBird;
+              const regBRL   = w.priceBRL?.regular;
+              const dayBRL   = w.priceBRL?.dayOf;
+              const earlyEUR = w.priceEUR?.earlyBird;
+              const regEUR   = w.priceEUR?.regular;
+              const dayEUR   = w.priceEUR?.dayOf;
+              const isTbd    = w.status === 'tbd';
+
               return (
-                <div class="card reveal" style={`transition-delay:${i*0.12}s`}>
+                <div
+                  class={`card reveal imersao-card${isTbd ? ' card-tbd' : ''}`}
+                  data-event-date={w.date ?? ''}
+                  data-early={w.currency === 'EUR' ? earlyEUR : earlyBRL}
+                  data-regular={w.currency === 'EUR' ? regEUR : regBRL}
+                  data-dayof={w.currency === 'EUR' ? dayEUR : dayBRL}
+                  data-currency={w.currency}
+                  style={`transition-delay:${i*0.12}s;position:relative;`}
+                >
+                  {isTbd && (
+                    <span style="position:absolute;top:1rem;right:1rem;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.4);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.72rem;letter-spacing:0.05em;color:#e91e8c;">
+                      Em breve
+                    </span>
+                  )}
+
                   <p class="workshop-date">{w.dateDisplay}</p>
                   <p class="workshop-city" style="font-size:1.15rem;">{w.neighborhood || w.city}</p>
                   <p class="workshop-location">{w.location}</p>
-                  <p class="workshop-time">⏰ {w.time} &nbsp;·&nbsp; 2 horas</p>
+                  <p class="workshop-time">⏰ {w.time}{!isTbd ? ' · 2 horas' : ''}</p>
 
-                  <table style="width:100%;font-size:0.85rem;margin:0.8rem 0 1.2rem;border-collapse:collapse;">
-                    <tr>
-                      <td style="color:var(--muted);padding:0.2rem 0;">🐦 Early bird</td>
-                      <td style="text-align:right;color:var(--orange);">{sym}{price} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(price*0.9)} PIX</span></td>
-                    </tr>
-                    <tr>
-                      <td style="color:var(--muted);padding:0.2rem 0;">Regular</td>
-                      <td style="text-align:right;">{sym}{priceR} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(priceR*0.9)} PIX</span></td>
-                    </tr>
-                    <tr>
-                      <td style="color:var(--muted);padding:0.2rem 0;">No dia</td>
-                      <td style="text-align:right;">{sym}{priceD} <span style="color:#00b374;font-size:0.75rem;">· {sym}{Math.round(priceD*0.9)} PIX</span></td>
-                    </tr>
-                  </table>
+                  <!-- Tier de preço calculado por JS -->
+                  <div style="margin:0.8rem 0 0.4rem;">
+                    <span class="price-tier-badge" style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);border-radius:8px;padding:0.25rem 0.7rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.5rem;"></span>
+                  </div>
+                  <div class="price-row" style="margin-bottom:0.5rem;">
+                    <span class="price-main tier-price" style="font-family:var(--font-display);font-size:2rem;"></span>
+                    <span class="tier-pix" style="font-size:0.85rem;color:#00b374;margin-left:0.4rem;"></span>
+                  </div>
+
+                  {w.addOn && (
+                    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">
+                      🍱 Opcional: {w.addOn.label} — R${w.addOn.price}
+                    </p>
+                  )}
 
                   <button
                     class="btn btn-primary"
-                    style="width:100%;text-align:center;"
+                    style={`width:100%;text-align:center;${isTbd ? 'opacity:0.5;' : ''}`}
                     data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
-                    data-price={price}
+                    data-price={w.currency === 'EUR' ? earlyEUR : earlyBRL}
                     data-currency={w.currency}
+                    data-addon-price={w.addOn?.price ?? ''}
+                    data-addon-label={w.addOn?.label ?? ''}
+                    disabled={isTbd}
                   >
-                    Reservar lugar
+                    {isTbd ? 'Em breve — aguarde' : 'Reservar lugar'}
                   </button>
                 </div>
               );
@@ -149,6 +180,7 @@ const eventSchemas = workshops.map(w => ({
 </BaseLayout>
 
 <script>
+  // Stars
   function makeStars(id, n = 120) {
     const c = document.getElementById(id);
     if (!c) return;
@@ -161,4 +193,53 @@ const eventSchemas = workshops.map(w => ({
     }
   }
   makeStars('stars');
+
+  // Dynamic pricing — calcula tier com base na data atual
+  function getPriceTier(dateStr) {
+    if (!dateStr) return 'earlyBird';
+    const today     = new Date(); today.setHours(0,0,0,0);
+    const eventDate = new Date(dateStr + 'T00:00:00');
+    const days      = Math.floor((eventDate - today) / 86400000);
+    if (days >= 3) return 'earlyBird';
+    if (days <= 0) return 'dayOf';
+    return 'regular';
+  }
+
+  const TIER_LABELS = {
+    earlyBird: '🐦 Early bird',
+    regular:   'Regular',
+    dayOf:     'No dia',
+  };
+
+  document.querySelectorAll('.imersao-card').forEach(card => {
+    const dateStr  = card.dataset.eventDate;
+    const early    = parseFloat(card.dataset.early   || 0);
+    const regular  = parseFloat(card.dataset.regular || 0);
+    const dayof    = parseFloat(card.dataset.dayof   || 0);
+    const curr     = card.dataset.currency === 'EUR' ? '€' : 'R$';
+
+    const prices   = { earlyBird: early, regular, dayOf: dayof };
+    const tier     = getPriceTier(dateStr || null);
+    const price    = prices[tier] || early;
+    const pix      = Math.round(price * 0.9 * 100) / 100;
+
+    function fmt(v) { return curr + v.toFixed(2).replace('.', ','); }
+
+    const badge = card.querySelector('.price-tier-badge');
+    const tierEl = card.querySelector('.tier-price');
+    const pixEl  = card.querySelector('.tier-pix');
+    const btn    = card.querySelector('[data-workshop]');
+
+    if (badge)  badge.textContent  = TIER_LABELS[tier] || '';
+    if (tierEl) tierEl.textContent = fmt(price);
+    if (pixEl)  pixEl.textContent  = `· ${fmt(pix)} PIX`;
+    if (btn && !card.classList.contains('card-tbd')) {
+      btn.dataset.price = price;
+    }
+  });
 </script>
+
+<style>
+  .card-tbd { opacity: 0.75; }
+  .card-tbd .btn[disabled] { cursor: not-allowed; }
+</style>

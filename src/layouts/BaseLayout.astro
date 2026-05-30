@@ -70,18 +70,52 @@ const ogImage = new URL(image, siteUrl).href;
 </head>
 <body>
   <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
   <slot />
 
   <script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    if (cursor && window.matchMedia('(pointer: fine)').matches) {
+    // Custom cursor — ring (lagged lerp) + dot (instant)
+    const ring = document.getElementById('cursor');
+    const dot  = document.getElementById('cursor-dot');
+    if (ring && dot && window.matchMedia('(pointer: fine)').matches) {
+      let mx = 0, my = 0, rx = 0, ry = 0;
+
       document.addEventListener('mousemove', e => {
-        cursor.style.transform = `translate(${e.clientX - 9}px, ${e.clientY - 9}px)`;
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
       });
-      document.querySelectorAll('a, button, .btn').forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+
+      (function animateRing() {
+        rx += (mx - rx) * 0.11;
+        ry += (my - ry) * 0.11;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animateRing);
+      })();
+
+      // Delegation — works with dynamically added elements
+      document.addEventListener('mouseover', e => {
+        if (e.target.closest('a, button, .btn, .card, [data-cursor-hover]')) {
+          ring.classList.add('hover');
+          dot.classList.add('hover');
+        }
+      });
+      document.addEventListener('mouseout', e => {
+        if (e.target.closest('a, button, .btn, .card, [data-cursor-hover]')) {
+          ring.classList.remove('hover');
+          dot.classList.remove('hover');
+        }
+      });
+
+      document.addEventListener('mouseleave', () => {
+        ring.style.opacity = '0';
+        dot.style.opacity  = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        ring.style.opacity = '1';
+        dot.style.opacity  = '1';
       });
     }
 
