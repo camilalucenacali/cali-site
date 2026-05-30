@@ -1,7 +1,8 @@
 ---
+interface Props { text?: string; }
+const { text = 'Olá! Quero saber mais sobre as imersões CALI.' } = Astro.props;
 const waNumber = '5551999595522';
-const waText = encodeURIComponent('Olá! Quero saber mais sobre as imersões CALI.');
-const waUrl = `https://wa.me/${waNumber}?text=${waText}`;
+const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
 ---
 <a href={waUrl} class="wa-float" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">

@@ -4,14 +4,15 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 
-const waNumber = '5551999595522';
+const waNumber   = '5551999595522';
+const appUrl     = 'https://calispinelab.vercel.app';
 const waWaitlist = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá! Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min com a Camila.')}`;
-const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cami! Recebi um convite para a Spine Lab e quero agendar minha conversa de 15 min.')}`;
+const waInvite   = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cami! Recebi um convite para a Spine Lab e quero agendar minha conversa de 15 min.')}`;
 ---
 
 <BaseLayout
   title="APP Spine Lab — CALI MOVIMIENTO"
-  description="Spine Lab é uma comunidade de prática corporal consciente. Acesso via conversa com a Camila — 10 vagas por semana. Entre na lista."
+  description="O Spine Lab está em fase beta. Uma jornada de respiração consciente e movimento da coluna — acesso via conversa com a Cami."
 >
   <Header />
 
@@ -20,49 +21,149 @@ const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cam
   ══════════════════════════════════════════ -->
   <section class="section-full" style="background:radial-gradient(ellipse at 50% 60%, #1a0a2e 0%, #080818 100%);padding-top:8rem;">
     <div class="stars-container" id="stars"></div>
-    <div style="position:relative;z-index:2;text-align:center;max-width:820px;padding:2rem;">
+    <div style="position:relative;z-index:2;text-align:center;max-width:840px;padding:2rem;">
       <p class="eyebrow reveal">acesso consciente</p>
       <h1 class="display-title reveal" style="font-size:clamp(2.8rem,7vw,5.5rem);transition-delay:0.1s;line-height:1.1;">
         Spine Lab é uma<br>comunidade que cuida
       </h1>
-      <p class="tagline reveal" style="transition-delay:0.2s;max-width:600px;margin:1.5rem auto 0;">
+      <p class="tagline reveal" style="transition-delay:0.2s;max-width:640px;margin:1.5rem auto 0.8rem;">
         Não é mais um app de yoga.<br>
         É um laboratório de prática corporal consciente — e o acesso começa com uma conversa.
       </p>
-      <div class="reveal" style="transition-delay:0.35s;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <p class="reveal" style="transition-delay:0.28s;max-width:600px;margin:0 auto 0;color:var(--muted);font-size:0.97rem;line-height:1.8;">
+        O Spine Lab está em fase beta. Cada nova pessoa que entra passa por uma conversa de 15 min com a Cami — não para ser selecionada, mas para que a prática faça sentido para o seu corpo, no seu momento. Respiração consciente e movimento da coluna podem ser muito intensos se feitos sem direção. A conversa existe para que isso não aconteça.
+      </p>
+      <div class="reveal" style="transition-delay:0.38s;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
           Entrar na lista de espera
         </a>
-        <a href="https://calispinelab.vercel.app" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
+        <a href={appUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
           Acessar o app ↗
         </a>
       </div>
-      <p class="reveal" style="transition-delay:0.45s;color:var(--muted);font-size:0.85rem;margin-top:1.2rem;">
+      <p class="reveal" style="transition-delay:0.48s;color:var(--muted);font-size:0.85rem;margin-top:1.2rem;">
         10 conversas por semana · próxima liberação: segunda-feira
       </p>
+      <p class="reveal" style="transition-delay:0.55s;margin-top:0.8rem;">
+        <a href={appUrl} target="_blank" rel="noopener"
+           style="color:var(--orange);font-size:0.88rem;text-decoration:none;border-bottom:1px solid rgba(255,107,53,0.3);padding-bottom:1px;transition:border-color 0.2s;">
+          Quer sentir antes de decidir? A Fase 1 está disponível sem cadastro.
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FRAGMENTOS DO MANIFESTO
+  ══════════════════════════════════════════ -->
+  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0c0820 100%);">
+    <div class="container" style="max-width:760px;display:flex;flex-direction:column;gap:3rem;">
+      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:300;font-style:italic;line-height:1.5;color:rgba(255,255,255,0.9);border-left:3px solid var(--orange);padding-left:2rem;margin:0;">
+        "Acreditamos em jornadas, não em catálogos. O mundo já tem conteúdo demais. O que falta é direção."
+      </blockquote>
+      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:300;font-style:italic;line-height:1.5;color:rgba(255,255,255,0.9);border-left:3px solid var(--magenta);padding-left:2rem;margin:0;">
+        "Cinco minutos de presença real valem mais do que uma hora de distração disfarçada de exercício."
+      </blockquote>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
        POR QUE O ACESSO NÃO É ABERTO
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:#080818;">
+  <section style="padding:6rem 2rem;background:#0c0820;">
     <div class="container" style="max-width:760px;">
       <p class="eyebrow reveal" style="text-align:center;">a lógica por trás</p>
       <h2 class="section-title reveal" style="text-align:center;margin-bottom:2.5rem;">
         Por que o acesso não é aberto?
       </h2>
       <div class="card reveal" style="line-height:1.95;font-size:1.05rem;color:rgba(255,255,255,0.85);">
-        <p style="margin-bottom:1.2rem;">
-          O mundo já tem conteúdo demais. A Spine Lab existe exatamente pelo oposto disso — não queremos ser mais um lugar onde a informação se acumula sem direção.
+        <p style="margin-bottom:1.3rem;">
+          O mundo já tem conteúdo demais. A Spine Lab existe exatamente pelo oposto disso.
         </p>
-        <p style="margin-bottom:1.2rem;">
-          Somos uma comunidade para quem já sabe que precisa cuidar da coluna e quer fazer isso com intenção, não por impulso.
+        <p style="margin-bottom:1.3rem;">
+          O Spine Lab está em fase beta. Isso significa que cada nova pessoa que entra tem atenção direta da Cami — para garantir que a prática funciona, coletar feedback real e construir o produto junto com quem usa.
         </p>
         <p style="margin-bottom:0;">
-          Por isso o acesso não é aberto. Cada nova pessoa passa por uma conversa de 15 min com a Cami — não como triagem, mas como direcionamento: entender onde essa pessoa está, o que ela precisa, e como o app pode servir melhor a ela.
+          Respiração consciente e movimento da coluna podem sobrecarregar se feitos sem direção. A conversa de 15 min existe para que isso não aconteça — não para selecionar quem merece entrar.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       A JORNADA
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#0c0820 0%,#080818 100%);">
+    <div class="container" style="max-width:900px;">
+      <p class="eyebrow reveal" style="text-align:center;">a jornada</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">
+        28 dias. 7 fases. Uma transformação real.
+      </h2>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
+
+        <!-- Card 1 — Estrutura do ciclo -->
+        <div class="card reveal" style="transition-delay:0s;">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">🔄</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:1rem;color:var(--orange);">1 Ciclo = 7 Fases × 4 Dias</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
+            {[
+              ['Dia 1', 'Compreender'],
+              ['Dia 2', 'Praticar'],
+              ['Dia 3', 'Integrar'],
+              ['Dia 4', 'Assimilar'],
+            ].map(([dia, acao]) => (
+              <li style="display:flex;gap:0.8rem;align-items:baseline;font-size:0.9rem;">
+                <span style="color:var(--orange);font-family:var(--font-heading);min-width:3rem;">{dia}</span>
+                <span style="color:var(--muted);">{acao}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Card 2 — Formatos -->
+        <div class="card reveal" style="transition-delay:0.12s;">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">⏱️</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:1rem;color:var(--magenta);">3 formatos para cada aula</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.8rem;">
+            {[
+              ['5 min', 'dias com pouco tempo'],
+              ['10 min', 'prática regular com movimento'],
+              ['21 min', 'quando há intenção de ir mais fundo'],
+            ].map(([dur, desc]) => (
+              <li style="display:flex;gap:0.8rem;align-items:baseline;font-size:0.9rem;">
+                <span style="color:var(--magenta);font-family:var(--font-heading);font-weight:400;min-width:3.5rem;">{dur}</span>
+                <span style="color:var(--muted);">{desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Card 3 — Ciclo atual -->
+        <div class="card reveal" style="transition-delay:0.24s;background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(168,85,247,0.08));border-color:rgba(168,85,247,0.3);">
+          <p style="font-size:1.8rem;margin-bottom:1rem;">🌬️</p>
+          <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lilac);margin-bottom:0.5rem;">em andamento</p>
+          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:0.8rem;">Ciclo 1</h3>
+          <p style="color:rgba(255,255,255,0.85);font-size:1rem;font-family:var(--font-heading);">Respiração e Nauli Kriya</p>
+          <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;line-height:1.6;">A base de tudo. Antes de mover o corpo, aprender a respirar de verdade.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       O SEU RITMO
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:#080818;">
+    <div class="container" style="max-width:760px;text-align:center;">
+      <p class="eyebrow reveal">o seu ritmo</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">
+        O app se adapta ao seu corpo — não o contrário.
+      </h2>
+      <p class="reveal" style="font-family:var(--font-heading);font-style:italic;font-size:clamp(1.05rem,2.5vw,1.35rem);color:rgba(255,255,255,0.8);line-height:1.85;max-width:640px;margin:0 auto;">
+        "O corpo não é linear. A lua não tem exatamente 28 dias em todos os meses. E o seu ciclo também não precisa ter. O Spine Lab sincroniza com o seu ritmo real — lunar ou biológico — porque transformação acontece em harmonia com o corpo, nunca contra ele."
+      </p>
     </div>
   </section>
 
@@ -75,16 +176,48 @@ const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cam
       <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">Como funciona o acesso</h2>
       <div style="display:flex;flex-direction:column;gap:1.5rem;">
         {[
-          { n: '01', title: 'Entra na lista', desc: 'Clica em "Entrar na lista de espera" e aguarda o contato via WhatsApp. Toda segunda-feira liberamos novas vagas.' },
-          { n: '02', title: 'Conversa de 15 min com a Cami', desc: 'Não é triagem — é direcionamento. A Cami entende onde você está e como a prática pode te servir melhor.' },
-          { n: '03', title: 'Aprovação + link de pagamento', desc: 'Após a conversa, você recebe o link de pagamento e o acesso ao app é liberado manualmente.' },
-          { n: '04', title: 'Boas-vindas à comunidade', desc: 'Acesso ao Spine Lab + entrada no grupo permanente "Zona Spine Lab" — onde a prática continua entre as aulas.' },
+          {
+            n: '01',
+            title: 'Sente a prática',
+            desc: 'A Fase 1 está disponível sem cadastro. 4 dias para experimentar a jornada antes de qualquer decisão.',
+            link: { href: appUrl, label: 'Experimentar agora ↗' },
+          },
+          {
+            n: '02',
+            title: 'Entra na lista',
+            desc: 'Clica em "Entrar na lista de espera" e aguarda o contato via WhatsApp. Toda segunda-feira liberamos novas vagas.',
+            link: null,
+          },
+          {
+            n: '03',
+            title: 'Conversa de 15 min com a Cami',
+            desc: 'Não é triagem — é direcionamento. A Cami entende onde você está e como a prática pode te servir melhor, sem sobrecarregar.',
+            link: null,
+          },
+          {
+            n: '04',
+            title: 'Aprovação + link de pagamento',
+            desc: 'Após a conversa, você recebe o link de pagamento e o acesso ao app é liberado manualmente.',
+            link: null,
+          },
+          {
+            n: '05',
+            title: 'Boas-vindas à Zona Spine Lab',
+            desc: 'Acesso ao Spine Lab + entrada no grupo permanente "Zona Spine Lab" — onde a prática continua entre as aulas.',
+            link: null,
+          },
         ].map((step, i) => (
-          <div class="card reveal" style={`display:flex;gap:1.5rem;align-items:flex-start;transition-delay:${i*0.12}s`}>
+          <div class="card reveal" style={`display:flex;gap:1.5rem;align-items:flex-start;transition-delay:${i*0.1}s`}>
             <p style="font-family:var(--font-display);font-size:2.5rem;font-weight:300;color:var(--orange);line-height:1;flex-shrink:0;min-width:3rem;">{step.n}</p>
             <div>
               <h3 style="font-family:var(--font-heading);font-size:1.15rem;font-weight:400;margin-bottom:0.5rem;">{step.title}</h3>
-              <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin:0;">{step.desc}</p>
+              <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin:0 0 0.5rem;">{step.desc}</p>
+              {step.link && (
+                <a href={step.link.href} target="_blank" rel="noopener"
+                   style="color:var(--orange);font-size:0.85rem;text-decoration:none;border-bottom:1px solid rgba(255,107,53,0.3);">
+                  {step.link.label}
+                </a>
+              )}
             </div>
           </div>
         ))}
@@ -117,9 +250,62 @@ const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cam
   </section>
 
   <!-- ══════════════════════════════════════════
+       PREÇOS
+  ══════════════════════════════════════════ -->
+  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#080818 100%);">
+    <div class="container" style="max-width:800px;">
+      <p class="eyebrow reveal" style="text-align:center;">investimento</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">
+        Acesso à Zona Spine Lab
+      </h2>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+
+        <!-- Mensal -->
+        <div class="card reveal" style="text-align:center;transition-delay:0s;">
+          <p style="font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Mensal</p>
+          <p style="font-family:var(--font-display);font-size:3rem;font-weight:300;line-height:1;margin-bottom:0.3rem;">
+            R$ 378<span style="font-size:1.5rem;">,90</span>
+          </p>
+          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.8rem;">por mês</p>
+          <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-outline" style="width:100%;display:block;text-align:center;">
+            Entrar na lista
+          </a>
+        </div>
+
+        <!-- Anual -->
+        <div class="card reveal" style="text-align:center;transition-delay:0.12s;background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(168,85,247,0.08));border-color:rgba(255,107,53,0.4);">
+          <p style="font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.3rem;">Anual</p>
+          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem;">R$ 279,90/mês · cobrado uma vez</p>
+          <p style="font-family:var(--font-display);font-size:3rem;font-weight:300;line-height:1;margin-bottom:0.3rem;">
+            R$ 3.358
+          </p>
+          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.8rem;">por ano</p>
+          <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;display:block;text-align:center;">
+            Entrar na lista
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Cupom COMUNIDADE -->
+      <div class="reveal" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.8rem;text-align:center;">
+        <p style="font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.8;margin-bottom:0.7rem;">
+          <em>"Este cupom existe porque cuidado corporal é um ato político. Se você faz parte da comunidade LGBTQIA+ ou de outra minoria, use-o."</em>
+        </p>
+        <p style="font-size:0.88rem;color:var(--muted);">
+          Código: <strong style="color:white;letter-spacing:0.1em;background:rgba(255,255,255,0.06);padding:0.2rem 0.6rem;border-radius:6px;">COMUNIDADE</strong>
+          <span style="color:#00b374;margin-left:0.5rem;">— 20% de desconto</span>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
        SISTEMA DE CONVITE
   ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#080818 100%);">
+  <section style="padding:5rem 2rem;background:#080818;">
     <div class="container" style="max-width:760px;text-align:center;">
       <p class="eyebrow reveal">convite exclusivo</p>
       <h2 class="section-title reveal" style="margin-bottom:1.5rem;">Conhece alguém que já é membro?</h2>
@@ -147,14 +333,14 @@ const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cam
       <h2 class="section-title reveal" style="margin-bottom:1.2rem;">
         O corpo não espera pelo momento certo.
       </h2>
-      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:2.5rem;">
-        Entra na lista. Conversa com a Cami. Começa a prática.
+      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:2.5rem;font-size:1rem;">
+        A jornada começa com uma conversa. E a conversa começa quando você decide que o seu corpo merece atenção real.
       </p>
       <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
         <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
           Entrar na lista de espera
         </a>
-        <a href="https://calispinelab.vercel.app" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
+        <a href={appUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
           Já sou membro — acessar ↗
         </a>
       </div>
@@ -162,7 +348,7 @@ const waInvite  = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cam
   </section>
 
   <Footer />
-  <WhatsAppButton />
+  <WhatsAppButton text="Olá! Quero saber mais sobre o Spine Lab e entrar na lista de espera." />
 </BaseLayout>
 
 <script>
