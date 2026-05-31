@@ -3,198 +3,105 @@ const pixKey   = '03043151097';
 const waNumber = '5551999595522';
 ---
 
-<div class="modal-overlay" id="payModal" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="payModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
     <button class="modal-close" id="modalClose" aria-label="Fechar">✕</button>
 
-    <p class="eyebrow" style="text-align:center;margin-bottom:0.5rem;">Imersão CALI</p>
-    <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:400;text-align:center;margin-bottom:0.3rem;" id="modalTitle">Reservar lugar</h2>
-    <p style="text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:1.2rem;" id="modalSubtitle"></p>
+    <p class="eyebrow" style="text-align:center;margin-bottom:0.4rem;">Imersão CALI</p>
+    <h2 id="modalTitle">Reservar lugar</h2>
+    <p class="m-sub" id="modalSub"></p>
 
-    <!-- Add-on marmita (só Rio) -->
-    <div id="addonSection" style="display:none;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.25);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.2rem;">
-      <label style="display:flex;align-items:center;gap:0.8rem;cursor:none;">
+    <div id="addonSection" class="modal-addon" style="display:none;">
+      <label style="display:flex;align-items:center;gap:0.8rem;cursor:pointer;">
         <input type="checkbox" id="addonCheck" style="width:18px;height:18px;accent-color:var(--orange);" />
-        <span id="addonLabel" style="font-size:0.9rem;color:rgba(255,255,255,0.85);"></span>
+        <span id="addonLabel" style="font-size:0.9rem;"></span>
       </label>
     </div>
 
-    <!-- Cupom de desconto -->
-    <div style="margin-bottom:1.2rem;">
-      <div style="display:flex;gap:0.5rem;">
-        <input
-          type="text"
-          id="couponInput"
-          placeholder="Código de desconto"
-          style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:white;font-size:0.88rem;outline:none;transition:border-color 0.2s;"
-        />
-        <button
-          id="couponApply"
-          style="background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:white;font-size:0.85rem;cursor:none;white-space:nowrap;transition:background 0.2s;"
-        >
-          Aplicar
-        </button>
+    <div style="margin-bottom:1rem;">
+      <div class="modal-coupon">
+        <input type="text" id="couponInput" placeholder="Código de desconto" />
+        <button id="couponApply">Aplicar</button>
       </div>
-      <p id="couponMsg" style="font-size:0.78rem;margin-top:0.4rem;min-height:1em;"></p>
+      <p id="couponMsg" style="font-size:0.78rem;min-height:1em;margin-top:0.3rem;"></p>
     </div>
 
-    <!-- PIX -->
-    <div style="background:rgba(0,179,116,0.06);border:1px solid rgba(0,179,116,0.25);border-radius:16px;padding:1.5rem;margin-bottom:1rem;">
-      <p style="font-family:var(--font-display);font-size:1.05rem;margin-bottom:0.4rem;">
-        🟢 Pague com <strong>PIX</strong> e ganhe <span style="color:#00b374;font-weight:600;">10% de desconto</span>
-      </p>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">
-        Valor com desconto: <span id="pixPrice" style="color:#00b374;font-size:1.15rem;font-weight:500;"></span>
+    <div class="pix-box">
+      <p class="pix-head">Pague com <b>PIX</b> e ganhe <b>10% de desconto</b></p>
+      <p style="font-size:0.88rem;color:var(--ink-soft);margin-bottom:0.6rem;">
+        Valor com desconto: <span class="pix-price" id="pixPrice"></span>
       </p>
       <div class="pix-key-box">
         <span class="pix-key">{pixKey}</span>
-        <button class="copy-btn" id="copyPixBtn">Copiar chave</button>
+        <button class="copy-btn" id="copyBtn">Copiar chave</button>
       </div>
-      <p style="font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;">
-        1. Copie a chave PIX acima &nbsp;·&nbsp; 2. Pague o valor com desconto &nbsp;·&nbsp; 3. Envie o comprovante pelo WhatsApp
-      </p>
-      <a id="waComprovante" href="#" target="_blank" rel="noopener"
-         class="btn btn-pix" style="display:block;text-align:center;width:100%;">
+      <p class="steps">1. Copie a chave PIX &nbsp;·&nbsp; 2. Pague o valor com desconto &nbsp;·&nbsp; 3. Envie o comprovante</p>
+      <a class="btn btn-wa" id="waProof" href="#" target="_blank" rel="noopener">
         📲 Enviar comprovante via WhatsApp
       </a>
     </div>
 
-    <div class="divider">ou pague com cartão</div>
-
-    <a href="https://www.mercadopago.com.br" id="mpLink" target="_blank" rel="noopener"
-       class="btn btn-mp" style="display:block;text-align:center;width:100%;margin-bottom:1.2rem;">
+    <div class="modal-divider">ou pague com cartão</div>
+    <a class="btn btn-mp" id="mpLink" href="https://www.mercadopago.com.br" target="_blank" rel="noopener">
       Pagar com Mercado Pago
     </a>
-
-    <p style="text-align:center;font-size:0.8rem;color:var(--muted);">
-      Dúvidas? <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener"
-        style="color:var(--orange);text-decoration:none;">Fale no WhatsApp</a>
-    </p>
+    <p class="modal-foot">Dúvidas? <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener">Fale no WhatsApp</a></p>
   </div>
 </div>
 
 <script define:vars={{ pixKey, waNumber }}>
-  const overlay  = document.getElementById('payModal');
-  const closeBtn = document.getElementById('modalClose');
-  const copyBtn  = document.getElementById('copyPixBtn');
-  const couponInput = document.getElementById('couponInput');
-  const couponApply = document.getElementById('couponApply');
-  const couponMsg   = document.getElementById('couponMsg');
-  const addonSection = document.getElementById('addonSection');
-  const addonCheck   = document.getElementById('addonCheck');
-  const addonLabel   = document.getElementById('addonLabel');
-
   const COUPONS = { COMUNIDADE: 0.20 };
-
-  let basePrice   = 0;
-  let currency    = 'BRL';
-  let couponDisc  = 0;
-  let addonPrice  = 0;
-  let addonActive = false;
-  let currentName = '';
-
-  function symbol() { return currency === 'EUR' ? '€' : 'R$'; }
-
-  function fmt(val) {
-    return symbol() + val.toFixed(2).replace('.', ',');
-  }
-
-  function effectivePrice() {
-    const base = addonActive && addonPrice ? addonPrice : basePrice;
-    return Math.round(base * (1 - couponDisc) * 100) / 100;
-  }
+  let basePrice=0, currency='BRL', couponDisc=0, addonPrice=0, addonActive=false, currentName='';
+  const sym = () => currency==='EUR'?'€':'R$';
+  const fmt = v => sym()+v.toFixed(2).replace('.',',');
+  const effective = () => { const b=addonActive&&addonPrice?addonPrice:basePrice; return Math.round(b*(1-couponDisc)*100)/100; };
 
   function updateDisplay() {
-    const total = effectivePrice();
-    const pix   = Math.round(total * 0.9 * 100) / 100;
-
-    document.getElementById('modalSubtitle').textContent = `Valor: ${fmt(total)}` +
-      (couponDisc > 0 ? ` (${Math.round(couponDisc*100)}% de desconto aplicado)` : '');
-    document.getElementById('pixPrice').textContent = fmt(pix);
-
-    const msg = encodeURIComponent(
-      `Olá Cami! Quero enviar o comprovante do pagamento PIX para a imersão "${currentName}" (${fmt(pix)}).`
-    );
-    document.getElementById('waComprovante').href = `https://wa.me/${waNumber}?text=${msg}`;
+    const t=effective(), pix=Math.round(t*0.9*100)/100;
+    document.getElementById('modalSub').textContent=`Valor: ${fmt(t)}`+(couponDisc>0?` (${Math.round(couponDisc*100)}% de desconto)`:'');
+    document.getElementById('pixPrice').textContent=fmt(pix);
+    document.getElementById('waProof').href=`https://wa.me/${waNumber}?text=${encodeURIComponent(`Olá Cami! Quero enviar o comprovante do PIX para a imersão "${currentName}" (${fmt(pix)}).`)}`;
   }
 
-  function openModal(workshopName, price, curr, addonP, addonLbl) {
-    currentName = workshopName;
-    basePrice   = parseFloat(price);
-    currency    = curr || 'BRL';
-    couponDisc  = 0;
-    addonPrice  = parseFloat(addonP || 0);
-    addonActive = false;
-
-    couponInput.value = '';
-    couponMsg.textContent = '';
-    couponMsg.style.color = '';
-
-    document.getElementById('modalTitle').textContent = workshopName;
-
-    if (addonP && addonLbl) {
-      addonSection.style.display = 'block';
-      addonLabel.textContent = addonLbl + ` — ${symbol()}${parseFloat(addonP).toFixed(2).replace('.', ',')}`;
-      addonCheck.checked = false;
-    } else {
-      addonSection.style.display = 'none';
-    }
-
+  function openModal(name, price, cur, addonP, addonLbl) {
+    currentName=name; basePrice=parseFloat(price); currency=cur||'BRL';
+    couponDisc=0; addonPrice=parseFloat(addonP||0); addonActive=false;
+    document.getElementById('couponInput').value='';
+    document.getElementById('couponMsg').textContent='';
+    document.getElementById('modalTitle').textContent=name;
+    const sec=document.getElementById('addonSection');
+    if (addonP&&addonLbl) { sec.style.display='block'; document.getElementById('addonLabel').textContent=addonLbl+` — ${sym()}${parseFloat(addonP).toFixed(2).replace('.',',')}`; document.getElementById('addonCheck').checked=false; }
+    else sec.style.display='none';
     updateDisplay();
-    overlay.classList.add('open');
+    document.getElementById('payModal').classList.add('open');
+    if (window.lenis) window.lenis.stop();
   }
-
   window.openPayModal = openModal;
 
-  // Add-on toggle
-  addonCheck.addEventListener('change', () => {
-    addonActive = addonCheck.checked;
+  document.getElementById('addonCheck').addEventListener('change',e=>{addonActive=e.target.checked;updateDisplay();});
+
+  document.getElementById('couponApply').addEventListener('click',()=>{
+    const code=document.getElementById('couponInput').value.trim().toUpperCase();
+    const msg=document.getElementById('couponMsg');
+    if (COUPONS[code]!==undefined) { couponDisc=COUPONS[code]; msg.textContent=`✓ Cupom aplicado — ${Math.round(couponDisc*100)}% de desconto`; msg.style.color='var(--orange-deep)'; }
+    else { couponDisc=0; msg.textContent=code?'Cupom inválido.':''; msg.style.color='var(--ink-soft)'; }
     updateDisplay();
   });
+  document.getElementById('couponInput').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('couponApply').click();});
 
-  // Coupon
-  couponApply.addEventListener('click', () => {
-    const code = couponInput.value.trim().toUpperCase();
-    if (COUPONS[code] !== undefined) {
-      couponDisc = COUPONS[code];
-      couponMsg.textContent = `✓ Cupom aplicado — ${Math.round(couponDisc*100)}% de desconto`;
-      couponMsg.style.color = '#00b374';
-    } else {
-      couponDisc = 0;
-      couponMsg.textContent = code ? 'Cupom inválido.' : '';
-      couponMsg.style.color = '#ff6b35';
-    }
-    updateDisplay();
-  });
-  couponInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') couponApply.click();
+  document.querySelectorAll('[data-workshop]').forEach(btn=>{
+    btn.addEventListener('click',()=>openModal(btn.dataset.workshop,btn.dataset.price,btn.dataset.currency||'BRL',btn.dataset.addonPrice,btn.dataset.addonLabel));
   });
 
-  // Wire buttons with data-workshop
-  document.querySelectorAll('[data-workshop]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      openModal(
-        btn.dataset.workshop,
-        btn.dataset.price,
-        btn.dataset.currency || 'BRL',
-        btn.dataset.addonPrice,
-        btn.dataset.addonLabel
-      );
-    });
-  });
+  const closeModal=()=>{ document.getElementById('payModal').classList.remove('open'); if(window.lenis) window.lenis.start(); };
+  document.getElementById('modalClose').addEventListener('click',closeModal);
+  document.getElementById('payModal').addEventListener('click',e=>{if(e.target.id==='payModal') closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
 
-  const closeModal = () => overlay.classList.remove('open');
-  closeBtn.addEventListener('click', closeModal);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  copyBtn.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(pixKey);
-      copyBtn.textContent = '✓ Copiado!';
-      setTimeout(() => { copyBtn.textContent = 'Copiar chave'; }, 2500);
-    } catch {
-      copyBtn.textContent = 'Copie: ' + pixKey;
-    }
+  document.getElementById('copyBtn').addEventListener('click',async()=>{
+    const btn=document.getElementById('copyBtn');
+    try { await navigator.clipboard.writeText(pixKey); btn.textContent='✓ Copiado!'; }
+    catch { btn.textContent=pixKey; }
+    setTimeout(()=>btn.textContent='Copiar chave',2200);
   });
 </script>

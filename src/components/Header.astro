@@ -1,21 +1,20 @@
 ---
-const nav = [
+const links = [
   { label: 'Imersões',      href: '/imersoes' },
   { label: 'APP Spine Lab', href: '/app-spine-lab' },
   { label: 'Blog',          href: '/blog' },
 ];
 ---
-<header class="site-header">
-  <a href="/" class="logo">CALI</a>
+<header class="site-header" id="header">
+  <a href="/" class="brand" aria-label="CALI — início">
+    <img src="/assets/cali-sun.png" alt="" class="brand-sun" />
+    <img src="/assets/cali-wordmark.png" alt="CALI" />
+  </a>
 
-  <nav>
-    <ul class="nav" id="main-nav">
-      {nav.map(item => (
-        <li><a href={item.href}>{item.label}</a></li>
-      ))}
-      <li><a href="/imersoes" class="nav-cta">Reservar lugar</a></li>
-    </ul>
+  <nav class="nav-main" id="nav">
+    {links.map(l => <a href={l.href}>{l.label}</a>)}
+    <a href="/imersoes" class="nav-cta">Reservar lugar</a>
   </nav>
 
-  <button class="nav-toggle" id="nav-toggle" aria-label="Menu">☰</button>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
 </header>

@@ -7,142 +7,129 @@ import PaymentModal from '../components/PaymentModal.astro';
 import { workshops } from '../data/workshops.js';
 import { getCollection } from 'astro:content';
 
-const nextWorkshops = workshops.filter(w => w.status === 'upcoming').slice(0, 3);
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-).slice(0, 3);
+const nextWorkshops = workshops.filter(w => w.status === 'upcoming' || w.status === 'tbd').slice(0, 3);
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
 
-const waNumber = '5551999595522';
-const waText = encodeURIComponent('Olá Cami! Quero saber mais sobre as imersões CALI.');
-const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
+const waUrl = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Quero saber mais sobre as imersões CALI.')}`;
+
+const spine = [
+  { time: '15 min', title: 'Abertura',        desc: 'Chegança real. Não começa com movimento — começa com parada. Dirga Pranayama, Sankalpa, Om × 3.' },
+  { time: '20 min', title: 'Aquecimento',      desc: 'A coluna se move em 6 direções. A maioria das pessoas usa 1. Gato-vaca, torções, Surya Namaskar lento.' },
+  { time: '40 min', title: 'Prática Central',  desc: 'Progressão clássica de pé → chão. Força, enraizamento, mobilidade profunda, introspecção.' },
+  { time: '20 min', title: 'Nauli',            desc: 'O coração do Spine Lab. Shatkarma — prática de purificação do Hatha Yoga. Não é acrobacia: é medicina interna.', feature: true },
+  { time: '15 min', title: 'Invertidas',       desc: 'Progressão segura: Viparita Karani, Sarvangasana, Sirsasana. Todo mundo entra de alguma forma.' },
+  { time: '10 min', title: 'Encerramento',     desc: '7 minutos reais de Savasana — não negociável. Yoga Nidra breve. Círculo de fechamento.' },
+];
 ---
 
 <BaseLayout
   title="CALI MOVIMIENTO — Yoga, Dança e Movimento com Camila Lucena"
-  description="Experiências de movimento, yoga, dança e expressão corporal com Camila Lucena. Imersões presenciais em todo Brasil e Europa."
+  description="Experiências de movimento, yoga, dança e expressão corporal com Camila Lucena. Imersões presenciais em todo o Brasil e Europa."
 >
   <Header />
 
   <!-- ══════════════════════════════════════════
-       HERO — Espaço sideral
+       HERO
   ══════════════════════════════════════════ -->
-  <section class="section-full" id="hero" style="background:radial-gradient(ellipse at 50% 60%, #12113a 0%, #080818 100%);padding-top:7rem;">
-    <div class="stars-container" id="stars"></div>
-    <div style="position:relative;z-index:2;text-align:center;max-width:900px;padding:2rem;">
-      <p class="eyebrow reveal">by Camila Lucena</p>
-      <h1 class="display-title reveal" style="transition-delay:0.1s;">CALI</h1>
-      <p class="reveal" style="font-family:var(--font-heading);font-size:clamp(1.2rem,3vw,2rem);letter-spacing:0.4em;color:var(--muted);margin:-0.5rem 0 1.5rem;transition-delay:0.2s;">
-        MOVIMIENTO
-      </p>
-      <p class="tagline reveal" style="transition-delay:0.3s;">
-        O corpo não é um problema a resolver.<br>É um território a habitar.
-      </p>
-      <a href="/imersoes" class="btn btn-primary reveal" style="transition-delay:0.4s;">
-        Ver imersões
-      </a>
+  <section id="hero">
+    <div class="prism prism-strong" id="heroPrism"></div>
+    <div class="hero-sun-wrap" aria-hidden="true">
+      <img src="/assets/cali-sun.png" alt="" class="hero-sun-bg" />
     </div>
-    <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;opacity:0.4;font-size:1.5rem;">↓</div>
+    <canvas class="prana-canvas" id="prana" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <img src="/assets/cali-wordmark.png" alt="CALI" class="hero-word" id="heroWord" />
+      <p class="hero-movimiento reveal" id="heroMovim">Movimiento · por Cami Lucena</p>
+      <p class="hero-tagline reveal">O corpo não é um problema a resolver. É um território a habitar.</p>
+      <div class="hero-cta reveal">
+        <a href="/imersoes" class="btn btn-primary btn-lg">Ver imersões</a>
+        <a href="#sobre" class="btn btn-outline btn-lg">Conhecer a Cami</a>
+      </div>
+    </div>
+    <div class="scroll-cue">
+      <span>rolar</span>
+      <span>↓</span>
+    </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       MANIFESTO — Cuidando da sua coluna
+       MANIFESTO
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#080818 0%,#0c0c24 100%);">
-    <div class="container">
-      <p class="eyebrow reveal" style="text-align:center;">manifesto</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3.5rem;">
-        Cuidando da tua coluna
-      </h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;">
-
-        <div class="card reveal">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">🌿</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
-            Consumo Consciente como Movimento
-          </h3>
-          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
-            Escolher o que consumimos é um movimento político e corporal. É o que "entra" e o que "sustenta" o ritmo da vida. Se o objetivo é ativar o ser, a poluição — visual, sonora ou química — é um ruído que bloqueia essa ativação.
-          </p>
+  <section id="manifesto" class="section-pad">
+    <div class="wrap">
+      <p class="eyebrow reveal">Manifesto</p>
+      <h2 class="manifesto-lead serif-it reveal">Cuidando da tua coluna — e do mundo que ela habita.</h2>
+      <div class="manifesto-grid">
+        <div class="mblock reveal">
+          <span class="num">01</span>
+          <h3>Consumo consciente como movimento</h3>
+          <p>Escolher o que consumimos é um movimento político e corporal. É o que "entra" e o que "sustenta" o ritmo da vida. Se o objetivo é ativar o ser, a poluição — visual, sonora ou química — é um ruído que bloqueia essa ativação.</p>
         </div>
-
-        <div class="card reveal" style="transition-delay:0.15s;">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">🌎</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
-            Ambientes que ativam o sentir
-          </h3>
-          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
-            Para sentir o corpo, precisamos de ambientes menos sintéticos. Conectar a preservação ambiental ao prazer sensorial que a natureza proporciona — o cheiro da chuva, o calor do sol, o frescor da água. Se o corpo sente prazer na natureza, o cuidado se torna instintivo, não uma obrigação teórica.
-          </p>
+        <div class="mblock reveal">
+          <span class="num">02</span>
+          <h3>Ambientes que ativam o sentir</h3>
+          <p>Para sentir o corpo, precisamos de ambientes menos sintéticos. Conectar a preservação ambiental ao prazer sensorial que a natureza proporciona — o cheiro da chuva, o calor do sol, o frescor da água. Se o corpo sente prazer na natureza, o cuidado se torna instintivo.</p>
         </div>
-
-        <div class="card reveal" style="transition-delay:0.3s;">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">🦶</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.3rem;font-weight:400;margin-bottom:0.8rem;">
-            O pé na terra
-          </h3>
-          <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;">
-            O pé na terra ativa terminações nervosas que "avisam" o corpo que ele pertence àquele lugar. Pertencer é a base de qualquer prática real de autoconhecimento.
-          </p>
+        <div class="mblock reveal">
+          <span class="num">03</span>
+          <h3>O pé na terra</h3>
+          <p>O pé na terra ativa terminações nervosas que "avisam" o corpo que ele pertence àquele lugar. Pertencer é a base de qualquer prática real de autoconhecimento.</p>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       PRÓXIMOS WORKSHOPS
+       IMERSÕES
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:#080818;">
-    <div class="container">
-      <p class="eyebrow reveal" style="text-align:center;">agenda nômade</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3.5rem;">
-        Próximas imersões
-      </h2>
-      <div class="grid-3">
+  <section id="imersoes" class="section-pad">
+    <div class="prism" id="prismImersoes"></div>
+    <div class="wrap" style="position:relative;z-index:3;">
+      <div class="agenda-head">
+        <div>
+          <p class="eyebrow reveal">Agenda nômade</p>
+          <h2 class="section-title reveal">Próximas<br />imersões</h2>
+        </div>
+        <p class="reveal" style="max-width:30ch;color:var(--ink-soft);">Camila leva o Spine Lab de cidade em cidade. Reserve seu lugar — vagas limitadas por turma.</p>
+      </div>
+      <div class="card-grid">
         {nextWorkshops.map((w, i) => {
-          const earlyPrice = w.currency === 'EUR'
-            ? (w.priceEUR?.earlyBird ?? 80)
-            : (w.priceBRL?.earlyBird ?? 0);
           const isTbd = w.status === 'tbd';
           return (
-            <div
-              class="card reveal home-imersao-card"
+            <article
+              class="wcard reveal imersao-card"
               data-event-date={w.date ?? ''}
-              data-early={w.currency === 'EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird}
-              data-regular={w.currency === 'EUR' ? w.priceEUR?.regular : w.priceBRL?.regular}
-              data-dayof={w.currency === 'EUR' ? w.priceEUR?.dayOf : w.priceBRL?.dayOf}
+              data-early={w.currency==='EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird}
+              data-regular={w.currency==='EUR' ? w.priceEUR?.regular : w.priceBRL?.regular}
+              data-dayof={w.currency==='EUR' ? w.priceEUR?.dayOf : w.priceBRL?.dayOf}
               data-currency={w.currency}
               data-addon-price={w.addOn?.price ?? ''}
               data-addon-label={w.addOn?.label ?? ''}
-              style={`transition-delay:${i * 0.15}s;position:relative;`}
+              style={`transition-delay:${i*0.12}s`}
             >
-              {isTbd && (
-                <span style="position:absolute;top:1rem;right:1rem;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.4);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.72rem;color:#e91e8c;">Em breve</span>
-              )}
-              <p class="workshop-date">{w.dateDisplay}</p>
-              <p class="workshop-city">{w.neighborhood || w.city}</p>
-              <p class="workshop-location">{w.location}</p>
-              <p class="workshop-time">{w.time}</p>
-              <div style="margin:0.8rem 0 0.4rem;">
-                <span class="home-tier-badge" style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);border-radius:8px;padding:0.25rem 0.7rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.5rem;"></span>
-              </div>
-              <div class="price-row" style="margin-bottom:1.2rem;">
-                <span class="price-main home-tier-price"></span>
-                <span class="home-tier-pix" style="font-size:0.85rem;color:#00b374;margin-left:0.4rem;"></span>
-              </div>
+              {isTbd && <span class="badge-tbd">Em breve</span>}
+              <span class="w-date">{w.dateDisplay}</span>
+              <span class="w-city">{w.neighborhood || w.city}</span>
+              <span class="w-loc">{w.location}</span>
+              <span class="w-time">⏰ {w.time}</span>
+              <span class="w-chip tier-label"></span>
+              <span class="w-price"><b class="tier-price"></b> <span class="pix tier-pix"></span></span>
+              {w.addOn && <span style="font-size:0.8rem;color:var(--ink-soft);">🍱 Opcional: {w.addOn.label} — R${w.addOn.price}</span>}
               <button
                 class="btn btn-primary"
-                style={`width:100%;text-align:center;${isTbd ? 'opacity:0.5;' : ''}`}
-                data-workshop={`${w.city}${w.neighborhood ? ' — ' + w.neighborhood : ''} · ${w.dateDisplay} ${w.time}`}
-                data-price={earlyPrice}
+                data-workshop={`${w.city}${w.neighborhood?' — '+w.neighborhood:''} · ${w.dateDisplay} ${w.time}`}
+                data-price={w.currency==='EUR' ? w.priceEUR?.earlyBird : w.priceBRL?.earlyBird}
                 data-currency={w.currency}
                 data-addon-price={w.addOn?.price ?? ''}
                 data-addon-label={w.addOn?.label ?? ''}
                 disabled={isTbd}
+                style={isTbd?'opacity:0.5;':''}
               >
-                {isTbd ? 'Em breve' : 'Reservar lugar'}
+                {isTbd ? 'Em breve — aguarde' : 'Reservar lugar'}
               </button>
-            </div>
+            </article>
           );
         })}
       </div>
@@ -153,35 +140,23 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   </section>
 
   <!-- ══════════════════════════════════════════
-       QUEM É A CAMI
+       SOBRE A CAMI
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
-    <div class="container">
-      <div class="grid-2" style="align-items:center;gap:4rem;">
-        <div>
-          <p class="eyebrow reveal">quem é</p>
-          <h2 class="section-title reveal" style="margin-bottom:1.5rem;">a Cami</h2>
-          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:1.2rem;">
-            Ativista do sentir corporal livre, a Cami é facilitadora de transformação pessoal e coletiva utilizando diferentes linguagens e ferramentas. Suas práticas fundem saberes que muitas vezes transcendem a abordagem tradicional, oferecendo <strong style="color:white;">conexão, liberdade e autonomia</strong>.
-          </p>
-          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:1.2rem;">
-            Propondo o cuidado como uma performance coletiva.
-          </p>
-          <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1.05rem;margin-bottom:2rem;">
-            Se você quer entender melhor sobre ti mesma, fases e ciclos da tua vida — chegaste no lugar certo. Na aula conseguimos entrar em todos esses temas de uma maneira leve e descontraída, mas profunda a nível de te auxiliar bastante no teu autoconhecimento e autodescoberta.
-          </p>
-          <div class="reveal" style="display:flex;gap:1rem;flex-wrap:wrap;">
-            <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">
-              Conversar no WhatsApp
-            </a>
-            <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
-          </div>
+  <section id="sobre" class="section-pad">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="portrait reveal">
+          <div class="portrait-placeholder">📸 Foto de Camila<br />(adicionar)</div>
         </div>
-        <div class="reveal" style="transition-delay:0.2s;">
-          <div style="aspect-ratio:3/4;border-radius:24px;background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(168,85,247,0.15));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;">
-            <p style="color:var(--muted);font-size:0.85rem;text-align:center;padding:2rem;">
-              📸 Foto de Camila<br>(adicionar)
-            </p>
+        <div class="about-copy">
+          <p class="eyebrow reveal">Quem é</p>
+          <h2 class="section-title reveal" style="margin-bottom:1.4rem;">a Cami</h2>
+          <p class="reveal">Ativista do sentir corporal livre, a Cami é facilitadora de transformação pessoal e coletiva utilizando diferentes linguagens e ferramentas. Suas práticas fundem saberes que muitas vezes transcendem a abordagem tradicional, oferecendo <strong>conexão, liberdade e autonomia</strong>.</p>
+          <p class="reveal">Propondo o cuidado como uma performance coletiva.</p>
+          <p class="reveal">Se você quer entender melhor sobre ti mesma, fases e ciclos da tua vida — chegaste no lugar certo. Na aula conseguimos entrar em todos esses temas de uma maneira leve e descontraída, mas profunda a nível de te auxiliar bastante no teu autoconhecimento e autodescoberta.</p>
+          <div class="about-actions reveal">
+            <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">Conversar no WhatsApp</a>
+            <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
           </div>
         </div>
       </div>
@@ -189,59 +164,42 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   </section>
 
   <!-- ══════════════════════════════════════════
-       1ª AULA ONLINE — Agendamento
+       1ª AULA ONLINE
   ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#0a0a1e 100%);">
-    <div class="container" style="max-width:760px;text-align:center;">
-      <p class="eyebrow reveal">experiência individual</p>
-      <h2 class="section-title reveal" style="margin-bottom:1rem;">Marque tua 1ª aula online</h2>
-      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:0.5rem;">
-        Uma sessão de 2h, ao vivo via Zoom. A mesma prática das imersões presenciais — no teu ritmo, no teu espaço.
-      </p>
-      <p class="reveal" style="font-family:var(--font-heading);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:400;margin:1.2rem 0 2rem;" id="aula-preco">
-        R$ 15,00
-      </p>
-      <a
-        href="#calendly-placeholder"
-        class="btn btn-primary reveal"
-        style="font-size:1rem;padding:1.1rem 2.8rem;"
-        id="btn-agendar"
-      >
-        📅 Agendar agora
-      </a>
-      <p class="reveal" style="color:var(--muted);font-size:0.82rem;margin-top:1rem;opacity:0.7;">
-        Seleciona a data e horário que funciona para ti — confirmação imediata.
-      </p>
+  <section id="aula" class="section-pad">
+    <div class="prism" id="prismAula"></div>
+    <div class="wrap">
+      <div class="aula">
+        <p class="eyebrow reveal">Experiência individual</p>
+        <h2 class="section-title reveal" style="margin-bottom:1rem;">Marque tua 1ª aula online</h2>
+        <p class="reveal" style="color:var(--ink-soft);max-width:46ch;margin-inline:auto;">
+          Uma sessão de 35min, ao vivo via Zoom. A mesma inspirada nas imersões presenciais — no teu ritmo, no teu espaço.
+        </p>
+        <p class="price reveal" id="aulaPrice">R$ 15,00</p>
+        <a href="#calendly-placeholder" class="btn btn-primary btn-lg reveal" id="btnAgendar">📅 Agendar agora</a>
+        <p class="reveal" style="color:var(--ink-soft);font-size:0.84rem;margin-top:1rem;">
+          Escolhe a data e o horário que funcionam para ti — confirmação imediata.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       A PRÁTICA — Spine Lab
+       SPINE LAB — A PRÁTICA
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:#0d0d28;">
-    <div class="container">
-      <p class="eyebrow reveal" style="text-align:center;">a prática</p>
-      <h2 class="section-title reveal" style="text-align:center;">
-        Spine Lab — 2 horas
-      </h2>
-      <p class="tagline reveal" style="margin-bottom:3rem;">
+  <section id="pratica" class="section-pad">
+    <div class="wrap">
+      <p class="eyebrow reveal" style="text-align:center;">A prática</p>
+      <h2 class="section-title reveal" style="text-align:center;">Spine Lab — 2 horas</h2>
+      <p class="reveal serif-it" style="text-align:center;font-size:clamp(1.2rem,1rem+1.4vw,1.9rem);color:var(--ink-soft);margin-top:0.8rem;">
         Para o ocidental que nunca soube que tinha um corpo.
       </p>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;">
-        {[
-          { time: '15min', title: 'Abertura', icon: '🌬️', desc: 'Chegança real. Não começa com movimento — começa com parada. Dirga Pranayama, Sankalpa, Om × 3.' },
-          { time: '20min', title: 'Aquecimento', icon: '🌊', desc: 'A coluna se move em 6 direções. A maioria das pessoas usa 1. Gato-vaca, torções, Surya Namaskar lento.' },
-          { time: '40min', title: 'Prática Central', icon: '⚡', desc: 'Progressão clássica de pé → chão. Força, enraizamento, mobilidade profunda, introspecção.' },
-          { time: '20min', title: 'Nauli', icon: '🔥', desc: 'O coração do Spine Lab. Shatkarma — prática de purificação do Hatha Yoga. Não é acrobacia: é medicina interna.' },
-          { time: '15min', title: 'Invertidas', icon: '🌙', desc: 'Progressão segura: Viparita Karani, Sarvangasana, Sirsasana. Todo mundo consegue entrar de alguma forma.' },
-          { time: '10min', title: 'Encerramento', icon: '✨', desc: '7 minutos reais de Savasana — não negociável. Yoga Nidra breve. Círculo de fechamento.' },
-        ].map((block, i) => (
-          <div class="card reveal" style={`transition-delay:${i * 0.1}s;text-align:center;`}>
-            <p style="font-size:2rem;margin-bottom:0.5rem;">{block.icon}</p>
-            <p style="font-size:0.75rem;letter-spacing:0.2em;color:var(--orange);text-transform:uppercase;margin-bottom:0.3rem;">{block.time}</p>
-            <h3 style="font-family:var(--font-heading);font-size:1.15rem;font-weight:400;margin-bottom:0.8rem;">{block.title}</h3>
-            <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;">{block.desc}</p>
+      <div class="spine-grid">
+        {spine.map((s, i) => (
+          <div class={`sblock reveal${s.feature ? ' feature' : ''}`} style={`transition-delay:${i*0.1}s`}>
+            <span class="s-time">{s.time}</span>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
           </div>
         ))}
       </div>
@@ -249,62 +207,51 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   </section>
 
   <!-- ══════════════════════════════════════════
-       CTA FINAL — Vamos nos encontrar
+       CTA FINAL
   ══════════════════════════════════════════ -->
-  <section class="section-full" style="background:radial-gradient(ellipse at 50% 50%, #1a0a2e 0%, #080818 100%);padding:6rem 2rem;">
-    <div class="stars-container" id="stars2"></div>
-    <div style="position:relative;z-index:2;text-align:center;max-width:700px;">
-      <p class="eyebrow reveal">próximo passo</p>
-      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">
-        Fico muito feliz que vamos nos encontrar em tempo real!
-      </h2>
-      <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1rem;margin-bottom:0.8rem;">
-        Nossa prática pode acontecer de forma presencial ou online via Zoom, onde estarei inteiramente disposta e interessada em te entender e vivenciar contigo.
-      </p>
-      <p class="reveal" style="color:var(--muted);line-height:1.9;font-size:1rem;margin-bottom:2.5rem;">
-        Podes tirar todas as dúvidas que quiseres — ou já partir direto para a reserva.
-      </p>
-      <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
-        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.8rem;">
-          💬 Vamos ver
-        </a>
-        <button
-          class="btn btn-primary"
-          style="font-size:1rem;padding:1.1rem 2.8rem;"
-          data-workshop={`${nextWorkshops[0]?.city ?? 'Imersão CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
-          data-price={nextWorkshops[0]?.currency === 'EUR'
-            ? (nextWorkshops[0]?.priceEUR?.earlyBird ?? 80)
-            : (nextWorkshops[0]?.priceBRL?.earlyBird ?? 180)}
-          data-currency={nextWorkshops[0]?.currency ?? 'BRL'}
-        >
-          ✨ Já quero
-        </button>
+  <section id="cta" class="section-pad">
+    <div class="prism prism-strong" id="prismCta"></div>
+    <div class="wrap">
+      <div class="cta-final">
+        <p class="eyebrow reveal">Próximo passo</p>
+        <h2 class="reveal">Fico muito feliz que vamos nos encontrar em tempo real!</h2>
+        <p class="reveal">Nossa prática pode acontecer de forma presencial ou online via Zoom, onde estarei inteiramente disposta e interessada em te entender e vivenciar contigo.</p>
+        <p class="reveal">Podes tirar todas as dúvidas que quiseres — ou já partir direto para a reserva.</p>
+        <div class="cta-actions reveal">
+          <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">💬 Vamos ver</a>
+          <button
+            class="btn btn-primary btn-lg"
+            data-workshop={`${nextWorkshops[0]?.city ?? 'Imersão CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
+            data-price={nextWorkshops[0]?.currency==='EUR' ? nextWorkshops[0]?.priceEUR?.earlyBird : nextWorkshops[0]?.priceBRL?.earlyBird}
+            data-currency={nextWorkshops[0]?.currency ?? 'BRL'}
+          >
+            ✨ Já quero
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       BLOG PREVIEW
+       BLOG
   ══════════════════════════════════════════ -->
   {posts.length > 0 && (
-    <section style="padding:6rem 2rem;background:#080818;">
-      <div class="container">
-        <p class="eyebrow reveal" style="text-align:center;">blog</p>
+    <section id="blog" class="section-pad">
+      <div class="wrap">
+        <p class="eyebrow reveal" style="text-align:center;">Blog</p>
         <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">Escritas do movimento</h2>
         <div class="blog-grid">
           {posts.map((post, i) => (
-            <a href={`/blog/${post.slug}`} style="text-decoration:none;color:inherit;" class="reveal" style={`transition-delay:${i*0.15}s`}>
-              <div class="card">
-                <div class="blog-card-img"></div>
-                <p class="blog-card-date">{post.data.pubDate.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}</p>
-                <h3 class="blog-card-title">{post.data.title}</h3>
-                <p class="blog-card-excerpt">{post.data.description}</p>
-              </div>
+            <a href={`/blog/${post.slug}`} class="bcard reveal" style={`transition-delay:${i*0.12}s`}>
+              <span class="b-meta">{post.data.pubDate.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})} · {post.data.city}</span>
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+              <span class="b-more">Ler o texto →</span>
             </a>
           ))}
         </div>
         <div style="text-align:center;margin-top:3rem;" class="reveal">
-          <a href="/blog" class="btn btn-outline">Ver todos os posts</a>
+          <a href="/blog" class="btn btn-outline">Ver todos os textos</a>
         </div>
       </div>
     </section>
@@ -315,76 +262,134 @@ const waUrl  = `https://wa.me/${waNumber}?text=${waText}`;
   <PaymentModal />
 </BaseLayout>
 
-<script>
-  // Dynamic pricing — home cards
-  (function() {
-    function getPriceTier(dateStr) {
-      if (!dateStr) return 'earlyBird';
-      const today = new Date(); today.setHours(0,0,0,0);
-      const ev    = new Date(dateStr + 'T00:00:00');
-      const days  = Math.floor((ev - today) / 86400000);
-      return days >= 3 ? 'earlyBird' : days <= 0 ? 'dayOf' : 'regular';
+<script is:inline>
+(function() {
+  /* Detect timezone → price for 1ª aula */
+  try {
+    var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz.startsWith('Europe/')) {
+      var p = document.getElementById('aulaPrice');
+      if (p) p.textContent = '€ 15,00';
     }
-    const LABELS = { earlyBird: '🐦 Early bird', regular: 'Regular', dayOf: 'No dia' };
+  } catch(e) {}
 
-    document.querySelectorAll('.home-imersao-card').forEach(card => {
-      const early   = parseFloat(card.dataset.early   || 0);
-      const regular = parseFloat(card.dataset.regular || 0);
-      const dayof   = parseFloat(card.dataset.dayof   || 0);
-      const curr    = card.dataset.currency === 'EUR' ? '€' : 'R$';
-      const tier    = getPriceTier(card.dataset.eventDate || null);
-      const price   = { earlyBird: early, regular, dayOf: dayof }[tier] || early;
-      const pix     = Math.round(price * 0.9 * 100) / 100;
-      const fmt     = v => curr + v.toFixed(2).replace('.', ',');
+  /* Dynamic pricing in home cards */
+  function getTier(dateStr) {
+    if (!dateStr) return 'earlyBird';
+    var today = new Date(); today.setHours(0,0,0,0);
+    var ev    = new Date(dateStr + 'T00:00:00');
+    var days  = Math.floor((ev - today) / 86400000);
+    return days >= 3 ? 'earlyBird' : days <= 0 ? 'dayOf' : 'regular';
+  }
+  var LABELS = { earlyBird: '🐦 Early bird', regular: 'Regular', dayOf: 'No dia' };
 
-      const badge = card.querySelector('.home-tier-badge');
-      const prEl  = card.querySelector('.home-tier-price');
-      const pixEl = card.querySelector('.home-tier-pix');
-      const btn   = card.querySelector('[data-workshop]');
+  document.querySelectorAll('.imersao-card').forEach(function(card) {
+    var early   = parseFloat(card.dataset.early   || 0);
+    var regular = parseFloat(card.dataset.regular || 0);
+    var dayof   = parseFloat(card.dataset.dayof   || 0);
+    var cur     = card.dataset.currency === 'EUR' ? '€' : 'R$';
+    var tier    = getTier(card.dataset.eventDate || null);
+    var price   = {earlyBird:early,regular:regular,dayOf:dayof}[tier] || early;
+    var pix     = Math.round(price*0.9*100)/100;
+    var fmt     = function(v){ return cur+v.toFixed(2).replace('.',','); };
 
-      if (badge)  badge.textContent  = LABELS[tier] || '';
-      if (prEl)   prEl.textContent   = fmt(price);
-      if (pixEl)  pixEl.textContent  = `· ${fmt(pix)} PIX`;
-      if (btn && card.dataset.eventDate) btn.dataset.price = price;
+    var lbl  = card.querySelector('.tier-label');
+    var prEl = card.querySelector('.tier-price');
+    var pixEl= card.querySelector('.tier-pix');
+    var btn  = card.querySelector('[data-workshop]');
+
+    if (lbl)  lbl.textContent  = LABELS[tier] || '';
+    if (prEl) prEl.textContent = fmt(price);
+    if (pixEl)pixEl.textContent= '· '+fmt(pix)+' PIX';
+    if (btn && card.dataset.eventDate) btn.dataset.price = price;
+  });
+})();
+</script>
+
+<!-- Hero FX: prana particles + mouse gravity -->
+<script is:inline>
+/* ============================================================
+   CALI — Hero FX  (prana particles + mouse gravity)
+   ============================================================ */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canvas = document.getElementById("prana");
+  var hero   = document.getElementById("hero");
+  if (canvas && hero) {
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 0, H = 0, particles = [];
+    var PALETTE = [[255,122,46],[255,122,46],[232,188,99],[255,168,92],[251,176,215],[102,207,190],[111,194,220],[195,174,201]];
+    function resize(){ var r=hero.getBoundingClientRect(); W=r.width; H=r.height; canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr); canvas.style.width=W+"px"; canvas.style.height=H+"px"; ctx.setTransform(dpr,0,0,dpr,0,0); }
+    function makeParticle(initial){ var col=PALETTE[(Math.random()*PALETTE.length)|0]; return {baseX:Math.random()*W,y:initial?Math.random()*H:H+Math.random()*40,vy:8+Math.random()*16,amp:10+Math.random()*46,ampGrow:0.15+Math.random()*0.5,freq:0.28+Math.random()*0.7,phase:Math.random()*Math.PI*2,size:1.0+Math.random()*2.3,col:col,twPhase:Math.random()*Math.PI*2,twFreq:0.7+Math.random()*1.7,baseAlpha:0.5+Math.random()*0.5,star:Math.random()<0.22,age:0,life:9+Math.random()*9}; }
+    function reset(p){ var np=makeParticle(false); for(var k in np) p[k]=np[k]; }
+    function spawn(){ particles=[]; var count=Math.max(30,Math.min(84,Math.round(W*H/18000))); for(var i=0;i<count;i++) particles.push(makeParticle(true)); }
+    function draw(p){ var t=p.age,climb=1-p.y/(H+1),amp=p.amp*(1+p.ampGrow*climb),x=p.baseX+Math.sin(p.phase+t*p.freq*Math.PI*2)*amp; var fadeIn=Math.min(1,t*1.4),fadeOut=Math.min(1,(p.life-t)*0.7,p.y/(H*0.22)),twinkle=0.55+0.45*Math.sin(p.twPhase+t*p.twFreq*Math.PI*2),a=p.baseAlpha*twinkle*fadeIn*Math.max(0,fadeOut); if(a<=0.01) return; var c=p.col,size=p.size*(0.85+0.3*twinkle),halo=size*6,g=ctx.createRadialGradient(x,p.y,0,x,p.y,halo); g.addColorStop(0,"rgba("+c[0]+","+c[1]+","+c[2]+","+(a*0.5)+")"); g.addColorStop(0.4,"rgba("+c[0]+","+c[1]+","+c[2]+","+(a*0.18)+")"); g.addColorStop(1,"rgba("+c[0]+","+c[1]+","+c[2]+",0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,p.y,halo,0,Math.PI*2); ctx.fill(); ctx.fillStyle="rgba(255,248,240,"+Math.min(1,a*0.9)+")"; ctx.beginPath(); ctx.arc(x,p.y,size*0.65,0,Math.PI*2); ctx.fill(); ctx.fillStyle="rgba("+c[0]+","+c[1]+","+c[2]+","+a+")"; ctx.beginPath(); ctx.arc(x,p.y,size,0,Math.PI*2); ctx.fill(); if(p.star){ ctx.strokeStyle="rgba("+c[0]+","+c[1]+","+c[2]+","+(a*0.7)+")"; ctx.lineWidth=0.8; var ray=size*3.4*(0.7+0.5*twinkle); ctx.beginPath(); ctx.moveTo(x-ray,p.y); ctx.lineTo(x+ray,p.y); ctx.moveTo(x,p.y-ray); ctx.lineTo(x,p.y+ray); ctx.stroke(); } }
+    var last=performance.now(),running=true;
+    function frame(now){ if(!running) return; var dt=Math.min((now-last)/1000,0.05); last=now; ctx.clearRect(0,0,W,H); for(var i=0;i<particles.length;i++){ var p=particles[i]; p.age+=dt; p.y-=p.vy*dt; if(p.y<-20||p.age>p.life) reset(p); draw(p); } requestAnimationFrame(frame); }
+    resize(); spawn();
+    if (!reduce) requestAnimationFrame(frame);
+    else for(var i=0;i<particles.length;i++){ particles[i].age=2; draw(particles[i]); }
+    var rT; window.addEventListener("resize",function(){ clearTimeout(rT); rT=setTimeout(function(){ resize(); spawn(); },200); });
+    if ("IntersectionObserver" in window && !reduce) new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&!running){running=true;last=performance.now();requestAnimationFrame(frame);}else if(!e.isIntersecting){running=false;} }); },{threshold:0}).observe(hero);
+  }
+  var word=document.getElementById("heroWord"),movim=document.getElementById("heroMovim");
+  if (word && hero && !reduce && window.gsap) {
+    var wx=gsap.quickTo(word,"x",{duration:0.9,ease:"power3"}),wy=gsap.quickTo(word,"y",{duration:0.9,ease:"power3"}),wr=gsap.quickTo(word,"rotation",{duration:1.1,ease:"power3"});
+    var mx=movim?gsap.quickTo(movim,"x",{duration:1.1,ease:"power3"}):null,my=movim?gsap.quickTo(movim,"y",{duration:1.1,ease:"power3"}):null;
+    hero.addEventListener("mousemove",function(e){ var r=hero.getBoundingClientRect(),nx=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width/2))),ny=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height/2))/(r.height/2))); wx(nx*34);wy(ny*22);wr(nx*3.2); if(mx){mx(nx*18);my(ny*12);} });
+    hero.addEventListener("mouseleave",function(){ wx(0);wy(0);wr(0); if(mx){mx(0);my(0);} });
+  }
+})();
+</script>
+
+<!-- Hero GSAP entrance -->
+<script is:inline>
+(function() {
+  if (!window.gsap) return;
+  var R = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (R) return;
+
+  function splitChars(el) {
+    var text = el.textContent;
+    el.textContent = '';
+    return text.split('').map(function(ch) {
+      var s = document.createElement('span');
+      s.className = 'ltr';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      el.appendChild(s);
+      return s;
     });
-  })();
-</script>
-
-<script>
-  // Detect location via timezone to show correct price for 1st class
-  (function() {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    const isEurope = tz.startsWith('Europe/');
-    const priceEl = document.getElementById('aula-preco');
-    if (priceEl && isEurope) priceEl.textContent = '€ 15,00';
-    // When Calendly link is available, swap the href here too
-  })();
-</script>
-
-<script>
-  // Generate stars for hero sections
-  function makeStars(containerId, count = 150) {
-    const c = document.getElementById(containerId);
-    if (!c) return;
-    for (let i = 0; i < count; i++) {
-      const s = document.createElement('div');
-      s.className = 'star';
-      const size = Math.random() * 2.5 + 0.5;
-      s.style.cssText = `
-        width:${size}px;height:${size}px;
-        left:${Math.random()*100}%;top:${Math.random()*100}%;
-        --d:${2 + Math.random()*4}s;--delay:${Math.random()*6}s;
-      `;
-      c.appendChild(s);
-    }
   }
-  makeStars('stars', 200);
-  makeStars('stars2', 100);
-</script>
 
-<style>
-  @keyframes bounce {
-    0%,100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(8px); }
+  var heroWord = document.getElementById('heroWord');
+  var movim    = document.getElementById('heroMovim');
+  var tagline  = document.querySelector('.hero-tagline');
+  var heroCta  = document.querySelector('.hero-cta');
+  var movChars = movim ? splitChars(movim) : [];
+
+  var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  tl.from(heroWord, { opacity:0, scale:0.86, filter:'blur(8px)', duration:1.1, ease:'power4.out' }, 0.2)
+    .from(movChars, { opacity:0, y:24, duration:0.6, stagger:0.045 }, 0.5)
+    .from(tagline,  { opacity:0, y:30, duration:0.9 }, 0.8)
+    .from(heroCta,  { opacity:0, y:20, duration:0.7 }, 1.05);
+
+  /* Prism parallax */
+  if (window.ScrollTrigger) {
+    document.querySelectorAll('[id^="prism"]').forEach(function(p) {
+      gsap.fromTo(p,{yPercent:-6},{yPercent:6,ease:'none',
+        scrollTrigger:{trigger:p.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+    });
+    /* Prism intensity on scroll velocity */
+    var target=1,current=1;
+    ScrollTrigger.create({ onUpdate: function(self) {
+      var v=Math.min(Math.abs(self.getVelocity())/2600,1); target=1+v*0.7;
+    }});
+    gsap.ticker.add(function() {
+      current+=(target-current)*0.06; target+=(1-target)*0.05;
+      document.documentElement.style.setProperty('--prism-intensity',current.toFixed(3));
+    });
   }
-</style>
+})();
+</script>

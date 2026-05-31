@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import { getCollection } from 'astro:content';
+import '../../styles/blog.css';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -33,59 +34,48 @@ const articleSchema = {
 
   <Header />
 
-  <article style="padding:8rem 2rem 6rem;max-width:720px;margin:0 auto;">
-    <header style="margin-bottom:3rem;text-align:center;">
-      <p class="eyebrow">
+  <section class="article-head section-pad page-top">
+    <div class="prism" id="prismArticle"></div>
+    <div class="wrap">
+      <a href="/blog" class="back-link">← Voltar ao blog</a>
+      <p class="article-meta">
         {post.data.pubDate.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}
-        {post.data.city && <span style="color:var(--orange);"> · {post.data.city}</span>}
+        {post.data.city && <span> · {post.data.city}</span>}
       </p>
-      <h1 style="font-family:var(--font-display);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:400;line-height:1.1;margin:1rem 0;">
-        {post.data.title}
-      </h1>
-      <p style="color:var(--muted);font-size:1.1rem;line-height:1.6;">{post.data.description}</p>
+      <h1>{post.data.title}</h1>
+      <p class="article-dek">{post.data.description}</p>
       {post.data.tags.length > 0 && (
-        <div style="margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;">
-          {post.data.tags.map(tag => (
-            <span style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.2);border-radius:20px;padding:0.2rem 0.8rem;font-size:0.8rem;color:var(--orange);">{tag}</span>
-          ))}
+        <div class="article-tags">
+          {post.data.tags.map(tag => <span>{tag}</span>)}
         </div>
       )}
-    </header>
+    </div>
+  </section>
 
+  <div class="wrap">
     <div class="prose">
       <Content />
     </div>
 
-    <div style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;">
-      <p style="color:var(--muted);margin-bottom:1.5rem;">Gostaste? Encontra-me numa imersão.</p>
-      <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
-      &nbsp;
-      <a href="/blog" class="btn btn-outline" style="margin-left:0.5rem;">← Voltar ao blog</a>
+    <div class="article-cta">
+      <h3>Gostaste? Encontra-me numa imersão.</h3>
+      <p>A prática acontece ao vivo — presencial ou online. Vagas limitadas por turma.</p>
+      <div class="cta-actions">
+        <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
+        <a href="/blog" class="btn btn-outline">← Mais textos</a>
+      </div>
     </div>
-  </article>
+  </div>
 
   <Footer />
   <WhatsAppButton />
 </BaseLayout>
 
-<style>
-  .prose { color: rgba(255,255,255,0.85); line-height: 1.9; font-size: 1.05rem; }
-  .prose h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; margin: 2.5rem 0 1rem; }
-  .prose h3 { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 400; margin: 2rem 0 0.8rem; }
-  .prose p  { margin-bottom: 1.4rem; }
-  .prose strong { color: white; font-weight: 500; }
-  .prose em { color: rgba(255,255,255,0.7); font-style: italic; }
-  .prose a  { color: var(--orange); text-decoration: underline; }
-  .prose ul, .prose ol { margin: 1rem 0 1.4rem 1.5rem; }
-  .prose li { margin-bottom: 0.5rem; }
-  .prose blockquote {
-    border-left: 3px solid var(--orange);
-    margin: 2rem 0;
-    padding: 1rem 1.5rem;
-    background: rgba(255,107,53,0.05);
-    border-radius: 0 12px 12px 0;
-    font-style: italic;
-    color: rgba(255,255,255,0.75);
-  }
-  .prose hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
-</style>
+<script is:inline>
+(function() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  var p = document.getElementById('prismArticle');
+  if (p) gsap.fromTo(p,{yPercent:-6},{yPercent:6,ease:'none',
+    scrollTrigger:{trigger:p.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+})();
+</script>

@@ -1,16 +1,28 @@
 ---
 const year = new Date().getFullYear();
+const waUrl = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Quero saber mais sobre as imersões CALI.')}`;
 ---
 <footer class="site-footer">
-  <div class="footer-logo">CALI</div>
-  <p>MOVIMIENTO · by Camila Lucena</p>
-  <p style="margin-top:0.5rem;">
-    <a href="https://www.instagram.com/camilalucena.cali" target="_blank" rel="noopener"
-       style="color:var(--muted);text-decoration:none;">
-      @camilalucena.cali
-    </a>
-  </p>
-  <p style="margin-top:1.5rem;font-size:0.75rem;opacity:0.4;">
-    © {year} CALI MOVIMIENTO · O corpo é território do sentir.
-  </p>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-mark">
+          <img src="/assets/cali-sun.png" alt="" class="sun" />
+          <img src="/assets/cali-wordmark.png" alt="CALI" class="word" />
+        </div>
+        <p class="footer-tag">Levar o sentir corporal a todos os cantos do mundo — para ativar o ser através do movimento, da alegria e do caos.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/imersoes">Imersões</a>
+        <a href="/app-spine-lab">APP Spine Lab</a>
+        <a href="/blog">Blog</a>
+        <a href="https://instagram.com/camilalucena.cali" target="_blank" rel="noopener">Instagram @camilalucena.cali</a>
+        <a href={waUrl} target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} CALI Movimiento · por Camila Lucena</span>
+      <span>Yoga · Dança · Movimento · Brasil &amp; Europa</span>
+    </div>
+  </div>
 </footer>

@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import { getCollection } from 'astro:content';
+import '../../styles/blog.css';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -13,45 +14,35 @@ const posts = (await getCollection('blog')).sort(
 <BaseLayout
   title="Blog — CALI MOVIMIENTO by Camila Lucena"
   description="Escritas sobre movimento, yoga, autoconhecimento e sentir corporal. Por Camila Lucena."
-  type="website"
 >
   <Header />
 
-  <section style="padding:9rem 2rem 4rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,#12113a 0%,#080818 70%);">
-    <div class="stars-container" id="stars"></div>
-    <div style="position:relative;z-index:2;max-width:600px;margin:0 auto;">
-      <p class="eyebrow reveal">escritas</p>
-      <h1 class="section-title reveal" style="font-size:clamp(3rem,8vw,6rem);">Blog</h1>
-      <p class="tagline reveal">Movimento como escrita. Corpo como texto.</p>
+  <section class="blog-hero section-pad page-top">
+    <div class="prism" id="prismBlog"></div>
+    <div class="wrap">
+      <span class="eyebrow reveal">escritas</span>
+      <h1 class="reveal">Escritas do<br />movimento</h1>
+      <p class="lede reveal">Corpo como texto. Movimento como linguagem.</p>
     </div>
   </section>
 
-  <section style="padding:5rem 2rem 6rem;background:#080818;">
-    <div class="container">
+  <section class="section-pad" style="background:var(--paper);">
+    <div class="wrap">
       {posts.length === 0 ? (
-        <p style="text-align:center;color:var(--muted);">Posts em breve.</p>
+        <p style="text-align:center;color:var(--ink-soft);">Posts em breve.</p>
       ) : (
-        <div class="blog-grid">
+        <div class="post-list">
           {posts.map((post, i) => (
-            <a href={`/blog/${post.slug}`} style="text-decoration:none;color:inherit;" class="reveal" style={`transition-delay:${i*0.1}s`}>
-              <article class="card" style="height:100%;">
-                <div class="blog-card-img"></div>
-                <p class="blog-card-date">
-                  {post.data.pubDate.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })}
-                  {post.data.city && <span style="color:var(--orange);margin-left:0.5rem;">· {post.data.city}</span>}
-                </p>
-                <h2 class="blog-card-title">{post.data.title}</h2>
-                <p class="blog-card-excerpt">{post.data.description}</p>
-                {post.data.tags.length > 0 && (
-                  <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
-                    {post.data.tags.map(tag => (
-                      <span style="background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.2);border-radius:20px;padding:0.2rem 0.7rem;font-size:0.75rem;color:var(--orange);">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </article>
+            <a href={`/blog/${post.slug}`} class="post-row reveal" style={`transition-delay:${i*0.1}s`}>
+              <div class="pr-date">
+                {post.data.pubDate.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}
+                <small>{post.data.pubDate.getFullYear()}</small>
+              </div>
+              <div>
+                <span class="pr-title">{post.data.title}</span>
+                <span class="pr-tags">{post.data.tags.slice(0,4).join(' · ')}</span>
+              </div>
+              <span class="pr-go">→</span>
             </a>
           ))}
         </div>
@@ -63,13 +54,11 @@ const posts = (await getCollection('blog')).sort(
   <WhatsAppButton />
 </BaseLayout>
 
-<script>
-  const c = document.getElementById('stars');
-  if (c) for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random() * 2 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;`;
-    c.appendChild(s);
-  }
+<script is:inline>
+(function() {
+  if (!window.gsap || !window.ScrollTrigger) return;
+  var p = document.getElementById('prismBlog');
+  if (p) gsap.fromTo(p,{yPercent:-6},{yPercent:6,ease:'none',
+    scrollTrigger:{trigger:p.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+})();
 </script>
