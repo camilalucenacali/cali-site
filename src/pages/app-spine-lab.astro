@@ -4,10 +4,21 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 
-const waNumber   = '5551999595522';
-const appUrl     = 'https://calispinelab.vercel.app';
-const waWaitlist = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá! Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min com a Camila.')}`;
-const waInvite   = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Cami! Recebi um convite para a Spine Lab e quero agendar minha conversa de 15 min.')}`;
+const appUrl  = 'https://calispinelab.vercel.app';
+const waUrl   = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá! Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min com a Camila.')}`;
+
+const days = [
+  { n: '01', role: 'Compreender', desc: 'Introdução teórica e a experiência inicial — o que vai acontecer e por quê.' },
+  { n: '02', role: 'Praticar',    desc: 'Prática mais intensa e consistente — para consolidar o que foi apresentado.' },
+  { n: '03', role: 'Integrar',    desc: 'Meditação orientada para o tema da fase — levar o aprendizado para o interno.' },
+  { n: '04', role: 'Assimilar',   desc: 'Savasana guiado — corpo e mente absorvem o que foi aprendido.' },
+];
+
+const durations = [
+  { min: '5',  desc: 'Versão concisa e direta, para os dias de pouco tempo.' },
+  { min: '10', desc: 'Inclui asanas básicos para o bem-estar do corpo.' },
+  { min: '21', desc: 'Mini prática de Hatha completa, para ir mais fundo.' },
+];
 ---
 
 <BaseLayout
@@ -19,331 +30,271 @@ const waInvite   = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Ca
   <!-- ══════════════════════════════════════════
        HERO
   ══════════════════════════════════════════ -->
-  <section class="section-full" style="background:radial-gradient(ellipse at 50% 60%, #1a0a2e 0%, #080818 100%);padding-top:8rem;">
-    <div class="stars-container" id="stars"></div>
-    <div style="position:relative;z-index:2;text-align:center;max-width:840px;padding:2rem;">
-      <p class="eyebrow reveal">acesso consciente</p>
-      <h1 class="display-title reveal" style="font-size:clamp(2.8rem,7vw,5.5rem);transition-delay:0.1s;line-height:1.1;">
-        Spine Lab é uma<br>comunidade que cuida
+  <section class="sl-hero" id="hero">
+
+    <!-- mandala animada -->
+    <div class="sl-mandala-wrap" aria-hidden="true">
+      <svg class="sl-mandala" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sl-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stop-color="#FF7F5C"/>
+            <stop offset="50%"  stop-color="#FF4D9F"/>
+            <stop offset="100%" stop-color="#8B9FFF"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(100,100)" fill="none" stroke="url(#sl-grad)" stroke-width="1.1">
+          <circle r="10"/>
+          <circle r="20"/>
+          <circle r="31"/>
+          <circle r="44"/>
+          <circle r="58"/>
+          <ellipse rx="7"  ry="24" transform="rotate(0)"/>
+          <ellipse rx="7"  ry="24" transform="rotate(45)"/>
+          <ellipse rx="7"  ry="24" transform="rotate(90)"/>
+          <ellipse rx="7"  ry="24" transform="rotate(135)"/>
+          <ellipse rx="12" ry="40" transform="rotate(22.5)"/>
+          <ellipse rx="12" ry="40" transform="rotate(67.5)"/>
+        </g>
+      </svg>
+      <svg class="sl-mandala sl-mandala-halo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sl-grad2" x1="1" y1="1" x2="0" y2="0">
+            <stop offset="0%"   stop-color="#FF7F5C" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#8B9FFF" stop-opacity="0.1"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(100,100)" fill="none" stroke="url(#sl-grad2)" stroke-width="0.8">
+          <circle r="70"/>
+          <circle r="82"/>
+          <ellipse rx="16" ry="56" transform="rotate(15)"/>
+          <ellipse rx="16" ry="56" transform="rotate(75)"/>
+          <ellipse rx="16" ry="56" transform="rotate(135)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="sl-hero-inner reveal">
+      <p class="sl-eyebrow">Respiração <span class="sl-dot">·</span> Coluna</p>
+      <h1 class="sl-h1">
+        A sua jornada.<br>
+        <em>O seu ritmo.</em><br>
+        O seu corpo.
       </h1>
-      <p class="tagline reveal" style="transition-delay:0.2s;max-width:640px;margin:1.5rem auto 0.8rem;">
-        Não é mais um app de yoga.<br>
-        É um laboratório de prática corporal consciente — e o acesso começa com uma conversa.
+      <p class="sl-lead">
+        Uma prática diária de respiração e movimento com raiz nos Yoga Sutras de Patanjali — organizada em ciclos de 28 dias que cabem em 5, 10 ou 21 minutos.
       </p>
-      <p class="reveal" style="transition-delay:0.28s;max-width:600px;margin:0 auto 0;color:var(--muted);font-size:0.97rem;line-height:1.8;">
-        O Spine Lab está em fase beta. Cada nova pessoa que entra passa por uma conversa de 15 min com a Cami — não para ser selecionada, mas para que a prática faça sentido para o seu corpo, no seu momento. Respiração consciente e movimento da coluna podem ser muito intensos se feitos sem direção. A conversa existe para que isso não aconteça.
-      </p>
-      <div class="reveal" style="transition-delay:0.38s;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
-          Entrar na lista de espera
+
+      <div class="sl-live">
+        <span class="sl-live-dot"></span>
+        <span>10 conversas por semana · próxima liberação: segunda-feira</span>
+      </div>
+
+      <div class="sl-hero-cta">
+        <a href="#lista" class="btn btn-primary btn-lg">
+          Entrar na lista de espera <span class="sl-arr">→</span>
         </a>
-        <a href={appUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
-          Acessar o app ↗
+        <a href={appUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">
+          Experimentar Fase 1 ↗
         </a>
       </div>
-      <p class="reveal" style="transition-delay:0.48s;color:var(--muted);font-size:0.85rem;margin-top:1.2rem;">
-        10 conversas por semana · próxima liberação: segunda-feira
-      </p>
-      <p class="reveal" style="transition-delay:0.55s;margin-top:0.8rem;">
-        <a href={appUrl} target="_blank" rel="noopener"
-           style="color:var(--orange);font-size:0.88rem;text-decoration:none;border-bottom:1px solid rgba(255,107,53,0.3);padding-bottom:1px;transition:border-color 0.2s;">
-          Quer sentir antes de decidir? A Fase 1 é gratuita.
-        </a>
-      </p>
+    </div>
+
+    <div class="sl-scroll-cue">
+      <span class="sl-scroll-line"></span>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       FRAGMENTOS DO MANIFESTO
+       MANIFESTO
   ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0c0820 100%);">
-    <div class="container" style="max-width:760px;display:flex;flex-direction:column;gap:3rem;">
-      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:300;font-style:italic;line-height:1.5;color:rgba(255,255,255,0.9);border-left:3px solid var(--orange);padding-left:2rem;margin:0;">
-        "Acreditamos em jornadas, não em catálogos. O mundo já tem conteúdo demais. O que falta é direção."
-      </blockquote>
-      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:300;font-style:italic;line-height:1.5;color:rgba(255,255,255,0.9);border-left:3px solid var(--magenta);padding-left:2rem;margin:0;">
-        "Cinco minutos de presença real valem mais do que uma hora de distração disfarçada de exercício."
+  <section class="sl-manifesto" id="manifesto">
+    <div class="wrap">
+      <p class="sl-eyebrow reveal" style="text-align:center;">Manifesto Spine Lab</p>
+      <blockquote class="sl-quote reveal">
+        Acreditamos que o corpo sabe o caminho.<br>
+        E que <em>cinco minutos</em> de presença real valem mais<br class="sl-br"> que uma hora de distração.
       </blockquote>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       POR QUE O ACESSO NÃO É ABERTO
+       COMO FUNCIONA
   ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:#0c0820;">
-    <div class="container" style="max-width:760px;">
-      <p class="eyebrow reveal" style="text-align:center;">a lógica por trás</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:2.5rem;">
-        Por que o acesso não é aberto?
-      </h2>
-      <div class="card reveal" style="line-height:1.95;font-size:1.05rem;color:rgba(255,255,255,0.85);">
-        <p style="margin-bottom:1.3rem;">
-          O mundo já tem conteúdo demais. A Spine Lab existe exatamente pelo oposto disso.
-        </p>
-        <p style="margin-bottom:1.3rem;">
-          O Spine Lab está em fase beta. Isso significa que cada nova pessoa que entra tem atenção direta da Cami — para garantir que a prática funciona, coletar feedback real e construir o produto junto com quem usa.
-        </p>
-        <p style="margin-bottom:0;">
-          Respiração consciente e movimento da coluna podem sobrecarregar se feitos sem direção. A conversa de 15 min existe para que isso não aconteça — não para selecionar quem merece entrar.
+  <section class="sl-how section-pad" id="como-funciona">
+    <div class="wrap">
+
+      <div class="sl-how-head">
+        <p class="sl-eyebrow reveal">Como funciona</p>
+        <h2 class="sl-h2 reveal">Uma jornada, <em>não um catálogo.</em></h2>
+        <p class="sl-p reveal">
+          Cada aula prepara a próxima. Cada fase aprofunda a anterior. Cada ciclo de 28 dias marca uma transformação concreta — sem pular, e isso não é limitação, é design.
         </p>
       </div>
-    </div>
-  </section>
 
-  <!-- ══════════════════════════════════════════
-       A JORNADA
-  ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#0c0820 0%,#080818 100%);">
-    <div class="container" style="max-width:900px;">
-      <p class="eyebrow reveal" style="text-align:center;">a jornada</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">
-        28 dias. 7 fases. Uma transformação real.
-      </h2>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
-
-        <!-- Card 1 — Estrutura do ciclo -->
-        <div class="card reveal" style="transition-delay:0s;">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">🔄</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:1rem;color:var(--orange);">1 Ciclo = 7 Fases × 4 Dias</h3>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.6rem;">
-            {[
-              ['Dia 1', 'Compreender'],
-              ['Dia 2', 'Praticar'],
-              ['Dia 3', 'Integrar'],
-              ['Dia 4', 'Assimilar'],
-            ].map(([dia, acao]) => (
-              <li style="display:flex;gap:0.8rem;align-items:baseline;font-size:0.9rem;">
-                <span style="color:var(--orange);font-family:var(--font-heading);min-width:3rem;">{dia}</span>
-                <span style="color:var(--muted);">{acao}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Card 2 — Formatos -->
-        <div class="card reveal" style="transition-delay:0.12s;">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">⏱️</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:1rem;color:var(--magenta);">3 formatos para cada aula</h3>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.8rem;">
-            {[
-              ['5 min', 'dias com pouco tempo'],
-              ['10 min', 'prática regular com movimento'],
-              ['21 min', 'quando há intenção de ir mais fundo'],
-            ].map(([dur, desc]) => (
-              <li style="display:flex;gap:0.8rem;align-items:baseline;font-size:0.9rem;">
-                <span style="color:var(--magenta);font-family:var(--font-heading);font-weight:400;min-width:3.5rem;">{dur}</span>
-                <span style="color:var(--muted);">{desc}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Card 3 — Ciclo atual -->
-        <div class="card reveal" style="transition-delay:0.24s;background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(168,85,247,0.08));border-color:rgba(168,85,247,0.3);">
-          <p style="font-size:1.8rem;margin-bottom:1rem;">🌬️</p>
-          <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--lilac);margin-bottom:0.5rem;">em andamento</p>
-          <h3 style="font-family:var(--font-heading);font-size:1.1rem;font-weight:400;margin-bottom:0.8rem;">Ciclo 1</h3>
-          <p style="color:rgba(255,255,255,0.85);font-size:1rem;font-family:var(--font-heading);">Respiração e Nauli Kriya</p>
-          <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;line-height:1.6;">A base de tudo. Antes de mover o corpo, aprender a respirar de verdade.</p>
-        </div>
-
+      <!-- equação -->
+      <div class="sl-eq reveal">
+        <div class="sl-eq-item"><span class="sl-eq-num">1</span><span class="sl-eq-lbl">Ciclo</span></div>
+        <span class="sl-eq-op">×</span>
+        <div class="sl-eq-item"><span class="sl-eq-num">7</span><span class="sl-eq-lbl">Fases</span></div>
+        <span class="sl-eq-op">×</span>
+        <div class="sl-eq-item"><span class="sl-eq-num">4</span><span class="sl-eq-lbl">Dias</span></div>
+        <span class="sl-eq-op">=</span>
+        <div class="sl-eq-item sl-eq-result"><span class="sl-eq-num">28</span><span class="sl-eq-lbl">Dias de prática</span></div>
       </div>
-    </div>
-  </section>
 
-  <!-- ══════════════════════════════════════════
-       O SEU RITMO
-  ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:#080818;">
-    <div class="container" style="max-width:760px;text-align:center;">
-      <p class="eyebrow reveal">o seu ritmo</p>
-      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">
-        O app se adapta ao seu corpo — não o contrário.
-      </h2>
-      <p class="reveal" style="font-family:var(--font-heading);font-style:italic;font-size:clamp(1.05rem,2.5vw,1.35rem);color:rgba(255,255,255,0.8);line-height:1.85;max-width:640px;margin:0 auto;">
-        "O corpo não é linear. A lua não tem exatamente 28 dias em todos os meses. E o seu ciclo também não precisa ter. O Spine Lab sincroniza com o seu ritmo real — lunar ou biológico — porque transformação acontece em harmonia com o corpo, nunca contra ele."
-      </p>
-    </div>
-  </section>
+      <!-- 4 dias -->
+      <div class="sl-days">
+        {days.map((d, i) => (
+          <div class="sl-day reveal" style={`transition-delay:${i*0.1}s`}>
+            <div class="sl-day-num">{d.n}</div>
+            <div class="sl-day-role">{d.role}</div>
+            <p class="sl-day-desc">{d.desc}</p>
+          </div>
+        ))}
+      </div>
 
-  <!-- ══════════════════════════════════════════
-       COMO FUNCIONA O ACESSO
-  ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:linear-gradient(180deg,#080818 0%,#0d0d28 100%);">
-    <div class="container" style="max-width:800px;">
-      <p class="eyebrow reveal" style="text-align:center;">passo a passo</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">Como funciona o acesso</h2>
-      <div style="display:flex;flex-direction:column;gap:1.5rem;">
-        {[
-          {
-            n: '01',
-            title: 'Sente a prática',
-            desc: 'A Fase 1 é gratuita. 4 dias para experimentar a jornada antes de qualquer decisão — o cadastro é necessário para a Cami acompanhar o teu progresso.',
-            link: { href: appUrl, label: 'Experimentar agora ↗' },
-          },
-          {
-            n: '02',
-            title: 'Entra na lista',
-            desc: 'Clica em "Entrar na lista de espera" e aguarda o contato via WhatsApp. Toda segunda-feira liberamos novas vagas.',
-            link: null,
-          },
-          {
-            n: '03',
-            title: 'Conversa de 15 min com a Cami',
-            desc: 'Não é triagem — é direcionamento. A Cami entende onde você está e como a prática pode te servir melhor, sem sobrecarregar.',
-            link: null,
-          },
-          {
-            n: '04',
-            title: 'Aprovação + link de pagamento',
-            desc: 'Após a conversa, você recebe o link de pagamento e o acesso ao app é liberado manualmente.',
-            link: null,
-          },
-          {
-            n: '05',
-            title: 'Boas-vindas à Zona Spine Lab',
-            desc: 'Acesso ao Spine Lab + entrada no grupo permanente "Zona Spine Lab" — onde a prática continua entre as aulas.',
-            link: null,
-          },
-        ].map((step, i) => (
-          <div class="card reveal" style={`display:flex;gap:1.5rem;align-items:flex-start;transition-delay:${i*0.1}s`}>
-            <p style="font-family:var(--font-display);font-size:2.5rem;font-weight:300;color:var(--orange);line-height:1;flex-shrink:0;min-width:3rem;">{step.n}</p>
-            <div>
-              <h3 style="font-family:var(--font-heading);font-size:1.15rem;font-weight:400;margin-bottom:0.5rem;">{step.title}</h3>
-              <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin:0 0 0.5rem;">{step.desc}</p>
-              {step.link && (
-                <a href={step.link.href} target="_blank" rel="noopener"
-                   style="color:var(--orange);font-size:0.85rem;text-decoration:none;border-bottom:1px solid rgba(255,107,53,0.3);">
-                  {step.link.label}
-                </a>
-              )}
+      <!-- durações -->
+      <div class="sl-dur-wrap">
+        <div class="sl-dur-head reveal">
+          <h3 class="sl-h3">A mesma prática, na medida do seu dia.</h3>
+          <p class="sl-p">Cada aula existe em três durações que passam o mesmo conhecimento — escolha conforme o tempo e a energia disponíveis.</p>
+        </div>
+        <div class="sl-durs">
+          {durations.map((d, i) => (
+            <div class="sl-dur reveal" style={`transition-delay:${i*0.12}s`}>
+              <div class="sl-dur-min">{d.min}<span> min</span></div>
+              <p class="sl-dur-desc">{d.desc}</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       O QUE ESTÁ DENTRO DO APP
+       PLANOS
   ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:#0d0d28;">
-    <div class="container" style="max-width:800px;">
-      <p class="eyebrow reveal" style="text-align:center;">a prática</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">O que está dentro do app</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;">
-        {[
-          { icon: '🌬️', title: 'Spine Lab — 2 horas', desc: 'A prática completa: Dirga Pranayama, 6 movimentos da coluna, Nauli, invertidas e Savasana real.' },
-          { icon: '🔥', title: 'Aulas avulsas', desc: 'Práticas focadas de 20–40 min para encaixar na rotina sem perder a profundidade.' },
-          { icon: '🌙', title: 'Ciclos de prática', desc: 'Sequências pensadas para diferentes fases do corpo — feminino, energia, introspecção.' },
-          { icon: '✨', title: 'Zona Spine Lab', desc: 'O grupo permanente onde a Cami acompanha, tira dúvidas e a comunidade se apoia entre as aulas.' },
-        ].map((item, i) => (
-          <div class="card reveal" style={`text-align:center;transition-delay:${i*0.1}s`}>
-            <p style="font-size:2rem;margin-bottom:0.8rem;">{item.icon}</p>
-            <h3 style="font-family:var(--font-heading);font-size:1.05rem;font-weight:400;margin-bottom:0.6rem;">{item.title}</h3>
-            <p style="color:var(--muted);font-size:0.88rem;line-height:1.7;margin:0;">{item.desc}</p>
-          </div>
-        ))}
+  <section class="sl-plans section-pad" id="planos">
+    <div class="wrap">
+      <div class="sl-how-head">
+        <p class="sl-eyebrow reveal">Planos no lançamento</p>
+        <h2 class="sl-h2 reveal">Comece grátis. <em>A primeira fase é sua.</em></h2>
+        <p class="sl-p reveal">
+          São 4 dias gratuitos que introduzem os fundamentos. Os planos abaixo dão acesso às Fases 2 a 7 e aos ciclos seguintes — e estarão disponíveis no lançamento.
+        </p>
       </div>
-    </div>
-  </section>
 
-  <!-- ══════════════════════════════════════════
-       PREÇOS
-  ══════════════════════════════════════════ -->
-  <section style="padding:6rem 2rem;background:linear-gradient(180deg,#0d0d28 0%,#080818 100%);">
-    <div class="container" style="max-width:800px;">
-      <p class="eyebrow reveal" style="text-align:center;">investimento</p>
-      <h2 class="section-title reveal" style="text-align:center;margin-bottom:3rem;">
-        Acesso à Zona Spine Lab
-      </h2>
+      <p class="sl-free-note reveal"><em>Fase 1 do Ciclo 1, sempre gratuita.</em></p>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+      <div class="sl-plan-grid">
 
         <!-- Mensal -->
-        <div class="card reveal" style="text-align:center;transition-delay:0s;">
-          <p style="font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Mensal</p>
-          <p style="font-family:var(--font-display);font-size:3rem;font-weight:300;line-height:1;margin-bottom:0.3rem;">
-            R$ 378<span style="font-size:1.5rem;">,90</span>
-          </p>
-          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.8rem;">por mês</p>
-          <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-outline" style="width:100%;display:block;text-align:center;">
-            Entrar na lista
-          </a>
+        <div class="sl-plan reveal">
+          <div class="sl-plan-name">Mensal</div>
+          <div class="sl-plan-price">R$ 29<span>,90</span><small>/mês</small></div>
+          <ul class="sl-plan-features">
+            <li>Acesso às Fases 2 a 7</li>
+            <li>Player Dual Mode (respiração + vídeo)</li>
+            <li>Ritmo lunar ou do corpo</li>
+          </ul>
+          <a href="#lista" class="btn btn-outline" style="width:100%;justify-content:center;">Entrar na lista</a>
         </div>
 
         <!-- Anual -->
-        <div class="card reveal" style="text-align:center;transition-delay:0.12s;background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(168,85,247,0.08));border-color:rgba(255,107,53,0.4);">
-          <p style="font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.3rem;">Anual</p>
-          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:0.8rem;">R$ 279,90/mês · cobrado uma vez</p>
-          <p style="font-family:var(--font-display);font-size:3rem;font-weight:300;line-height:1;margin-bottom:0.3rem;">
-            R$ 3.358
-          </p>
-          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.8rem;">por ano</p>
-          <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;display:block;text-align:center;">
-            Entrar na lista
-          </a>
+        <div class="sl-plan sl-plan-featured reveal" style="transition-delay:0.12s">
+          <div class="sl-plan-badge">Popular</div>
+          <div class="sl-plan-name">Anual</div>
+          <div class="sl-plan-price">R$ 197<small>/ano</small></div>
+          <div class="sl-plan-equiv">Equivale a R$ 16,41 por mês.</div>
+          <ul class="sl-plan-features">
+            <li>Tudo do plano mensal</li>
+            <li>Acesso aos próximos ciclos</li>
+          </ul>
+          <a href="#lista" class="btn btn-primary" style="width:100%;justify-content:center;">Entrar na lista</a>
         </div>
 
       </div>
 
-      <!-- Cupom COMUNIDADE -->
-      <div class="reveal" style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.8rem;text-align:center;">
-        <p style="font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.8;margin-bottom:0.7rem;">
-          <em>"Este cupom existe porque cuidado corporal é um ato político. Se você faz parte da comunidade LGBTQIA+ ou de outra minoria, use-o."</em>
-        </p>
-        <p style="font-size:0.88rem;color:var(--muted);">
-          Código: <strong style="color:white;letter-spacing:0.1em;background:rgba(255,255,255,0.06);padding:0.2rem 0.6rem;border-radius:6px;">COMUNIDADE</strong>
-          <span style="color:#00b374;margin-left:0.5rem;">— 20% de desconto</span>
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       SISTEMA DE CONVITE
-  ══════════════════════════════════════════ -->
-  <section style="padding:5rem 2rem;background:#080818;">
-    <div class="container" style="max-width:760px;text-align:center;">
-      <p class="eyebrow reveal">convite exclusivo</p>
-      <h2 class="section-title reveal" style="margin-bottom:1.5rem;">Conhece alguém que já é membro?</h2>
-      <div class="card reveal" style="text-align:left;margin-bottom:2.5rem;">
-        <p style="line-height:1.9;color:rgba(255,255,255,0.85);font-size:1.02rem;margin-bottom:1rem;">
-          Cada membro aprovado recebe <strong style="color:white;">2 convites exclusivos</strong> para indicar quem acredita que vai se beneficiar da prática.
-        </p>
-        <p style="line-height:1.9;color:var(--muted);font-size:0.95rem;margin:0;">
-          Quem chega por convite pula a fila e vai direto para a conversa de 15 min — sem espera. O convite não dá acesso automático, mas garante a vaga na entrevista.
-        </p>
-      </div>
-      <a href={waInvite} target="_blank" rel="noopener" class="btn btn-outline reveal">
-        Tenho um convite — quero agendar
-      </a>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       CTA FINAL
-  ══════════════════════════════════════════ -->
-  <section class="section-full" style="background:radial-gradient(ellipse at 50% 50%, #12113a 0%, #080818 100%);padding:6rem 2rem;">
-    <div class="stars-container" id="stars2"></div>
-    <div style="position:relative;z-index:2;text-align:center;max-width:680px;">
-      <p class="eyebrow reveal">próximo passo</p>
-      <h2 class="section-title reveal" style="margin-bottom:1.2rem;">
-        O corpo não espera pelo momento certo.
-      </h2>
-      <p class="reveal" style="color:var(--muted);line-height:1.9;margin-bottom:2.5rem;font-size:1rem;">
-        A jornada começa com uma conversa. E a conversa começa quando você decide que o seu corpo merece atenção real.
+      <p class="sl-plans-note reveal">
+        Pagamento ainda não disponível. Entre na lista de espera para garantir seu lugar e ser avisado no lançamento.
       </p>
-      <div class="reveal" style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;">
-        <a href={waWaitlist} target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.6rem;">
-          Entrar na lista de espera
-        </a>
-        <a href={appUrl} target="_blank" rel="noopener" class="btn btn-outline" style="font-size:1rem;padding:1.1rem 2.6rem;">
-          Já sou membro — acessar ↗
-        </a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       LISTA DE ESPERA
+  ══════════════════════════════════════════ -->
+  <section class="sl-waitlist section-pad" id="lista">
+    <div class="wrap sl-wl-wrap">
+
+      <div class="sl-mandala-sm" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sl-grad3" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="#FF7F5C"/>
+              <stop offset="50%"  stop-color="#FF4D9F"/>
+              <stop offset="100%" stop-color="#8B9FFF"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(60,60)" fill="none" stroke="url(#sl-grad3)" stroke-width="1.2">
+            <circle r="8"/><circle r="16"/><circle r="26"/>
+            <ellipse rx="5" ry="18" transform="rotate(0)"/>
+            <ellipse rx="5" ry="18" transform="rotate(60)"/>
+            <ellipse rx="5" ry="18" transform="rotate(120)"/>
+          </g>
+        </svg>
       </div>
+
+      <p class="sl-eyebrow reveal" style="text-align:center;">Lista de espera</p>
+      <h2 class="sl-h2 reveal" style="text-align:center;">O acesso começa<br><em>com uma conversa.</em></h2>
+      <p class="sl-p reveal" style="text-align:center;max-width:48ch;margin-inline:auto;">
+        O acesso à Spine Lab começa com uma conversa de 15 min com a Cami — são 10 vagas por semana. Deixe seu contato e a gente abre o WhatsApp para agendar.
+      </p>
+
+      <form class="sl-form reveal" id="wlForm" novalidate>
+        <div class="sl-field">
+          <label for="wl-nome">Nome</label>
+          <input type="text" id="wl-nome" name="nome" autocomplete="given-name" placeholder="Teu nome" required />
+          <span class="sl-err">Conta pra gente seu nome.</span>
+        </div>
+        <div class="sl-field">
+          <label for="wl-email">E-mail</label>
+          <input type="email" id="wl-email" name="email" autocomplete="email" placeholder="teu@email.com" required />
+          <span class="sl-err">Confere o e-mail, parece incompleto.</span>
+        </div>
+        <div class="sl-field">
+          <label for="wl-obj">Objetivo <span class="sl-optional">(opcional)</span></label>
+          <select id="wl-obj" name="objetivo">
+            <option value="">Escolha uma opção</option>
+            <option>Dor nas costas ou no pescoço</option>
+            <option>Ansiedade e clareza mental</option>
+            <option>Quero mais consistência</option>
+            <option>Curiosidade sobre a prática</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary sl-submit">
+          Entrar na lista <span class="sl-arr">→</span>
+        </button>
+        <p class="sl-fine">Sem spam. Abrimos o WhatsApp da Cami para agendar sua conversa.</p>
+      </form>
+
+      <div class="sl-success" id="wlSuccess" style="display:none;">
+        <div class="sl-success-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="url(#sg)"/>
+            <path d="M11 21l6 6L29 14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#FF7F5C"/><stop offset="0.5" stop-color="#FF4D9F"/><stop offset="1" stop-color="#8B9FFF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h3>Você está na lista.</h3>
+        <p id="wlSuccessMsg">A Cami vai abrir o WhatsApp para agendar sua conversa.</p>
+      </div>
+
     </div>
   </section>
 
@@ -351,18 +302,516 @@ const waInvite   = `https://wa.me/${waNumber}?text=${encodeURIComponent('Olá Ca
   <WhatsAppButton text="Olá! Quero saber mais sobre o Spine Lab e entrar na lista de espera." />
 </BaseLayout>
 
-<script>
-  function makeStars(id, n = 150) {
-    const c = document.getElementById(id);
-    if (!c) return;
-    for (let i = 0; i < n; i++) {
-      const s = document.createElement('div');
-      s.className = 'star';
-      const sz = Math.random() * 2.5 + 0.5;
-      s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*6}s;`;
-      c.appendChild(s);
-    }
-  }
-  makeStars('stars', 200);
-  makeStars('stars2', 100);
+<script is:inline>
+(function() {
+  var form    = document.getElementById('wlForm');
+  var success = document.getElementById('wlSuccess');
+  var msg     = document.getElementById('wlSuccessMsg');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var nome   = document.getElementById('wl-nome');
+    var email  = document.getElementById('wl-email');
+    var obj    = document.getElementById('wl-obj');
+    var valid  = true;
+
+    form.querySelectorAll('.sl-field').forEach(function(f) { f.classList.remove('sl-error'); });
+
+    if (!nome.value.trim()) { nome.closest('.sl-field').classList.add('sl-error'); valid = false; }
+    if (!email.value.trim() || !email.value.includes('@')) { email.closest('.sl-field').classList.add('sl-error'); valid = false; }
+    if (!valid) return;
+
+    var text  = 'Olá Cami! Me chamo ' + nome.value.trim() + ', meu e-mail é ' + email.value.trim();
+    if (obj.value) text += '. Objetivo: ' + obj.value;
+    text += '. Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min.';
+
+    var waUrl = 'https://wa.me/5551999595522?text=' + encodeURIComponent(text);
+    window.open(waUrl, '_blank');
+
+    form.style.display = 'none';
+    success.style.display = 'block';
+    msg.textContent = 'Abrindo o WhatsApp da Cami para agendar a tua conversa.';
+  });
+})();
 </script>
+
+<style>
+  /* ── Variáveis específicas Spine Lab ─────────── */
+  :root {
+    --sl-coral:    #FF7F5C;
+    --sl-magenta:  #FF4D9F;
+    --sl-lavender: #8B9FFF;
+    --sl-sage:     #5A7F6F;
+    --sl-grad:     linear-gradient(135deg, #FF7F5C 0%, #FF4D9F 50%, #8B9FFF 100%);
+    --sl-bg-deep:  #ECE6DB;
+    --sl-line:     #E2DACB;
+    --sl-ink:      #322A33;
+    --sl-ink-soft: #6E6570;
+  }
+
+  /* ── HERO ─────────────────────────────────────── */
+  .sl-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem var(--gut) 7rem;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .sl-mandala-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .sl-mandala {
+    width: min(500px, 80vw);
+    height: auto;
+    position: absolute;
+    animation: slSpin 140s linear infinite;
+    opacity: 0.8;
+  }
+  .sl-mandala-halo {
+    width: min(640px, 95vw);
+    animation-direction: reverse;
+    animation-duration: 220s;
+    opacity: 0.5;
+  }
+  @keyframes slSpin { to { transform: rotate(360deg); } }
+
+  .sl-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 780px;
+  }
+
+  .sl-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--sl-coral);
+    margin-bottom: 1.4rem;
+    display: block;
+  }
+  .sl-dot { color: var(--sl-lavender); }
+
+  .sl-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.9rem, 7.2vw, 6.2rem);
+    line-height: 1.03;
+    letter-spacing: 0.005em;
+    color: var(--sl-ink);
+    margin-bottom: 1.4rem;
+  }
+  .sl-h1 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    background: var(--sl-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sl-lead {
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    line-height: 1.72;
+    color: var(--sl-ink-soft);
+    max-width: 54ch;
+    margin: 0 auto 1.8rem;
+  }
+
+  .sl-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.83rem;
+    color: var(--sl-ink-soft);
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+  .sl-live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--sl-sage);
+    box-shadow: 0 0 0 0 rgba(90,127,111,0.5);
+    animation: slPulse 2.2s ease infinite;
+    flex-shrink: 0;
+  }
+  @keyframes slPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(90,127,111,0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(90,127,111,0); }
+    100% { box-shadow: 0 0 0 0 rgba(90,127,111,0); }
+  }
+
+  .sl-hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .sl-arr { display: inline-block; transition: transform 0.3s ease; }
+  .btn:hover .sl-arr { transform: translateX(4px); }
+
+  .sl-scroll-cue {
+    position: absolute;
+    bottom: 2.2rem;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 2;
+  }
+  .sl-scroll-line {
+    display: block;
+    width: 1px;
+    height: 52px;
+    background: linear-gradient(to bottom, var(--sl-coral), transparent);
+    margin: 0 auto;
+    animation: slLine 2.4s ease infinite;
+    transform-origin: top;
+  }
+  @keyframes slLine {
+    0%   { transform: scaleY(0); opacity: 0; }
+    30%  { opacity: 1; }
+    100% { transform: scaleY(1); opacity: 0; }
+  }
+
+  /* ── MANIFESTO ────────────────────────────────── */
+  .sl-manifesto {
+    padding: clamp(5rem, 9vw, 8rem) var(--gut);
+    background: var(--sl-bg-deep);
+    text-align: center;
+  }
+  .sl-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.28;
+    color: var(--sl-ink);
+    max-width: 22ch;
+    margin: 1.2rem auto 0;
+  }
+  .sl-quote em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    background: var(--sl-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sl-br { display: none; }
+  @media (min-width: 600px) { .sl-br { display: block; } }
+
+  /* ── COMO FUNCIONA ────────────────────────────── */
+  .sl-how { background: var(--paper); }
+  .sl-how-head { max-width: 640px; margin-bottom: 3.5rem; }
+  .sl-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4.6vw, 3.5rem);
+    line-height: 1.06;
+    color: var(--sl-ink);
+    margin: 0.6rem 0 1rem;
+  }
+  .sl-h2 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    background: var(--sl-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sl-p { color: var(--sl-ink-soft); line-height: 1.72; font-size: 1.05rem; }
+  .sl-h3 { font-family: var(--font-display); font-size: clamp(1.4rem, 2.8vw, 2rem); color: var(--sl-ink); margin-bottom: 0.7rem; }
+
+  /* equação */
+  .sl-eq {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 0 0 3.5rem;
+    padding: 1.8rem 2rem;
+    background: var(--sl-bg-deep);
+    border-radius: 20px;
+    border: 1px solid var(--sl-line);
+  }
+  .sl-eq-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 4rem;
+  }
+  .sl-eq-num {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1;
+    background: var(--sl-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sl-eq-lbl {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sl-ink-soft);
+  }
+  .sl-eq-op {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--sl-line);
+    flex-shrink: 0;
+  }
+  .sl-eq-result .sl-eq-num { font-size: clamp(2.4rem, 5vw, 4rem); }
+
+  /* 4 dias */
+  .sl-days {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 4rem;
+  }
+  .sl-day {
+    padding: 1.6rem;
+    border: 1px solid var(--sl-line);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.6);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(.22,.61,.36,1), box-shadow 0.4s ease, border-color 0.4s;
+  }
+  .sl-day::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--sl-grad);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .sl-day:hover { transform: translateY(-6px); box-shadow: 0 20px 44px -20px rgba(50,42,51,0.2); border-color: var(--sl-coral); }
+  .sl-day:hover::after { transform: scaleX(1); }
+  .sl-day-num {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    color: var(--sl-coral);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .sl-day-role { font-family: var(--font-display); font-size: 1.4rem; color: var(--sl-ink); margin-bottom: 0.7rem; }
+  .sl-day-desc { font-size: 0.9rem; color: var(--sl-ink-soft); line-height: 1.65; margin: 0; }
+
+  /* durações */
+  .sl-dur-wrap {
+    background: var(--sl-bg-deep);
+    border-radius: 24px;
+    border: 1px solid var(--sl-line);
+    padding: clamp(1.8rem, 4vw, 3rem);
+  }
+  .sl-dur-head { margin-bottom: 2.2rem; max-width: 560px; }
+  .sl-durs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .sl-dur {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--sl-line);
+    border-radius: 16px;
+    padding: 1.4rem;
+    transition: transform 0.35s ease, border-color 0.35s ease;
+    text-align: center;
+  }
+  .sl-dur:hover { transform: translateY(-4px); border-color: var(--sl-coral); }
+  .sl-dur-min {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 1;
+    background: var(--sl-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.6rem;
+  }
+  .sl-dur-min span { font-size: 1rem; }
+  .sl-dur-desc { font-size: 0.88rem; color: var(--sl-ink-soft); line-height: 1.6; margin: 0; }
+
+  /* ── PLANOS ───────────────────────────────────── */
+  .sl-plans { background: var(--sl-bg-deep); border-top: 1px solid var(--sl-line); border-bottom: 1px solid var(--sl-line); }
+  .sl-free-note {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--sl-ink-soft);
+    margin: -1.5rem 0 2.5rem;
+  }
+  .sl-free-note em { color: var(--sl-coral); font-style: italic; }
+  .sl-plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .sl-plan {
+    background: rgba(255,255,255,0.65);
+    border: 1px solid var(--sl-line);
+    border-radius: 24px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .sl-plan:hover { transform: translateY(-5px); box-shadow: 0 24px 50px -24px rgba(50,42,51,0.2); }
+  .sl-plan-featured {
+    border-color: rgba(255,77,159,0.35);
+    box-shadow: 0 0 0 1px rgba(255,77,159,0.2), 0 40px 80px -40px rgba(255,77,159,0.35);
+  }
+  .sl-plan-badge {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--sl-grad);
+    padding: 0.28rem 0.7rem;
+    border-radius: 100px;
+  }
+  .sl-plan-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sl-ink-soft);
+    margin-bottom: 0.8rem;
+  }
+  .sl-plan-price {
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    line-height: 1;
+    color: var(--sl-ink);
+    margin-bottom: 0.3rem;
+  }
+  .sl-plan-price span { font-size: 1.8rem; }
+  .sl-plan-price small { font-family: var(--font-body); font-size: 1rem; color: var(--sl-ink-soft); margin-left: 0.2rem; }
+  .sl-plan-equiv { font-size: 0.82rem; color: var(--sl-ink-soft); margin-bottom: 1.4rem; }
+  .sl-plan-features {
+    list-style: none;
+    margin: 0 0 1.6rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .sl-plan-features li {
+    font-size: 0.9rem;
+    color: var(--sl-ink-soft);
+    padding-left: 1.4rem;
+    position: relative;
+  }
+  .sl-plan-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--sl-coral);
+    font-weight: 700;
+  }
+  .sl-plans-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--sl-ink-soft);
+    margin-top: 2rem;
+    max-width: 52ch;
+    margin-inline: auto;
+  }
+
+  /* ── LISTA DE ESPERA ─────────────────────────── */
+  .sl-waitlist { background: var(--paper); }
+  .sl-wl-wrap { max-width: 540px; text-align: center; }
+  .sl-mandala-sm {
+    width: 90px; height: 90px;
+    margin: 0 auto 1.5rem;
+  }
+  .sl-mandala-sm svg { width: 100%; height: 100%; animation: slSpin 100s linear infinite; }
+
+  .sl-form { margin: 2.5rem auto 0; text-align: left; }
+  .sl-field { margin-bottom: 1.2rem; }
+  .sl-field label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sl-ink-soft);
+    margin-bottom: 0.45rem;
+  }
+  .sl-optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--sl-ink-soft); opacity: 0.7; }
+  .sl-field input,
+  .sl-field select {
+    width: 100%;
+    background: var(--paper-pure);
+    border: 1px solid var(--sl-line);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    color: var(--sl-ink);
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    appearance: none;
+  }
+  .sl-field input:focus,
+  .sl-field select:focus {
+    border-color: var(--sl-coral);
+    box-shadow: 0 0 0 3px rgba(255,127,92,0.15);
+  }
+  .sl-field.sl-error input,
+  .sl-field.sl-error select {
+    border-color: #D9534F;
+    box-shadow: 0 0 0 3px rgba(217,83,79,0.1);
+  }
+  .sl-err {
+    display: none;
+    font-size: 0.78rem;
+    color: #D9534F;
+    margin-top: 0.35rem;
+  }
+  .sl-field.sl-error .sl-err { display: block; }
+  .sl-submit { width: 100%; justify-content: center; margin-top: 0.5rem; }
+  .sl-fine { font-size: 0.78rem; color: var(--sl-ink-soft); text-align: center; margin-top: 0.8rem; }
+
+  .sl-success { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem; }
+  .sl-success-icon { width: 56px; height: 56px; }
+  .sl-success h3 { font-family: var(--font-display); font-size: 1.8rem; color: var(--sl-ink); }
+  .sl-success p { color: var(--sl-ink-soft); }
+
+  /* ── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 860px) {
+    .sl-days { grid-template-columns: 1fr 1fr; }
+    .sl-plan-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .sl-days { grid-template-columns: 1fr; }
+    .sl-durs { grid-template-columns: 1fr; }
+    .sl-eq { gap: 0.7rem; padding: 1.2rem; }
+    .sl-eq-op { font-size: 1.2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sl-mandala, .sl-mandala-halo, .sl-mandala-sm svg { animation: none; }
+    .sl-live-dot { animation: none; }
+    .sl-scroll-line { animation: none; opacity: 0.4; }
+  }
+</style>
