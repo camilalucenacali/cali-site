@@ -219,14 +219,7 @@ const spine = [
         <p class="reveal">Podes tirar todas as dúvidas que quiseres — ou já partir direto para a reserva.</p>
         <div class="cta-actions reveal">
           <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">💬 Vamos ver</a>
-          <button
-            class="btn btn-primary btn-lg"
-            data-workshop={`${nextWorkshops[0]?.city ?? 'Imersão CALI'} — ${nextWorkshops[0]?.dateDisplay ?? ''}`}
-            data-price={nextWorkshops[0]?.currency==='EUR' ? nextWorkshops[0]?.priceEUR?.earlyBird : nextWorkshops[0]?.priceBRL?.earlyBird}
-            data-currency={nextWorkshops[0]?.currency ?? 'BRL'}
-          >
-            ✨ Já quero
-          </button>
+          <a href="#imersoes" class="btn btn-primary btn-lg">✨ Já quero</a>
         </div>
       </div>
     </div>

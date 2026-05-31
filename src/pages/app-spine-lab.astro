@@ -196,10 +196,10 @@ const mandala = '/assets/spine-mandala.png';
     var lines = [
       'Olá Cami! Me inscrevi na lista da Spine Lab e gostaria de agendar minha conversa de 15 min.',
       '',
-      'Nome: ' + nome.value.trim(),
-      'E-mail: ' + email.value.trim()
+      'Pode me chamar de ' + nome.value.trim(),
+      'Meu e-mail é ' + email.value.trim()
     ];
-    if (motivo.value) lines.push('O que me traz: ' + motivo.value);
+    if (motivo.value) lines.push('O que me traz aqui é ' + motivo.value);
     var waUrl = 'https://wa.me/5551999595522?text=' + encodeURIComponent(lines.join('\n'));
     window.open(waUrl, '_blank', 'noopener');
 
@@ -313,7 +313,7 @@ const mandala = '/assets/spine-mandala.png';
     min-height: 100svh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
-    padding: 130px 32px 90px;
+    padding: 100px 32px 60px;
   }
   .sl-page .hero-eyebrow { margin-bottom: 34px; }
 
@@ -370,7 +370,7 @@ const mandala = '/assets/spine-mandala.png';
   @keyframes slCue { 0%,100%{ transform: scaleY(.6); opacity:.5;} 50%{ transform: scaleY(1); opacity:1;} }
 
   /* ════════════════════ MANIFESTO ════════════════════ */
-  .sl-page .manifesto { padding: clamp(90px, 13vw, 170px) 32px; text-align: center; }
+  .sl-page .manifesto { padding: clamp(60px, 8vw, 100px) 32px; text-align: center; }
   .sl-page .manifesto .quote {
     font-family: var(--font-display);
     font-size: clamp(1.9rem, 4.6vw, 3.6rem);
@@ -384,7 +384,7 @@ const mandala = '/assets/spine-mandala.png';
   }
 
   /* ════════════════════ COMO FUNCIONA ════════════════════ */
-  .sl-page .section { padding: clamp(80px, 11vw, 150px) 0; }
+  .sl-page .section { padding: clamp(56px, 8vw, 100px) 0; }
   .sl-page .section-head { max-width: 60ch; }
   .sl-page .section-head .eyebrow { display: block; margin-bottom: 22px; }
   .sl-page .section-head h2 {
@@ -446,7 +446,7 @@ const mandala = '/assets/spine-mandala.png';
   }
 
   /* ════════════════════ LISTA DE ESPERA ════════════════════ */
-  .sl-page .waitlist { padding: clamp(90px,12vw,160px) 0; text-align: center; }
+  .sl-page .waitlist { padding: clamp(56px, 8vw, 100px) 0; text-align: center; }
   .sl-page .wait-inner { max-width: 560px; margin: 0 auto; }
   .sl-page .wait-mandala { width: 92px; height: 92px; margin: 0 auto 28px; animation: slSpin calc(var(--spin) * .8) linear infinite; opacity: .95; }
   .sl-page .waitlist h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.1rem,4.8vw,3.4rem); line-height: 1.1; letter-spacing: -.01em; }
