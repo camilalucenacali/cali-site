@@ -1,6 +1,6 @@
 # ESTADO DA ARTE — cali-site.vercel.app
-**Data:** 30 de maio de 2026
-**Versão:** commit `95d0b48`
+**Data:** 31 de maio de 2026
+**Versão:** commit `fc4ae32`
 
 ---
 
@@ -25,31 +25,45 @@ Objetivos principais: vender imersões presenciais (Brasil + Europa), apresentar
 | Conteúdo | Content Collections (Markdown) para blog |
 | Dados | `src/data/workshops.js` — array JS simples |
 | Deploy | Vercel (CI/CD via GitHub Actions) |
-| Fontes | Cormorant Garamond · Fraunces · DM Sans (Google Fonts) |
+| Fontes | Poiret One · Instrument Serif · Hanken Grotesk (Google Fonts) |
 
 ---
 
 ## PÁGINAS ATIVAS
 
 ### `/` — Home
-Seções em ordem:
-1. **Hero** — espaço sideral com stars animadas, título CALI MOVIMIENTO, CTA "Ver imersões"
-2. **Manifesto** — 3 cards: Consumo Consciente, Ambientes, O pé na terra
-3. **Próximas imersões** — grid 3 cards das próximas imersões com pricing dinâmico
-4. **1ª aula online** — R$15,00 (BRL) ou €15,00 (EUR, detectado via timezone) + botão Calendly (placeholder)
-5. **Quem é a Cami** — bio + placeholder de foto
-6. **Spine Lab — 2 horas** — 6 blocos de prática (Abertura, Aquecimento, Prática Central, Nauli, Invertidas, Encerramento)
-7. **CTA Final** — botões WhatsApp + modal de pagamento
-8. **Blog preview** — últimos 3 posts
+Design solar/prismático (fundo creme #FBF6EE, laranja #FF7A2E, efeito prisma animado).
+Seções em ordem (com IDs para scroll interno):
+1. **Hero** (`#hero`) — wordmark + sol girante, prana canvas, CTA "Ver imersões" → `/#pratica`
+2. **Manifesto** (`#manifesto`) — 3 cards: Consumo Consciente, Ambientes, O pé na terra
+3. **Próximas imersões** (`#imersoes`) — grid 3 cards com pricing dinâmico + modal de pagamento
+4. **Quem é a Cami** (`#sobre`) — bio + foto `Cami-18.jpg`
+5. **1ª aula online** (`#aula`) — R$15 (BRL/EUR por timezone) + botão Calendly (placeholder)
+6. **A prática — Spine Lab** (`#pratica`) — 6 blocos (Abertura → Encerramento)
+7. **CTA Final** (`#cta`) — "Vamos ver" (WhatsApp) · "Já quero" (scrolla para `#imersoes`)
+8. **Blog preview** (`#blog`) — últimos 2 posts
+
+**Nav:**
+- "Imersões" → `/#pratica` (scroll para A prática)
+- "Reservar lugar" → `/#imersoes` (scroll para Agenda nômade)
 
 ---
 
-### `/imersoes` — Agenda de Imersões
-- Grid único, máx 3 cards por linha (desktop), 2 (tablet), 1 (mobile)
-- Banner topo: "Todas as imersões incluem material impresso + acesso ao APP Spine Lab"
-- Legenda de tiers de preço (early bird / regular / no dia / PIX)
-- Preço calculado dinamicamente no cliente com base na data atual vs. data da imersão
-- Modal de pagamento ao clicar em "Reservar lugar"
+### `/app-spine-lab` — APP Spine Lab
+Design Spine Lab próprio (bone cream #F4F0E9, coral/magenta/lavender prisma, mandala animada).
+Seções:
+1. **Hero** — mandala `spine-mandala.png`, h1 "A sua jornada...", live dot, CTA lista de espera
+2. **Manifesto** — citação "cinco minutos de presença real..."
+3. **Como funciona** — equação 1×7×4=28, 4 cards de dias, 3 durações (5/10/21 min)
+4. **Lista de espera** — formulário Nome + E-mail + Objetivo → abre WhatsApp com mensagem formatada
+
+**Formulário WhatsApp:**
+```
+Olá Cami! Me inscrevi na lista da Spine Lab...
+Pode me chamar de [nome]
+Meu e-mail é [email]
+O que me traz aqui é [motivo]
+```
 
 **Redirect ativo:** `/workshops` → 301 → `/imersoes`
 
