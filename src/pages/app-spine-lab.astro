@@ -597,97 +597,6 @@ const durations = [
   .sl-dur-min span { font-size: 1rem; }
   .sl-dur-desc { font-size: 0.88rem; color: var(--sl-ink-soft); line-height: 1.6; margin: 0; }
 
-  /* ── PLANOS ───────────────────────────────────── */
-  .sl-plans { background: var(--sl-bg-deep); border-top: 1px solid var(--sl-line); border-bottom: 1px solid var(--sl-line); }
-  .sl-free-note {
-    text-align: center;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--sl-ink-soft);
-    margin: -1.5rem 0 2.5rem;
-  }
-  .sl-free-note em { color: var(--sl-coral); font-style: italic; }
-  .sl-plan-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .sl-plan {
-    background: rgba(255,255,255,0.65);
-    border: 1px solid var(--sl-line);
-    border-radius: 24px;
-    padding: 2rem;
-    position: relative;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-  }
-  .sl-plan:hover { transform: translateY(-5px); box-shadow: 0 24px 50px -24px rgba(50,42,51,0.2); }
-  .sl-plan-featured {
-    border-color: rgba(255,77,159,0.35);
-    box-shadow: 0 0 0 1px rgba(255,77,159,0.2), 0 40px 80px -40px rgba(255,77,159,0.35);
-  }
-  .sl-plan-badge {
-    position: absolute;
-    top: 1rem; right: 1rem;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--sl-grad);
-    padding: 0.28rem 0.7rem;
-    border-radius: 100px;
-  }
-  .sl-plan-name {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--sl-ink-soft);
-    margin-bottom: 0.8rem;
-  }
-  .sl-plan-price {
-    font-family: var(--font-display);
-    font-size: 3.4rem;
-    line-height: 1;
-    color: var(--sl-ink);
-    margin-bottom: 0.3rem;
-  }
-  .sl-plan-price span { font-size: 1.8rem; }
-  .sl-plan-price small { font-family: var(--font-body); font-size: 1rem; color: var(--sl-ink-soft); margin-left: 0.2rem; }
-  .sl-plan-equiv { font-size: 0.82rem; color: var(--sl-ink-soft); margin-bottom: 1.4rem; }
-  .sl-plan-features {
-    list-style: none;
-    margin: 0 0 1.6rem;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-  .sl-plan-features li {
-    font-size: 0.9rem;
-    color: var(--sl-ink-soft);
-    padding-left: 1.4rem;
-    position: relative;
-  }
-  .sl-plan-features li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--sl-coral);
-    font-weight: 700;
-  }
-  .sl-plans-note {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--sl-ink-soft);
-    margin-top: 2rem;
-    max-width: 52ch;
-    margin-inline: auto;
-  }
-
   /* ── LISTA DE ESPERA ─────────────────────────── */
   .sl-waitlist { background: var(--paper); }
   .sl-wl-wrap { max-width: 540px; text-align: center; }
@@ -751,7 +660,6 @@ const durations = [
   /* ── RESPONSIVE ───────────────────────────────── */
   @media (max-width: 860px) {
     .sl-days { grid-template-columns: 1fr 1fr; }
-    .sl-plan-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 580px) {
     .sl-days { grid-template-columns: 1fr; }
