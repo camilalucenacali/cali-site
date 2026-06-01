@@ -240,6 +240,16 @@ section { position: relative; }
 .wcard .w-price b { font-weight: 700; }
 .wcard .w-price .pix { color: var(--orange-deep); }
 .wcard .btn { width: 100%; justify-content: center; margin-top: auto; }
+.wcard-nomade {
+  background: linear-gradient(135deg, rgba(255,122,46,0.08), rgba(195,174,201,0.12));
+  border-style: dashed;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 220px;
+  color: var(--ink);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease;
+}
+.wcard-nomade:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px rgba(39,30,22,0.28); border-color: var(--orange); }
+.wcard-nomade .w-time { color: var(--orange); font-weight: 600; }
 .badge-tbd { position: absolute; top: 1rem; right: 1rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange-deep); background: var(--orange-soft); padding: 0.2rem 0.7rem; border-radius: 100px; }
 
 /* ── SOBRE A CAMI ────────────────────────────────────────── */

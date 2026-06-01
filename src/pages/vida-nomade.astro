@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+
+const waUrl = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Vi a página Vida Nômade e quero saber mais sobre as imersões.')}`;
+---
+
+<BaseLayout
+  title="Vida Nômade — CALI MOVIMIENTO"
+  description="Camila Lucena leva o Spine Lab de cidade em cidade — Brasil e Europa. Como é ser professora em movimento."
+>
+  <Header />
+
+  <!-- Hero -->
+  <section style="padding:9rem 2rem 5rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,#f0ebe0 0%,var(--paper) 70%);position:relative;overflow:hidden;">
+    <div class="prism" style="opacity:0.5;"></div>
+    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
+      <p class="eyebrow reveal" style="text-align:center;">em movimento</p>
+      <h1 class="section-title reveal" style="font-size:clamp(3rem,8vw,6rem);line-height:0.96;">Vida<br><em style="font-family:var(--font-serif);font-style:italic;color:var(--orange);">Nômade</em></h1>
+      <p class="reveal serif-it" style="font-size:clamp(1.1rem,2vw,1.5rem);color:var(--ink-soft);margin-top:1.2rem;line-height:1.5;">
+        Camila leva o Spine Lab de cidade em cidade — Brasil e Europa.<br>
+        Cada lugar deixa uma marca no corpo da prática.
+      </p>
+    </div>
+  </section>
+
+  <!-- Manifesto nômade -->
+  <section class="section-pad" style="background:var(--paper);">
+    <div class="wrap" style="max-width:760px;">
+      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:400;line-height:1.28;color:var(--ink);border-left:3px solid var(--orange);padding-left:2rem;margin:0 0 3rem;">
+        "O nomadismo não é fuga. É a escolha de deixar o mundo inteiro ser o estúdio."
+      </blockquote>
+      <p class="reveal" style="color:var(--ink-soft);font-size:1.05rem;line-height:1.9;margin-bottom:1.2rem;">
+        A Cami não tem uma sala fixa. Tem uma prática que vai com ela — e se adapta ao chão onde pousa. Rio de Janeiro, Florianópolis, Porto Alegre, Lisboa, Barcelona. Cada cidade traz um corpo diferente para a roda.
+      </p>
+      <p class="reveal" style="color:var(--ink-soft);font-size:1.05rem;line-height:1.9;">
+        A vida nômade é uma escolha que exige constância sem rotina fixa, presença sem permanência. É o que a prática do Spine Lab ensina também — habitar o que está aqui, agora, independente do onde.
+      </p>
+    </div>
+  </section>
+
+  <!-- Próximas cidades -->
+  <section class="section-pad" style="background:var(--bg-deep,#ECE6DB);">
+    <div class="wrap" style="text-align:center;">
+      <p class="eyebrow reveal">agenda nômade 2026</p>
+      <h2 class="section-title reveal" style="margin-bottom:3rem;">Próximas cidades</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;" class="reveal">
+        {[
+          { cidade: 'Rio de Janeiro', periodo: 'jun 2026' },
+          { cidade: 'Florianópolis', periodo: 'jun 2026' },
+          { cidade: 'Porto Alegre',  periodo: 'jun 2026' },
+          { cidade: 'Europa',        periodo: 'jun–ago 2026' },
+        ].map(c => (
+          <div style="background:rgba(255,255,255,0.7);border:1px solid var(--line,#E2DACB);border-radius:16px;padding:1.2rem 2rem;min-width:180px;">
+            <p style="font-family:var(--font-display);font-size:1.3rem;color:var(--ink);">{c.cidade}</p>
+            <p style="font-size:0.82rem;color:var(--ink-soft,#6E6570);margin-top:0.3rem;letter-spacing:0.08em;">{c.periodo}</p>
+          </div>
+        ))}
+      </div>
+      <div class="reveal" style="margin-top:3rem;">
+        <a href="/#imersoes" class="btn btn-primary btn-lg">Ver datas e reservar lugar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-pad" style="background:var(--paper);text-align:center;">
+    <div class="wrap" style="max-width:600px;">
+      <p class="eyebrow reveal">vem junto</p>
+      <h2 class="section-title reveal" style="margin-bottom:1.2rem;">A prática chega perto de ti.</h2>
+      <p class="reveal" style="color:var(--ink-soft);line-height:1.9;margin-bottom:2rem;">
+        Fica de olho na agenda ou fala direto com a Cami para saber quando ela estará na tua cidade.
+      </p>
+      <div class="reveal" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">Falar com a Cami</a>
+        <a href="/#imersoes" class="btn btn-primary btn-lg">Ver agenda</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+  <WhatsAppButton />
+</BaseLayout>
+
+<style>
+  .bg-deep { background: #ECE6DB; }
+</style>
