@@ -4,7 +4,7 @@ description: "Base em Movimento é um projeto da CALI que une educação ambient
 pubDate: 2026-05-29
 city: "Rio de Janeiro"
 tags: ["base em movimento", "educação ambiental", "agrofloresta", "compostagem", "corpo", "escola pública", "Rio de Janeiro", "infância", "território"]
-image: /fotos/Cami-18.jpg
+image: /fotos/foto8.jpg
 ---
 
 *— sobre o projeto da CALI que começa com as mãos na terra*
