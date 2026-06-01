@@ -3,87 +3,242 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
+import PaymentModal from '../components/PaymentModal.astro';
+import { workshops } from '../data/workshops.js';
 
-const waUrl = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Vi a página Vida Nômade e quero saber mais sobre as imersões.')}`;
+const waUrl = `https://wa.me/5551999595522?text=${encodeURIComponent('Olá Cami! Quero saber mais sobre as imersões CALI.')}`;
+
+function getPriceTier(dateStr) {
+  if (!dateStr) return 'earlyBird';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev = new Date(dateStr + 'T00:00:00');
+  const days = Math.floor((ev.valueOf() - today.valueOf()) / 86400000);
+  return days >= 3 ? 'earlyBird' : days <= 0 ? 'dayOf' : 'regular';
+}
 ---
 
 <BaseLayout
-  title="Vida Nômade — CALI MOVIMIENTO"
-  description="Camila Lucena leva o Spine Lab de cidade em cidade — Brasil e Europa. Como é ser professora em movimento."
+  title="Vida Nômade — CALI MOVIMIENTO by Camila Lucena"
+  description="A agenda nômade das imersões CALI e o mapa dos cantos do mundo por onde a Cami já passou. Onde você mora? Onde quer me encontrar?"
 >
   <Header />
 
-  <!-- Hero -->
-  <section style="padding:9rem 2rem 5rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,#f0ebe0 0%,var(--paper) 70%);position:relative;overflow:hidden;">
-    <div class="prism" style="opacity:0.5;"></div>
-    <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
-      <p class="eyebrow reveal" style="text-align:center;">em movimento</p>
-      <h1 class="section-title reveal" style="font-size:clamp(3rem,8vw,6rem);line-height:0.96;">Vida<br><em style="font-family:var(--font-serif);font-style:italic;color:var(--orange);">Nômade</em></h1>
-      <p class="reveal serif-it" style="font-size:clamp(1.1rem,2vw,1.5rem);color:var(--ink-soft);margin-top:1.2rem;line-height:1.5;">
-        Camila leva o Spine Lab de cidade em cidade — Brasil e Europa.<br>
-        Cada lugar deixa uma marca no corpo da prática.
+  <!-- ════════════════════ HERO ════════════════════ -->
+  <section id="topo" class="vn-hero section-pad page-top">
+    <div class="prism" id="prismHero"></div>
+    <div class="wrap vn-hero-inner">
+      <p class="eyebrow reveal">Agenda nômade · pelo mundo</p>
+      <p class="vn-lede reveal serif-it">
+        Levar o sentir corporal a todos os cantos do mundo.<br>
+        Veja onde estarei — e por onde já passei.
       </p>
+    </div>
+    <!-- wave -->
+    <div class="vn-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 54" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 27 C240 54 480 0 720 27 C960 54 1200 0 1440 27 L1440 54 L0 54 Z" fill="var(--paper)"/>
+      </svg>
     </div>
   </section>
 
-  <!-- Manifesto nômade -->
-  <section class="section-pad" style="background:var(--paper);">
-    <div class="wrap" style="max-width:760px;">
-      <blockquote class="reveal" style="font-family:var(--font-display);font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:400;line-height:1.28;color:var(--ink);border-left:3px solid var(--orange);padding-left:2rem;margin:0 0 3rem;">
-        "O nomadismo não é fuga. É a escolha de deixar o mundo inteiro ser o estúdio."
-      </blockquote>
-      <p class="reveal" style="color:var(--ink-soft);font-size:1.05rem;line-height:1.9;margin-bottom:1.2rem;">
-        A Cami não tem uma sala fixa. Tem uma prática que vai com ela — e se adapta ao chão onde pousa. Rio de Janeiro, Florianópolis, Porto Alegre, Lisboa, Barcelona. Cada cidade traz um corpo diferente para a roda.
-      </p>
-      <p class="reveal" style="color:var(--ink-soft);font-size:1.05rem;line-height:1.9;">
-        A vida nômade é uma escolha que exige constância sem rotina fixa, presença sem permanência. É o que a prática do Spine Lab ensina também — habitar o que está aqui, agora, independente do onde.
-      </p>
+  <!-- ════════════════════ AGENDA ════════════════════ -->
+  <section id="agenda" class="section-pad" style="background:var(--paper);">
+    <div class="wrap">
+      <div class="agenda-head">
+        <div>
+          <p class="eyebrow reveal">Próximas paradas</p>
+          <h2 class="section-title reveal">Onde eu<br><em class="iris-text">estarei</em></h2>
+        </div>
+        <p class="reveal" style="max-width:34ch;color:var(--ink-soft);">
+          A Cami leva o Spine Lab de cidade em cidade. Reserve seu lugar — vagas limitadas por turma.
+          Todas as imersões incluem material impresso + acesso ao APP Spine Lab.
+        </p>
+      </div>
+
+      <div class="card-grid">
+        {workshops.map((w, i) => {
+          const isTbd = w.status === 'tbd';
+          const tier  = getPriceTier(w.date);
+          const prices = w.currency === 'EUR' ? w.priceEUR : w.priceBRL;
+          const price  = prices ? (prices[tier] ?? prices.earlyBird) : 0;
+          const sym    = w.currency === 'EUR' ? '€' : 'R$';
+          const pix    = Math.round(price * 0.9 * 100) / 100;
+          const LABELS = { earlyBird: '🐦 Early bird', regular: 'Regular', dayOf: 'No dia' };
+          return (
+            <article
+              class="wcard reveal"
+              style={`transition-delay:${i*0.1}s;position:relative;`}
+            >
+              {isTbd && <span class="badge-tbd">Em breve</span>}
+              <span class="w-date">{w.dateDisplay}</span>
+              <span class="w-city">{w.neighborhood || w.city}</span>
+              <span class="w-loc">{w.location}</span>
+              <span class="w-time">⏰ {w.time}</span>
+              {!isTbd && (
+                <>
+                  <span class="w-chip">{LABELS[tier]}</span>
+                  <span class="w-price">
+                    <b>{sym}{price.toFixed(2).replace('.',',')}</b>
+                    <span class="pix"> · {sym}{pix.toFixed(2).replace('.',',')} PIX</span>
+                  </span>
+                </>
+              )}
+              {w.addOn && (
+                <span style="font-size:0.8rem;color:var(--ink-soft);">🍱 Opcional: {w.addOn.label} — R${w.addOn.price}</span>
+              )}
+              <button
+                class="btn btn-primary"
+                style={`width:100%;justify-content:center;${isTbd?'opacity:0.5;':''}`}
+                data-workshop={`${w.city}${w.neighborhood?' — '+w.neighborhood:''} · ${w.dateDisplay} ${w.time}`}
+                data-price={price}
+                data-currency={w.currency}
+                data-addon-price={w.addOn?.price ?? ''}
+                data-addon-label={w.addOn?.label ?? ''}
+                disabled={isTbd}
+              >
+                {isTbd ? 'Em breve — aguarde' : 'Reservar lugar'}
+              </button>
+            </article>
+          );
+        })}
+      </div>
+
+      <div style="text-align:center;margin-top:3rem;" class="reveal">
+        <a href="/#imersoes" class="btn btn-outline">Ver toda a agenda</a>
+      </div>
     </div>
   </section>
 
-  <!-- Próximas cidades -->
-  <section class="section-pad" style="background:var(--bg-deep,#ECE6DB);">
-    <div class="wrap" style="text-align:center;">
-      <p class="eyebrow reveal">agenda nômade 2026</p>
-      <h2 class="section-title reveal" style="margin-bottom:3rem;">Próximas cidades</h2>
-      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;" class="reveal">
-        {[
-          { cidade: 'Rio de Janeiro', periodo: 'jun 2026' },
-          { cidade: 'Florianópolis', periodo: 'jun 2026' },
-          { cidade: 'Porto Alegre',  periodo: 'jun 2026' },
-          { cidade: 'Europa',        periodo: 'jun–ago 2026' },
-        ].map(c => (
-          <div style="background:rgba(255,255,255,0.7);border:1px solid var(--line,#E2DACB);border-radius:16px;padding:1.2rem 2rem;min-width:180px;">
-            <p style="font-family:var(--font-display);font-size:1.3rem;color:var(--ink);">{c.cidade}</p>
-            <p style="font-size:0.82rem;color:var(--ink-soft,#6E6570);margin-top:0.3rem;letter-spacing:0.08em;">{c.periodo}</p>
-          </div>
+  <!-- ════════════════════ GLOBO ════════════════════ -->
+  <section id="mapa" class="section-pad" style="background:var(--bg-deep,#ECE6DB);">
+    <div class="wrap">
+      <p class="eyebrow reveal" style="text-align:center;">O mundo como tapete</p>
+      <h2 class="section-title reveal" style="text-align:center;margin-bottom:1rem;">
+        Onde você mora?<br><em class="iris-text">Onde quer me encontrar?</em>
+      </h2>
+      <p class="reveal serif-it" style="text-align:center;color:var(--ink-soft);max-width:44ch;margin:0 auto 3rem;font-size:clamp(1rem,1.4vw,1.3rem);">
+        Cada ponto aceso é um canto do mundo por onde já passei.
+      </p>
+
+      <!-- SLOT DO GLOBO — substituir pelo código do Claude Design -->
+      <div id="globe-stage" class="reveal">
+        <div id="globe-holder">
+          <!-- globo interativo aqui -->
+        </div>
+        <p id="globe-count" style="text-align:center;font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);color:var(--orange);margin-bottom:0.3rem;">44 lugares</p>
+        <p id="globe-hint" style="text-align:center;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-faint);">arraste para girar · toque num ponto</p>
+      </div>
+
+      <!-- Filtros de continente -->
+      <div id="continent-chips" class="vn-chips reveal">
+        {['África','América do Sul','América Central','Ásia','Oceania','Europa'].map(c => (
+          <button class="vn-chip" data-continent={c}>{c}</button>
         ))}
       </div>
-      <div class="reveal" style="margin-top:3rem;">
-        <a href="/#imersoes" class="btn btn-primary btn-lg">Ver datas e reservar lugar</a>
+
+      <div style="text-align:center;margin-top:3rem;" class="reveal">
+        <a href="/blog" class="btn btn-outline">✈️ Ver todas as crônicas de viagem</a>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="section-pad" style="background:var(--paper);text-align:center;">
-    <div class="wrap" style="max-width:600px;">
+  <!-- ════════════════════ CTA ════════════════════ -->
+  <section id="cta" class="section-pad" style="background:var(--paper);text-align:center;">
+    <div class="wrap">
       <p class="eyebrow reveal">vem junto</p>
-      <h2 class="section-title reveal" style="margin-bottom:1.2rem;">A prática chega perto de ti.</h2>
-      <p class="reveal" style="color:var(--ink-soft);line-height:1.9;margin-bottom:2rem;">
-        Fica de olho na agenda ou fala direto com a Cami para saber quando ela estará na tua cidade.
-      </p>
-      <div class="reveal" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">Falar com a Cami</a>
-        <a href="/#imersoes" class="btn btn-primary btn-lg">Ver agenda</a>
+      <h2 class="section-title reveal" style="margin-bottom:2rem;">
+        A prática chega<br><em class="serif-it" style="color:var(--orange);">perto de ti.</em>
+      </h2>
+      <div class="reveal">
+        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">
+          Conversar no WhatsApp
+        </a>
       </div>
     </div>
   </section>
 
   <Footer />
   <WhatsAppButton />
+  <PaymentModal />
 </BaseLayout>
 
 <style>
-  .bg-deep { background: #ECE6DB; }
+  /* ── Hero ─────────────────────────────────────── */
+  .vn-hero {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 0;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--bg-deep, #ECE6DB) 100%);
+  }
+  .vn-hero-inner { position: relative; z-index: 2; max-width: 860px; }
+  .vn-lede {
+    font-size: clamp(2rem, 1.2rem + 4.2vw, 4.8rem);
+    line-height: 1.18;
+    color: var(--ink-soft);
+    margin-top: 1.2rem;
+    max-width: 18ch;
+  }
+  .vn-wave {
+    position: relative;
+    z-index: 2;
+    margin-top: 4rem;
+    line-height: 0;
+  }
+  .vn-wave svg { width: 100%; display: block; }
+
+  /* ── Globo placeholder ───────────────────────── */
+  #globe-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  #globe-holder {
+    width: min(560px, 90vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 36%,
+      rgba(111,194,220,0.35) 0%,
+      rgba(102,207,190,0.25) 30%,
+      rgba(195,174,201,0.18) 60%,
+      rgba(232,188,99,0.10) 100%);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    /* substituído pelo globo interativo */
+  }
+
+  /* ── Chips de continente ─────────────────────── */
+  .vn-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .vn-chip {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.6);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+  }
+  .vn-chip:hover,
+  .vn-chip.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
 </style>
