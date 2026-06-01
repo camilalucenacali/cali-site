@@ -44,7 +44,7 @@ const spine = [
       <p class="hero-movimiento reveal" id="heroMovim">Movimiento · por Cami Lucena</p>
       <p class="hero-tagline reveal">O corpo não é um problema a resolver. É um território a habitar.</p>
       <div class="hero-cta reveal">
-        <a href="/imersoes" class="btn btn-primary btn-lg">Ver imersões</a>
+        <a href="#agendanomade" class="btn btn-primary btn-lg">Ver imersões</a>
         <a href="#sobre" class="btn btn-outline btn-lg">Conhecer a Cami</a>
       </div>
     </div>
@@ -84,13 +84,13 @@ const spine = [
   <!-- ══════════════════════════════════════════
        IMERSÕES
   ══════════════════════════════════════════ -->
-  <section id="imersoes" class="section-pad">
+  <section id="agendanomade" class="section-pad">
     <div class="prism" id="prismImersoes"></div>
     <div class="wrap" style="position:relative;z-index:3;">
       <div class="agenda-head">
         <div>
           <p class="eyebrow reveal">Agenda nômade</p>
-          <h2 class="section-title reveal">Próximas<br />imersões</h2>
+          <h2 class="section-title reveal">Próximas imersões<br />presenciais</h2>
         </div>
         <p class="reveal" style="max-width:30ch;color:var(--ink-soft);">Camila leva o Spine Lab de cidade em cidade. Reserve seu lugar — vagas limitadas por turma.</p>
       </div>
@@ -137,9 +137,9 @@ const spine = [
       <div class="card-grid" style="margin-top:1.5rem;">
         <a href="/vida-nomade" class="wcard wcard-nomade reveal" style="text-decoration:none;">
           <span class="w-date" style="font-size:1.4rem;">✦</span>
-          <span class="w-city">Vida nômade</span>
-          <span class="w-loc">Como é ser professora em movimento</span>
-          <span class="w-time" style="margin-top:auto;">Conhecer →</span>
+          <span class="w-city">PRÓXIMOS WORKSHOPS</span>
+          <span class="w-loc">aonde nos encontraremos?</span>
+          <span class="w-time" style="margin-top:auto;">saber mais →</span>
         </a>
       </div>
     </div>
@@ -157,12 +157,24 @@ const spine = [
         <div class="about-copy">
           <p class="eyebrow reveal">Quem é</p>
           <h2 class="section-title reveal" style="margin-bottom:1.4rem;">a Cami</h2>
-          <p class="reveal">Ativista do sentir corporal livre, a Cami é facilitadora de transformação pessoal e coletiva utilizando diferentes linguagens e ferramentas. Suas práticas fundem saberes que muitas vezes transcendem a abordagem tradicional, oferecendo <strong>conexão, liberdade e autonomia</strong>.</p>
-          <p class="reveal">Propondo o cuidado como uma performance coletiva.</p>
-          <p class="reveal">Se você quer entender melhor sobre ti mesma, fases e ciclos da tua vida — chegaste no lugar certo. Na aula conseguimos entrar em todos esses temas de uma maneira leve e descontraída, mas profunda a nível de te auxiliar bastante no teu autoconhecimento e autodescoberta.</p>
+          <p class="reveal">Ativista do sentir corporal livre, a Cami é facilitadora de transformação pessoal e coletiva que funde saberes os quais muitas vezes transcendem a abordagem tradicional — oferecendo <strong>conexão, liberdade e autonomia</strong>. Propondo o cuidado como uma performance coletiva.</p>
+          <p class="reveal">A relação da Cami com o corpo começou muito antes da prática. Aos 4 anos com o ballet, pra parar de tropeçar, deu certo! Natação, futsal, ginástica olímpica, judô.. e aos 11 anos, uma escoliose grave a apresentou à dor — e também à descoberta de que o movimento poderia ser resposta, não fuga.</p>
+
+          <!-- Continuar lendo -->
+          <div class="cami-expand reveal">
+            <button class="btn btn-outline btn-cami-expand" id="btnCamiExpand" aria-expanded="false">
+              Continuar lendo ↓
+            </button>
+            <div class="cami-more" id="camiMore" hidden>
+              <p>Formada em engenharia civil, geminiana, praticante de yoga há 21 anos — a prática entrou na vida dela antes mesmo de qualquer formação. Em 2019, aos 29 anos, foi aprofundar essa relação na escola Kashish Yoga, baseada na Índia, onde se formou professora. O caminho seguiu: nove meses morando no Ashram Ram Das Guru, em Portugal, praticando sevadara na agrofloresta local. Depois, vivências no Ashram in the City, em Bruxelas. E, pelo mundo inteiro, ensinando e aprendendo — em trocas com culturas que expandiram o que ela entendia ser possível num corpo.</p>
+              <p style="margin-top:1rem;">Desde 2023 ensina. Não um método — uma intenção.</p>
+              <p style="margin-top:1rem;">Se queres entender melhor sobre ti mesma, tuas fases e ciclos — chegaste no lugar certo. Na aula conseguimos entrar em todos esses temas de uma forma leve e descontraída, mas profunda o suficiente para te auxiliar no teu autoconhecimento e autodescoberta. E quanto mais nos conhecemos, mais honramos a nossa vida — e entendemos os rumos que queremos e podemos dar a ela.</p>
+            </div>
+          </div>
+
           <div class="about-actions reveal">
             <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">Conversar no WhatsApp</a>
-            <a href="/imersoes" class="btn btn-primary">Ver imersões</a>
+            <a href="/vida-nomade" class="btn btn-primary">Ver imersões</a>
           </div>
         </div>
       </div>
@@ -182,6 +194,7 @@ const spine = [
           Uma sessão de 35min, ao vivo via Zoom. A mesma inspirada nas imersões presenciais — no teu ritmo, no teu espaço.
         </p>
         <p class="price reveal" id="aulaPrice">R$ 45,00</p>
+        <p class="reveal serif-it" style="color:var(--ink-soft);margin-top:-0.5rem;margin-bottom:1rem;">pra tua aula experimental</p>
         <a href="https://calendly.com/camilalucena-cali" target="_blank" rel="noopener" class="btn btn-primary btn-lg reveal" id="btnAgendar">📅 Agendar agora</a>
         <p class="reveal" style="color:var(--ink-soft);font-size:0.84rem;margin-top:1rem;">
           Escolhe a data e o horário que funcionam para ti — confirmação imediata.
@@ -229,7 +242,7 @@ const spine = [
         <p class="reveal">Podes tirar todas as dúvidas que quiseres — ou já partir direto para a reserva.</p>
         <div class="cta-actions reveal">
           <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline btn-lg">💬 Vamos ver</a>
-          <a href="#imersoes" class="btn btn-primary btn-lg">✨ Já quero</a>
+          <a href="#agendanomade" class="btn btn-primary btn-lg">✨ Já quero</a>
         </div>
       </div>
     </div>
