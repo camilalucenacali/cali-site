@@ -155,6 +155,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"quem-foi-patanjali.md": {
+	id: "quem-foi-patanjali.md";
+  slug: "quem-foi-patanjali";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "semana-de-yoga.md": {
 	id: "semana-de-yoga.md";
   slug: "semana-de-yoga";

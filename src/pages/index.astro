@@ -226,6 +226,12 @@ const spine = [
           </div>
         ))}
       </div>
+
+      <div class="spine-actions reveal">
+        <a href="/blog/quem-foi-patanjali" class="btn btn-outline">Quem foi Patanjali</a>
+        <a href={waUrl} target="_blank" rel="noopener" class="btn btn-outline">Conversar no WhatsApp</a>
+        <a href="/vida-nomade" class="btn btn-primary">Ver imersões</a>
+      </div>
     </div>
   </section>
 
@@ -411,20 +417,198 @@ const spine = [
 </script>
 
 <style>
-  /* Hover foto nos cards Spine Lab */
+  /* ── GRUPO 2: CALI bounce + tagline shine ───── */
+
+  /* CALI wordmark: dança sutil */
+  @keyframes caliDance {
+    0%,100% { transform: translateY(0) rotate(-0.5deg) scale(1); }
+    20%      { transform: translateY(-6px) rotate(1deg) scale(1.01); }
+    40%      { transform: translateY(-2px) rotate(-1.2deg) scale(1.005); }
+    60%      { transform: translateY(-8px) rotate(0.8deg) scale(1.015); }
+    80%      { transform: translateY(-3px) rotate(-0.6deg) scale(1.008); }
+  }
+  .hero-word {
+    animation: caliDance 3.8s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  /* Tagline: Text Reveal Shine */
+  .hero-tagline {
+    background: linear-gradient(
+      90deg,
+      var(--ink) 0%,
+      var(--ink) 30%,
+      var(--orange) 45%,
+      rgba(251,246,238,0.95) 50%,
+      var(--orange) 55%,
+      var(--ink) 70%,
+      var(--ink) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shineReveal 4s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+  @keyframes shineReveal {
+    0%   { background-position: 150% center; }
+    50%  { background-position: -50% center; }
+    100% { background-position: 150% center; }
+  }
+
+  /* ── GRUPO 3: Manifesto shine + stagger ─────── */
+
+  .manifesto-lead {
+    background: linear-gradient(
+      90deg,
+      var(--ink) 0%, var(--ink) 25%,
+      var(--orange) 38%, rgba(255,255,255,0.9) 43%, var(--orange) 48%,
+      var(--ink) 62%, var(--ink) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shineReveal 5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  .mblock { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .mblock.visible { opacity: 1; transform: none; }
+  .mblock:nth-child(1) { transition-delay: 0s; }
+  .mblock:nth-child(2) { transition-delay: 0.2s; }
+  .mblock:nth-child(3) { transition-delay: 0.4s; }
+
+  /* ── GRUPO 4: Cards Spine Lab hover typewriter ─ */
+
   .sblock { position: relative; overflow: hidden; }
   .sblock-foto {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    border-radius: 18px;
-    z-index: 1;
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 0.45s ease;
+    border-radius: 18px; z-index: 1;
   }
   .sblock:hover .sblock-foto { opacity: 1; }
+
+  /* texto padrão some quando a foto aparece */
   .sblock .s-time,
   .sblock h3,
-  .sblock p { position: relative; z-index: 2; }
+  .sblock p {
+    position: relative; z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+  .sblock:hover .s-time,
+  .sblock:hover h3,
+  .sblock:hover p { opacity: 0; }
+
+  /* overlay do typewriter */
+  .sblock-tw {
+    position: absolute; inset: 0; z-index: 3;
+    display: flex; align-items: flex-end;
+    padding: 1.2rem 1.4rem;
+    border-radius: 18px;
+    opacity: 0; transition: opacity 0.3s ease 0.2s;
+    pointer-events: none;
+  }
+  .sblock:hover .sblock-tw { opacity: 1; }
+  .sblock-tw-text {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink);
+    background: rgba(251,246,238,0.82);
+    backdrop-filter: blur(4px);
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    max-width: 100%;
+    /* gradiente de texto (text masking) */
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
+  /* ── GRUPO 5: Botões abaixo dos cards ───────── */
+  .spine-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 2.5rem;
+  }
+
+  /* ── Continuar lendo ─────────────────────────── */
+  .cami-expand { margin: 1.2rem 0; }
+  .btn-cami-expand {
+    font-size: 0.88rem; padding: 0.6rem 1.4rem;
+    border-color: var(--line); color: var(--ink-soft);
+  }
+  .cami-more { margin-top: 1.2rem; }
+  .cami-more p { color: var(--ink-soft); line-height: 1.85; font-size: 1.02rem; }
 </style>
+
+<script is:inline>
+/* Grupos 2-5: animações, typewriter, botão expandir */
+(function() {
+  /* ── Manifesto stagger (IntersectionObserver) ── */
+  var mblocks = document.querySelectorAll('.mblock');
+  if (mblocks.length) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    mblocks.forEach(function(b) { obs.observe(b); });
+  }
+
+  /* ── Typewriter nos cards Spine Lab ─────────── */
+  var spine = [
+    'Chegança real. Não começa com movimento — começa com parada. Dirga Pranayama, Sankalpa, Om × 3.',
+    'A coluna se move em 6 direções. A maioria das pessoas usa 1. Gato-vaca, torções, Surya Namaskar lento.',
+    'Progressão clássica de pé → chão. Força, enraizamento, mobilidade profunda, introspecção.',
+    'O coração do Spine Lab. Shatkarma — prática de purificação do Hatha Yoga. Não é acrobacia: é medicina interna.',
+    'Progressão segura: Viparita Karani, Sarvangasana, Sirsasana. Todo mundo consegue entrar de alguma forma.',
+    '7 minutos reais de Savasana — não negociável. Yoga Nidra breve. Círculo de fechamento.'
+  ];
+
+  document.querySelectorAll('.sblock').forEach(function(card, idx) {
+    /* cria overlay */
+    var tw = document.createElement('div');
+    tw.className = 'sblock-tw';
+    var span = document.createElement('span');
+    span.className = 'sblock-tw-text';
+    tw.appendChild(span);
+    card.appendChild(tw);
+
+    var text = spine[idx] || '';
+    var timer = null;
+
+    card.addEventListener('mouseenter', function() {
+      span.textContent = '';
+      var i = 0;
+      timer = setInterval(function() {
+        if (i < text.length) { span.textContent += text[i]; i++; }
+        else clearInterval(timer);
+      }, 22);
+    });
+    card.addEventListener('mouseleave', function() {
+      clearInterval(timer);
+      span.textContent = '';
+    });
+  });
+
+  /* ── Botão Continuar lendo ────────────────────── */
+  var btnExpand = document.getElementById('btnCamiExpand');
+  var camiMore  = document.getElementById('camiMore');
+  if (btnExpand && camiMore) {
+    btnExpand.addEventListener('click', function() {
+      var open = camiMore.hasAttribute('hidden');
+      if (open) {
+        camiMore.removeAttribute('hidden');
+        btnExpand.textContent = 'Fechar ↑';
+        btnExpand.setAttribute('aria-expanded', 'true');
+      } else {
+        camiMore.setAttribute('hidden', '');
+        btnExpand.textContent = 'Continuar lendo ↓';
+        btnExpand.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+})();
+</script>
