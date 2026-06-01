@@ -4,6 +4,7 @@ description: "Como costumo estruturar os primeiros cinco dias de Ashtanga — o 
 pubDate: 2026-05-31
 city: "Rio de Janeiro"
 tags: ["ashtanga", "iniciantes", "método", "primary series", "yoga"]
+image: /fotos/Cami-18.jpg
 ---
 
 Talvez você esteja aqui por curiosidade. Ouviu falar, viu alguém praticando, ficou com uma pulguinha atrás da orelha. Ainda não decidiu nada.

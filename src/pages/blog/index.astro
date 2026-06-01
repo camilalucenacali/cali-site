@@ -34,6 +34,9 @@ const posts = (await getCollection('blog')).sort(
         <div class="post-list">
           {posts.map((post, i) => (
             <a href={`/blog/${post.slug}`} class="post-row reveal" style={`transition-delay:${i*0.1}s`}>
+              {post.data.image && (
+                <div class="pr-foto" style={`background-image:url('${post.data.image}')`}></div>
+              )}
               <div class="pr-date">
                 {post.data.pubDate.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}
                 <small>{post.data.pubDate.getFullYear()}</small>
@@ -53,6 +56,23 @@ const posts = (await getCollection('blog')).sort(
   <Footer />
   <WhatsAppButton />
 </BaseLayout>
+
+<style>
+  .post-row { position: relative; overflow: hidden; }
+  .pr-foto {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+  .post-row:hover .pr-foto { opacity: 1; }
+  .post-row .pr-date,
+  .post-row > div,
+  .post-row .pr-go { position: relative; z-index: 1; }
+</style>
 
 <script is:inline>
 (function() {

@@ -4,6 +4,7 @@ description: "A coluna não é um problema a resolver. É um território a habit
 pubDate: 2026-05-23
 city: "Rio de Janeiro"
 tags: ["yoga", "coluna", "movimento", "autoconhecimento"]
+image: /fotos/Cami-18.jpg
 ---
 
 O corpo fala antes da mente. Antes de qualquer palavra, antes de qualquer pensamento formulado, o corpo já respondeu.
