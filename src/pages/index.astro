@@ -196,7 +196,11 @@ const spine = [
       </p>
       <div class="spine-grid">
         {spine.map((s, i) => (
-          <div class={`sblock reveal${s.feature ? ' feature' : ''}`} style={`transition-delay:${i*0.1}s`}>
+          <div
+            class={`sblock reveal${s.feature ? ' feature' : ''}`}
+            style={`transition-delay:${i*0.1}s`}
+          >
+            <div class="sblock-foto" style={`background-image:url('/fotos/foto${i+1}.jpg')`}></div>
             <span class="s-time">{s.time}</span>
             <h3>{s.title}</h3>
             <p>{s.desc}</p>
@@ -386,3 +390,22 @@ const spine = [
   }
 })();
 </script>
+
+<style>
+  /* Hover foto nos cards Spine Lab */
+  .sblock { position: relative; overflow: hidden; }
+  .sblock-foto {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    border-radius: 18px;
+    z-index: 1;
+  }
+  .sblock:hover .sblock-foto { opacity: 1; }
+  .sblock .s-time,
+  .sblock h3,
+  .sblock p { position: relative; z-index: 2; }
+</style>
