@@ -1,5 +1,5 @@
 ---
-title: "Como vai ser a sua semana de yoga comigo"
+title: "Como será a sua semana de Ashtanga Yoga comigo"
 description: "Como costumo estruturar os primeiros cinco dias de Ashtanga — o que exploramos em cada aula, por que nessa ordem, e o que você pode esperar sentir. Um mapa, não um contrato."
 pubDate: 2026-05-31
 city: "Rio de Janeiro"

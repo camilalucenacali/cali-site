@@ -175,8 +175,8 @@ const spine = [
         <p class="reveal" style="color:var(--ink-soft);max-width:46ch;margin-inline:auto;">
           Uma sessão de 35min, ao vivo via Zoom. A mesma inspirada nas imersões presenciais — no teu ritmo, no teu espaço.
         </p>
-        <p class="price reveal" id="aulaPrice">R$ 15,00</p>
-        <a href="#calendly-placeholder" class="btn btn-primary btn-lg reveal" id="btnAgendar">📅 Agendar agora</a>
+        <p class="price reveal" id="aulaPrice">R$ 45,00</p>
+        <a href="https://calendly.com/camilalucena-cali" target="_blank" rel="noopener" class="btn btn-primary btn-lg reveal" id="btnAgendar">📅 Agendar agora</a>
         <p class="reveal" style="color:var(--ink-soft);font-size:0.84rem;margin-top:1rem;">
           Escolhe a data e o horário que funcionam para ti — confirmação imediata.
         </p>
@@ -192,7 +192,7 @@ const spine = [
       <p class="eyebrow reveal" style="text-align:center;">A prática</p>
       <h2 class="section-title reveal" style="text-align:center;">Spine Lab — 2 horas</h2>
       <p class="reveal serif-it" style="text-align:center;font-size:clamp(1.2rem,1rem+1.4vw,1.9rem);color:var(--ink-soft);margin-top:0.8rem;">
-        Para o ocidental que nunca soube que tinha um corpo.
+        Para quem quer sentir o corpo cada vez mais como lar.
       </p>
       <div class="spine-grid">
         {spine.map((s, i) => (
@@ -262,7 +262,7 @@ const spine = [
     var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
     if (tz.startsWith('Europe/')) {
       var p = document.getElementById('aulaPrice');
-      if (p) p.textContent = '€ 15,00';
+      if (p) p.textContent = '€ 45,00';
     }
   } catch(e) {}
 
