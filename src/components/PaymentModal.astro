@@ -50,7 +50,7 @@ const waNumber = '5551999595522';
 </div>
 
 <script define:vars={{ pixKey, waNumber }}>
-  const COUPONS = { COMUNIDADE: 0.20 };
+  const COUPONS = { COMUNIDADE: 0.20, AMIGADACAMI: 0.65 };
   let basePrice=0, currency='BRL', couponDisc=0, addonPrice=0, addonActive=false, currentName='';
   const sym = () => currency==='EUR'?'€':'R$';
   const fmt = v => sym()+v.toFixed(2).replace('.',',');

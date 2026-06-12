@@ -7,7 +7,7 @@ export const workshops = [
     date: "2026-06-19",
     dateDisplay: "19 jun",
     time: "11h",
-    priceBRL: { earlyBird: 65, regular: 65, dayOf: 65 },
+    priceBRL: { earlyBird: 65, regular: 75, dayOf: 82.50 },
     earlyBirdDays: 3,
     earlyBirdDeadline: "2026-06-16",
     currency: "BRL",
